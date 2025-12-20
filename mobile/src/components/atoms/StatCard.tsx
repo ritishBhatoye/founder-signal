@@ -48,17 +48,27 @@ const StatCard: React.FC<StatCardProps> = ({
     >
       <View className="flex-row items-start justify-between">
         <View className="flex-1">
-          <Text className="mb-1 text-sm text-neutral-600 dark:text-neutral-400">{title}</Text>
+          <Text className="mb-1 text-sm text-neutral-600 dark:text-neutral-400">
+            {title}
+          </Text>
           <Text className="mb-1 text-2xl font-bold text-neutral-900 dark:text-neutral-100">
             {value}
           </Text>
           {subtitle && (
-            <Text className="text-xs text-neutral-500 dark:text-neutral-500">{subtitle}</Text>
+            <Text className="text-xs text-neutral-500 dark:text-neutral-500">
+              {subtitle}
+            </Text>
           )}
           {trend && trendValue && (
             <View className="mt-2 flex-row items-center">
-              <Ionicons name={getTrendIcon()} size={16} className={getTrendColor()} />
-              <Text className={`ml-1 text-xs font-medium ${getTrendColor()}`}>{trendValue}</Text>
+              <Ionicons
+                name={getTrendIcon()}
+                size={16}
+                className={getTrendColor()}
+              />
+              <Text className={`ml-1 text-xs font-medium ${getTrendColor()}`}>
+                {trendValue}
+              </Text>
             </View>
           )}
         </View>

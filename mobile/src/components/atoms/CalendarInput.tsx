@@ -38,7 +38,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
   className = "",
 }) => {
   const { isDark } = useTheme();
-  const [showPicker, setShowPicker] = useState(false);
+  const [, setShowPicker] = useState(false);
   const isInvalid = !!error && !!touched;
 
   const formatDate = useCallback(
@@ -51,18 +51,13 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
         year: "numeric",
       });
     },
-    [placeholder],
+    [placeholder]
   );
 
   const handlePress = () => {
     if (!isDisabled) {
       setShowPicker(true);
     }
-  };
-
-  const handleClose = () => {
-    setShowPicker(false);
-    onBlur?.();
   };
 
   return (
@@ -79,13 +74,17 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
         onPress={handlePress}
         disabled={isDisabled}
         className={`flex-row items-center justify-between rounded-xl border px-4 py-3 ${
-          isInvalid ? "border-error-500" : "border-neutral-300 dark:border-neutral-600"
+          isInvalid
+            ? "border-error-500"
+            : "border-neutral-300 dark:border-neutral-600"
         } ${isDisabled ? "opacity-50" : ""} bg-white dark:bg-neutral-800`}
         activeOpacity={0.7}
       >
         <Text
           className={`text-base ${
-            value ? "text-neutral-900 dark:text-neutral-100" : "text-neutral-400"
+            value
+              ? "text-neutral-900 dark:text-neutral-100"
+              : "text-neutral-400"
           }`}
         >
           {formatDate(value)}
@@ -96,7 +95,9 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
           color={isDark ? Colors.neutral[400] : Colors.neutral[500]}
         />
       </TouchableOpacity>
-      {isInvalid && <Text className="text-xs text-error-500 mt-1">{error}</Text>}
+      {isInvalid && (
+        <Text className="text-xs text-error-500 mt-1">{error}</Text>
+      )}
     </View>
   );
 };

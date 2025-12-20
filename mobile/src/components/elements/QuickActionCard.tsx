@@ -23,7 +23,7 @@ const QuickActionCard: React.FC<QuickActionCardProps> = ({
   disabled = false,
   className = "",
 }) => {
-  const { isDark } = useTheme();
+  useTheme();
 
   return (
     <TouchableOpacity

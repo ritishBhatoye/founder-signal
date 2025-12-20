@@ -58,16 +58,18 @@ const AttendanceSummary: React.FC<AttendanceSummaryProps> = ({
     >
       <View className="flex-row items-center justify-between mb-4">
         <Text className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
-          Today's Attendance
+          Today&apos;s Attendance
         </Text>
         <View className={`px-3 py-1 rounded-full ${config.bg}`}>
-          <Text className={`text-sm font-medium ${config.color}`}>{config.label}</Text>
+          <Text className={`text-sm font-medium ${config.color}`}>
+            {config.label}
+          </Text>
         </View>
       </View>
       <View className="flex-row mb-4">
         <View className="flex-1 items-center py-3 bg-neutral-50 dark:bg-neutral-900 rounded-xl mr-2">
           <Ionicons name="log-in" size={24} color={Colors.success[500]} />
-          <Text className="text-xs text-neutral-500 mt-1">Check In</Text>
+          <Text className="text-xs text-neutral-500 mt-1">Check-In</Text>
           <Text className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
             {checkInTime || "--:--"}
           </Text>
@@ -88,12 +90,22 @@ const AttendanceSummary: React.FC<AttendanceSummaryProps> = ({
         </View>
       )}
       {status === "not-checked-in" && onCheckIn && (
-        <PrimaryButton onPress={onCheckIn} loading={loading} fullWidth icon="log-in">
+        <PrimaryButton
+          onPress={onCheckIn}
+          loading={loading}
+          fullWidth
+          icon="log-in"
+        >
           Check In
         </PrimaryButton>
       )}
       {status === "checked-in" && onCheckOut && (
-        <SecondaryButton onPress={onCheckOut} loading={loading} fullWidth icon="log-out">
+        <SecondaryButton
+          onPress={onCheckOut}
+          loading={loading}
+          fullWidth
+          icon="log-out"
+        >
           Check Out
         </SecondaryButton>
       )}
