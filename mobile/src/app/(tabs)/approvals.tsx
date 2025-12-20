@@ -38,8 +38,12 @@ export default function ApprovalsScreen() {
       <ScrollView className="flex-1">
         <View className="p-4">
           <View className="mb-6">
-            <Text className="text-2xl font-bold text-gray-900">Pending Approvals</Text>
-            <Text className="text-gray-600 mt-1">{pendingApprovals.length} requests waiting</Text>
+            <Text className="text-2xl font-bold text-gray-900">
+              Pending Approvals
+            </Text>
+            <Text className="text-gray-600 mt-1">
+              {pendingApprovals.length} requests waiting
+            </Text>
           </View>
 
           <View className="gap-4">
@@ -49,7 +53,9 @@ export default function ApprovalsScreen() {
                   <Text className="text-lg font-semibold text-gray-900">
                     {approval.employeeName}
                   </Text>
-                  <Text className="text-sm text-gray-600 mt-1">{approval.type}</Text>
+                  <Text className="text-sm text-gray-600 mt-1">
+                    {approval.type}
+                  </Text>
                 </View>
 
                 <View className="mb-4 p-3 bg-gray-50 rounded-lg">
@@ -67,20 +73,18 @@ export default function ApprovalsScreen() {
                   </View>
                   <View className="mt-2">
                     <Text className="text-sm text-gray-600 mb-1">Reason</Text>
-                    <Text className="text-sm text-gray-900">{approval.reason}</Text>
+                    <Text className="text-sm text-gray-900">
+                      {approval.reason}
+                    </Text>
                   </View>
                 </View>
 
                 <View className="flex-row gap-3">
                   <View className="flex-1">
-                    <Button variant="outline" size="md">
-                      Reject
-                    </Button>
+                    <Button label="Reject" variant="primary" size="md"></Button>
                   </View>
                   <View className="flex-1">
-                    <Button variant="primary" size="md">
-                      Approve
-                    </Button>
+                    <Button label="Approve" variant="primary" size="md" />
                   </View>
                 </View>
               </Card>

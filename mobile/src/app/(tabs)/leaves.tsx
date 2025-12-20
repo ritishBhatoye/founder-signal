@@ -1,11 +1,14 @@
 import { Button } from "@/components/atoms";
-import { LeaveCard } from "@/components/molecules";
+import { LeaveCard } from "@/components/molecules/LeaveCard";
+
 import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LeavesScreen() {
-  const [filter, setFilter] = useState<"all" | "pending" | "approved" | "rejected">("all");
+  const [filter, setFilter] = useState<
+    "all" | "pending" | "approved" | "rejected"
+  >("all");
 
   const leaves = [
     {
@@ -43,16 +46,20 @@ export default function LeavesScreen() {
   ];
 
   const filteredLeaves =
-    filter === "all" ? leaves : leaves.filter((leave) => leave.status === filter);
+    filter === "all"
+      ? leaves
+      : leaves.filter((leave) => leave.status === filter);
 
   return (
     <SafeAreaView className="flex-1 bg-neutral-50 dark:bg-neutral-950">
       <View className="flex-1" style={{ paddingBottom: 100 }}>
         {/* Header with Action Button */}
         <View className="px-4 pt-4 pb-2 bg-white border-b border-gray-200">
-          <Button variant="primary" size="md">
-            + Request New Leave
-          </Button>
+          <Button
+            label="+ Request New Leave"
+            variant="primary"
+            size="md"
+          ></Button>
         </View>
 
         {/* Filter Tabs */}
@@ -61,13 +68,12 @@ export default function LeavesScreen() {
             <View className="flex-row gap-2">
               {["all", "pending", "approved", "rejected"].map((status) => (
                 <Button
+                  label={status.charAt(0).toUpperCase() + status.slice(1)}
                   key={status}
-                  variant={filter === status ? "primary" : "ghost"}
+                  variant={filter === status ? "primary" : "secondary"}
                   size="sm"
                   onPress={() => setFilter(status as any)}
-                >
-                  {status.charAt(0).toUpperCase() + status.slice(1)}
-                </Button>
+                />
               ))}
             </View>
           </ScrollView>

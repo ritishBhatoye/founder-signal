@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-env node */
 
 const { execSync } = require("child_process");
 const fs = require("fs");
@@ -8,7 +9,11 @@ class AndroidBuilder {
   constructor() {
     this.projectRoot = path.resolve(__dirname, "..");
     this.androidDir = path.join(this.projectRoot, "android");
-    this.keystorePath = path.join(this.androidDir, "app", "clockio-release-key.keystore");
+    this.keystorePath = path.join(
+      this.androidDir,
+      "app",
+      "clockio-release-key.keystore"
+    );
     this.gradlePropsPath = path.join(this.androidDir, "gradle.properties");
     this.buildGradlePath = path.join(this.androidDir, "app", "build.gradle");
   }
@@ -54,7 +59,10 @@ class AndroidBuilder {
     this.log("Cleaning previous build..."); // Remove android directory if it exists
 
     if (fs.existsSync(this.androidDir)) {
-      this.executeCommand("rm -rf android", "Removing existing android directory");
+      this.executeCommand(
+        "rm -rf android",
+        "Removing existing android directory"
+      );
     }
 
     this.log("Clean completed", "success");
@@ -62,14 +70,17 @@ class AndroidBuilder {
 
   runExpoDoctor() {
     this.log("Running Expo doctor...");
-    this.executeCommand("npx expo-doctor", "Running expo-doctor to check project health");
+    this.executeCommand(
+      "npx expo-doctor",
+      "Running expo-doctor to check project health"
+    );
   }
 
   updateExpoPackages() {
     this.log("Checking and updating Expo packages...");
     this.executeCommand(
       "npx expo install --check",
-      "Checking and updating Expo packages for compatibility",
+      "Checking and updating Expo packages for compatibility"
     );
   }
 
@@ -77,7 +88,7 @@ class AndroidBuilder {
     this.log("Running Expo prebuild...");
     this.executeCommand(
       "npx expo prebuild --platform android --clean",
-      "Running expo prebuild for Android",
+      "Running expo prebuild for Android"
     );
   }
 
@@ -94,7 +105,11 @@ class AndroidBuilder {
 
       const keystoreCommand = `keytool -genkey -v -keystore ${this.keystorePath} -alias clockio-key-alias -keyalg RSA -keysize 2048 -validity 10000 -storepass clockio123 -keypass clockio123 -dname "CN=Clockio, OU=Development, O=Clockio, L=City, ST=State, C=US"`;
 
-      this.executeCommand(keystoreCommand, "Generating release keystore", this.androidDir);
+      this.executeCommand(
+        keystoreCommand,
+        "Generating release keystore",
+        this.androidDir
+      );
     }
 
     this.configureGradleProperties();
@@ -119,7 +134,10 @@ CLOCKIO_UPLOAD_KEY_PASSWORD=clockio123`; // Read existing gradle.properties
     if (!gradleProps.includes("CLOCKIO_UPLOAD_STORE_FILE")) {
       gradleProps += gradleConfig;
       fs.writeFileSync(this.gradlePropsPath, gradleProps);
-      this.log("Updated gradle.properties with signing configuration", "success");
+      this.log(
+        "Updated gradle.properties with signing configuration",
+        "success"
+      );
     } else {
       this.log("gradle.properties already configured", "success");
     }
@@ -149,19 +167,19 @@ CLOCKIO_UPLOAD_KEY_PASSWORD=clockio123`; // Read existing gradle.properties
       if (buildGradle.includes("signingConfigs {")) {
         buildGradle = buildGradle.replace(
           /(signingConfigs\s*\{[^}]*debug\s*\{[^}]*\})/,
-          `$1\n${releaseSigningConfig}`,
+          `$1\n${releaseSigningConfig}`
         );
       } // Update release buildType to use release signing
 
       buildGradle = buildGradle.replace(
         /(release\s*\{[^}]*)(signingConfig\s+signingConfigs\.debug)/,
-        "$1signingConfig signingConfigs.release",
+        "$1signingConfig signingConfigs.release"
       ); // If no signingConfig line exists in release, add it
 
       if (!buildGradle.match(/release\s*\{[^}]*signingConfig/)) {
         buildGradle = buildGradle.replace(
           /(release\s*\{)/,
-          "$1\n            signingConfig signingConfigs.release",
+          "$1\n            signingConfig signingConfigs.release"
         );
       }
 
@@ -178,7 +196,7 @@ CLOCKIO_UPLOAD_KEY_PASSWORD=clockio123`; // Read existing gradle.properties
     this.executeCommand(
       "NODE_ENV=production ./gradlew assembleRelease --parallel --max-workers=4",
       "Building release APK",
-      this.androidDir,
+      this.androidDir
     ); // Check if APK was generated
 
     const apkPath = path.join(
@@ -188,7 +206,7 @@ CLOCKIO_UPLOAD_KEY_PASSWORD=clockio123`; // Read existing gradle.properties
       "outputs",
       "apk",
       "release",
-      "app-release.apk",
+      "app-release.apk"
     );
     if (fs.existsSync(apkPath)) {
       this.log(`Release APK generated successfully at: ${apkPath}`, "success"); // Get file size

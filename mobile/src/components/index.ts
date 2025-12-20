@@ -17,5 +17,9 @@ export * from "./molecules";
 // Organisms - Complex structures
 export * from "./organisms";
 
-// Elements (legacy support)
-export * from "./elements";
+// Elements (legacy support) - excluding FilterChipGroup which is in molecules
+export { ApprovalCard } from "./elements";
+export { AttendanceCard } from "./elements";
+export { LeaveBalanceCard } from "./elements";
+export { LeaveCard } from "./elements";
+export { QuickActionCard } from "./elements";

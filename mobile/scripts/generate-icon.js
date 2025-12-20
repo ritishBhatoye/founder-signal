@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+/* eslint-env node */
+/* eslint-disable no-unused-vars */
 
 const fs = require("fs");
 const path = require("path");
@@ -41,7 +43,7 @@ class IconGenerator {
       radius * 0.8,
       center,
       center,
-      radius * 1.2,
+      radius * 1.2
     );
     gradient.addColorStop(0, COLORS.primary + "40");
     gradient.addColorStop(1, COLORS.primary + "00");
@@ -55,7 +57,7 @@ class IconGenerator {
       center - radius,
       center - radius,
       center + radius,
-      center + radius,
+      center + radius
     );
     clockGradient.addColorStop(0, COLORS.primary);
     clockGradient.addColorStop(1, COLORS.primaryDark);
@@ -93,7 +95,7 @@ class IconGenerator {
     const hourAngle = (300 - 90) * (Math.PI / 180); // 10 o'clock
     ctx.lineTo(
       center + Math.cos(hourAngle) * radius * 0.4,
-      center + Math.sin(hourAngle) * radius * 0.4,
+      center + Math.sin(hourAngle) * radius * 0.4
     );
     ctx.stroke();
 
@@ -105,7 +107,7 @@ class IconGenerator {
     const minuteAngle = (60 - 90) * (Math.PI / 180); // 2 o'clock (10 minutes)
     ctx.lineTo(
       center + Math.cos(minuteAngle) * radius * 0.6,
-      center + Math.sin(minuteAngle) * radius * 0.6,
+      center + Math.sin(minuteAngle) * radius * 0.6
     );
     ctx.stroke();
 
@@ -116,7 +118,7 @@ class IconGenerator {
       0,
       center,
       center,
-      radius * 0.1,
+      radius * 0.1
     );
     centerGradient.addColorStop(0, COLORS.accent);
     centerGradient.addColorStop(1, COLORS.primary);
@@ -157,7 +159,10 @@ class IconGenerator {
     this.drawClockIcon(ctx, size, false);
 
     const buffer = canvas.toBuffer("image/png");
-    fs.writeFileSync(path.join(this.assetsDir, "android-icon-foreground.png"), buffer);
+    fs.writeFileSync(
+      path.join(this.assetsDir, "android-icon-foreground.png"),
+      buffer
+    );
     this.log("✅ Android foreground generated");
   }
 
@@ -176,7 +181,10 @@ class IconGenerator {
     ctx.fillRect(0, 0, size, size);
 
     const buffer = canvas.toBuffer("image/png");
-    fs.writeFileSync(path.join(this.assetsDir, "android-icon-background.png"), buffer);
+    fs.writeFileSync(
+      path.join(this.assetsDir, "android-icon-background.png"),
+      buffer
+    );
     this.log("✅ Android background generated");
   }
 
@@ -225,7 +233,7 @@ class IconGenerator {
     const hourAngle = (300 - 90) * (Math.PI / 180);
     ctx.lineTo(
       center + Math.cos(hourAngle) * radius * 0.4,
-      center + Math.sin(hourAngle) * radius * 0.4,
+      center + Math.sin(hourAngle) * radius * 0.4
     );
     ctx.stroke();
 
@@ -235,7 +243,7 @@ class IconGenerator {
     const minuteAngle = (60 - 90) * (Math.PI / 180);
     ctx.lineTo(
       center + Math.cos(minuteAngle) * radius * 0.6,
-      center + Math.sin(minuteAngle) * radius * 0.6,
+      center + Math.sin(minuteAngle) * radius * 0.6
     );
     ctx.stroke();
 
@@ -246,7 +254,10 @@ class IconGenerator {
     ctx.fill();
 
     const buffer = canvas.toBuffer("image/png");
-    fs.writeFileSync(path.join(this.assetsDir, "android-icon-monochrome.png"), buffer);
+    fs.writeFileSync(
+      path.join(this.assetsDir, "android-icon-monochrome.png"),
+      buffer
+    );
     this.log("✅ Android monochrome generated");
   }
 
