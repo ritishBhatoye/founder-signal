@@ -1,5 +1,4 @@
 // Base UI Atoms
-export { Button } from "./Button";
 export { Card } from "./Card";
 export { default as GlassTabBarBackground } from "./GlassTabBarBackground";
 export { Icon } from "./Icon";
@@ -15,7 +14,7 @@ export { default as ScreenTitle } from "./ScreenTitle";
 export { default as SubTitle } from "./SubTitle";
 
 // Buttons
-export { default as CustomButton } from "./button";
+export { default as CustomButton } from "./Button";
 export { default as IconButton } from "./IconButton";
 export { default as PrimaryButton } from "./PrimaryButton";
 export { default as SecondaryButton } from "./SecondaryButton";
@@ -24,7 +23,7 @@ export { default as SecondaryButton } from "./SecondaryButton";
 export { default as CalendarInput } from "./CalendarInput";
 export { default as Checkbox } from "./Checkbox";
 export { default as DateRangePicker } from "./DateRangePicker";
-export { default as Dropdown } from "./DropDown";
+export { default as Dropdown } from "./Dropdown";
 export { default as InputField } from "./InputField";
 export { default as InputGroup } from "./InputGroup";
 export { default as Radio } from "./Radio";
