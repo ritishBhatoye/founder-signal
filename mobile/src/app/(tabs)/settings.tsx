@@ -178,7 +178,7 @@ export default function SettingsScreen() {
               />
               <SettingsRow
                 icon="time"
-                iconColor={colors.warning}
+                iconColor={colors.warning[500]}
                 title="Daily Summary Time"
                 subtitle="9:00 AM"
               />
@@ -236,7 +236,7 @@ export default function SettingsScreen() {
               />
               <SettingsRow
                 icon="diamond"
-                iconColor={colors.warning}
+                iconColor={colors.warning[500]}
                 title="Plan"
                 subtitle="Pro - $19/mo"
               />
