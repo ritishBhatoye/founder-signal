@@ -49,7 +49,7 @@ export default function StripeConnectScreen() {
 
         {/* What We'll Access */}
         <View
-          className="mb-6 rounded-2xl border border-neutral-800 p-5"
+          className="mb-6 rounded-2xl border border p-5"
           style={{ backgroundColor: colors.card }}
         >
           <Text

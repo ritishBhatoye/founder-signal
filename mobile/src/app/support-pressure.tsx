@@ -116,7 +116,7 @@ export default function SupportPressureScreen() {
 
         {/* Info Box */}
         <View
-          className="mb-6 rounded-2xl border border-neutral-800 p-4"
+          className="mb-6 rounded-2xl border border p-4"
           style={{ backgroundColor: colors.card }}
         >
           <View className="flex-row items-start">

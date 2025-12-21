@@ -11,10 +11,10 @@ const summaryItemConfig: Record<
   SummaryItemType,
   { icon: keyof typeof Ionicons.glyphMap; color: string }
 > = {
-  revenue: { icon: "trending-up", color: colors.success },
-  churn: { icon: "trending-down", color: colors.danger },
-  payment: { icon: "card", color: colors.warning },
-  neutral: { icon: "checkmark-circle", color: colors.success },
+  revenue: { icon: "trending-up", color: colors.success[500] },
+  churn: { icon: "trending-down", color: colors.danger[500] },
+  payment: { icon: "card", color: colors.warning[500] },
+  neutral: { icon: "checkmark-circle", color: colors.success[500] },
 };
 
 interface SummaryItemProps {
@@ -30,7 +30,10 @@ function SummaryItem({ type, message }: SummaryItemProps) {
       : type.charAt(0).toUpperCase() + type.slice(1);
 
   return (
-    <View className="flex-row items-start border-b border-neutral-800 py-4">
+    <View
+      className="flex-row items-start border-b py-4"
+      style={{ borderColor: colors.border }}
+    >
       <View
         className="mr-3 h-10 w-10 items-center justify-center rounded-full"
         style={{ backgroundColor: config.color + "20" }}
@@ -57,8 +60,8 @@ interface DaySummaryCardProps {
 function DaySummaryCard({ summary, isToday }: DaySummaryCardProps) {
   return (
     <View
-      className="mb-4 rounded-2xl border border-neutral-800 p-4"
-      style={{ backgroundColor: colors.card }}
+      className="mb-4 rounded-2xl border p-4"
+      style={{ backgroundColor: colors.card, borderColor: colors.border }}
     >
       <View className="mb-3 flex-row items-center justify-between">
         <Text style={{ color: colors.text }} className="text-lg font-semibold">
@@ -67,10 +70,10 @@ function DaySummaryCard({ summary, isToday }: DaySummaryCardProps) {
         {isToday && (
           <View
             className="rounded-full px-2 py-1"
-            style={{ backgroundColor: colors.success + "20" }}
+            style={{ backgroundColor: colors.success[500] + "20" }}
           >
             <Text
-              style={{ color: colors.success }}
+              style={{ color: colors.success[500] }}
               className="text-xs font-medium"
             >
               Today
@@ -110,18 +113,18 @@ export default function SummaryScreen() {
           <View
             className="mb-6 rounded-2xl border p-4"
             style={{
-              backgroundColor: colors.success + "10",
-              borderColor: colors.success + "30",
+              backgroundColor: colors.success[50],
+              borderColor: colors.success[200],
             }}
           >
             <View className="flex-row items-center">
               <Ionicons
                 name="checkmark-circle"
                 size={24}
-                color={colors.success}
+                color={colors.success[500]}
               />
               <Text
-                style={{ color: colors.success }}
+                style={{ color: colors.success[700] }}
                 className="ml-2 text-lg font-semibold"
               >
                 Looking Good Today
@@ -143,11 +146,15 @@ export default function SummaryScreen() {
 
           {/* Push Notification Status */}
           <View
-            className="mt-2 rounded-2xl border border-neutral-800 p-4"
-            style={{ backgroundColor: colors.card }}
+            className="mt-2 rounded-2xl border p-4"
+            style={{ backgroundColor: colors.card, borderColor: colors.border }}
           >
             <View className="flex-row items-center">
-              <Ionicons name="notifications" size={20} color={colors.text} />
+              <Ionicons
+                name="notifications"
+                size={20}
+                color={colors.primary[500]}
+              />
               <Text
                 style={{ color: colors.text }}
                 className="ml-2 text-base font-medium"

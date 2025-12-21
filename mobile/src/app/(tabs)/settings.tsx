@@ -25,7 +25,7 @@ function SettingsRow({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="flex-row items-center py-4 border-b border-neutral-800"
+      className="flex-row items-center py-4 border-b border"
     >
       <View
         className="w-10 h-10 rounded-full items-center justify-center mr-3"
@@ -127,7 +127,7 @@ export default function SettingsScreen() {
             </View>
 
             {isStripeConnected && (
-              <View className="pt-3 border-t border-neutral-800">
+              <View className="pt-3 border-t border">
                 <View className="flex-row justify-between mb-2">
                   <Text style={{ color: colors.textMuted }} className="text-sm">
                     Account
@@ -150,10 +150,10 @@ export default function SettingsScreen() {
 
           {/* Notifications */}
           <View
-            className="rounded-2xl mb-6 border border-neutral-800 overflow-hidden"
+            className="rounded-2xl mb-6 border border overflow-hidden"
             style={{ backgroundColor: colors.card }}
           >
-            <View className="p-4 border-b border-neutral-800">
+            <View className="p-4 border-b border">
               <Text
                 style={{ color: colors.text }}
                 className="text-base font-semibold"
@@ -187,10 +187,10 @@ export default function SettingsScreen() {
 
           {/* Support Pressure (Manual Input v1) */}
           <View
-            className="rounded-2xl mb-6 border border-neutral-800 overflow-hidden"
+            className="rounded-2xl mb-6 border border overflow-hidden"
             style={{ backgroundColor: colors.card }}
           >
-            <View className="p-4 border-b border-neutral-800">
+            <View className="p-4 border-b border">
               <Text
                 style={{ color: colors.text }}
                 className="text-base font-semibold"
@@ -217,10 +217,10 @@ export default function SettingsScreen() {
 
           {/* Account */}
           <View
-            className="rounded-2xl mb-6 border border-neutral-800 overflow-hidden"
+            className="rounded-2xl mb-6 border border overflow-hidden"
             style={{ backgroundColor: colors.card }}
           >
-            <View className="p-4 border-b border-neutral-800">
+            <View className="p-4 border-b border">
               <Text
                 style={{ color: colors.text }}
                 className="text-base font-semibold"
@@ -246,7 +246,7 @@ export default function SettingsScreen() {
 
           {/* Danger Zone */}
           <View
-            className="rounded-2xl border border-neutral-800 overflow-hidden"
+            className="rounded-2xl border border overflow-hidden"
             style={{ backgroundColor: colors.card }}
           >
             <View className="px-4">

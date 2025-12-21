@@ -14,13 +14,18 @@ interface AlertTypeToggleProps {
 
 function AlertTypeToggle({ label, enabled }: AlertTypeToggleProps) {
   return (
-    <View className="flex-row items-center justify-between border-b border-neutral-800 py-3">
+    <View
+      className="flex-row items-center justify-between border-b py-3"
+      style={{ borderColor: colors.border }}
+    >
       <Text style={{ color: colors.text }} className="text-sm">
         {label}
       </Text>
       <View
         className="h-6 w-10 justify-center rounded-full px-1"
-        style={{ backgroundColor: enabled ? colors.success : colors.border }}
+        style={{
+          backgroundColor: enabled ? colors.success[500] : colors.border,
+        }}
       >
         <View
           className="h-4 w-4 rounded-full bg-white"
@@ -61,7 +66,7 @@ export default function AlertsScreen() {
               {unreadCount > 0 && (
                 <View
                   className="rounded-full px-3 py-1"
-                  style={{ backgroundColor: colors.danger }}
+                  style={{ backgroundColor: colors.danger[500] }}
                 >
                   <Text className="text-sm font-medium text-white">
                     {unreadCount} new
@@ -76,8 +81,8 @@ export default function AlertsScreen() {
 
           {/* Alert Types Config */}
           <View
-            className="mb-6 rounded-2xl border border-neutral-800 p-4"
-            style={{ backgroundColor: colors.card }}
+            className="mb-6 rounded-2xl border p-4"
+            style={{ backgroundColor: colors.card, borderColor: colors.border }}
           >
             <Text
               style={{ color: colors.text }}
@@ -112,13 +117,16 @@ export default function AlertsScreen() {
           {/* Empty State */}
           {alerts.length === 0 && (
             <View
-              className="items-center rounded-2xl border border-neutral-800 p-8"
-              style={{ backgroundColor: colors.card }}
+              className="items-center rounded-2xl border p-8"
+              style={{
+                backgroundColor: colors.card,
+                borderColor: colors.border,
+              }}
             >
               <Ionicons
                 name="checkmark-circle"
                 size={48}
-                color={colors.success}
+                color={colors.success[500]}
               />
               <Text
                 style={{ color: colors.text }}
