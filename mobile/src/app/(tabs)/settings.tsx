@@ -77,7 +77,7 @@ export default function SettingsScreen() {
             style={{
               backgroundColor: colors.card,
               borderColor: isStripeConnected
-                ? colors.success + "40"
+                ? colors.success[500] + "40"
                 : colors.stripe + "40",
             }}
           >
@@ -105,10 +105,10 @@ export default function SettingsScreen() {
                 <View className="flex-row items-center">
                   <View
                     className="w-2 h-2 rounded-full mr-2"
-                    style={{ backgroundColor: colors.success }}
+                    style={{ backgroundColor: colors.success[500] }}
                   />
                   <Text
-                    style={{ color: colors.success }}
+                    style={{ color: colors.success[500] }}
                     className="text-sm font-medium"
                   >
                     Active
@@ -164,13 +164,13 @@ export default function SettingsScreen() {
             <View className="px-4">
               <SettingsRow
                 icon="notifications"
-                iconColor={colors.success}
+                iconColor={colors.success[500]}
                 title="Push Notifications"
                 subtitle="Daily summary & alerts"
                 rightElement={
                   <View
                     className="w-10 h-6 rounded-full justify-center px-1"
-                    style={{ backgroundColor: colors.success }}
+                    style={{ backgroundColor: colors.success[500] }}
                   >
                     <View className="w-4 h-4 rounded-full bg-white self-end" />
                   </View>
@@ -207,7 +207,7 @@ export default function SettingsScreen() {
             <View className="px-4">
               <SettingsRow
                 icon="chatbubbles"
-                iconColor={colors.success}
+                iconColor={colors.success[500]}
                 title="Support Pressure"
                 subtitle="Currently: Low"
                 onPress={() => router.push("/support-pressure")}
@@ -252,12 +252,12 @@ export default function SettingsScreen() {
             <View className="px-4">
               <SettingsRow
                 icon="log-out"
-                iconColor={colors.danger}
+                iconColor={colors.danger[500]}
                 title="Sign Out"
               />
               <SettingsRow
                 icon="trash"
-                iconColor={colors.danger}
+                iconColor={colors.danger[500]}
                 title="Disconnect Stripe"
                 subtitle="Remove all data"
               />
