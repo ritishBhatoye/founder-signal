@@ -17,9 +17,9 @@ const alertConfig: Record<
   AlertType,
   { icon: keyof typeof Ionicons.glyphMap; color: string }
 > = {
-  revenue_drop: { icon: "trending-down", color: colors.danger },
-  churn_spike: { icon: "people", color: colors.danger },
-  failed_payments: { icon: "card", color: colors.warning },
+  revenue_drop: { icon: "trending-down", color: colors.danger[500] },
+  churn_spike: { icon: "people", color: colors.danger[500] },
+  failed_payments: { icon: "card", color: colors.warning[500] },
 };
 
 export function AlertCard({

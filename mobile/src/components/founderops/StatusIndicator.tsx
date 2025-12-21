@@ -14,7 +14,10 @@ export function StatusIndicator({
   status,
 }: StatusIndicatorProps) {
   return (
-    <View className="flex-row items-center justify-between border-b border-neutral-800 py-3">
+    <View
+      className="flex-row items-center justify-between border-b py-3"
+      style={{ borderColor: colors.border }}
+    >
       <Text style={{ color: colors.textMuted }} className="text-sm">
         {label}
       </Text>

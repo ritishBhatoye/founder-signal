@@ -29,8 +29,8 @@ export function MetricCard({
 }: MetricCardProps) {
   return (
     <View
-      className="rounded-2xl border border-neutral-800 p-4"
-      style={{ backgroundColor: colors.card }}
+      className="rounded-2xl border p-4"
+      style={{ backgroundColor: colors.card, borderColor: colors.border }}
     >
       <Text style={{ color: colors.textMuted }} className="mb-1 text-sm">
         {title}

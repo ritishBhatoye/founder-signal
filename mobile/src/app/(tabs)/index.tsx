@@ -29,8 +29,8 @@ export default function TruthDashboard() {
 
           {/* Primary Metric - MRR */}
           <View
-            className="mb-4 rounded-2xl border border-neutral-800 p-6"
-            style={{ backgroundColor: colors.card }}
+            className="mb-4 rounded-2xl border p-6"
+            style={{ backgroundColor: colors.card, borderColor: colors.border }}
           >
             <Text style={{ color: colors.textMuted }} className="mb-1 text-sm">
               Monthly Recurring Revenue
@@ -39,9 +39,9 @@ export default function TruthDashboard() {
               {metrics.mrr}
             </Text>
             <View className="mt-3 flex-row items-center">
-              <Ionicons name="arrow-up" size={18} color={colors.success} />
+              <Ionicons name="arrow-up" size={18} color={colors.success[500]} />
               <Text
-                style={{ color: colors.success }}
+                style={{ color: colors.success[500] }}
                 className="ml-1 text-lg font-medium"
               >
                 {metrics.mrrChange}
@@ -94,8 +94,8 @@ export default function TruthDashboard() {
 
           {/* Health Check */}
           <View
-            className="rounded-2xl border border-neutral-800 p-4"
-            style={{ backgroundColor: colors.card }}
+            className="rounded-2xl border p-4"
+            style={{ backgroundColor: colors.card, borderColor: colors.border }}
           >
             <Text
               style={{ color: colors.text }}

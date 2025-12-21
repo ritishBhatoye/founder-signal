@@ -1,19 +1,9 @@
 import { Text } from "@/components/atoms";
+import { colors } from "@/constants/theme";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-const colors = {
-  bg: "#030712",
-  card: "#020617",
-  text: "#E5E7EB",
-  textMuted: "#9CA3AF",
-  success: "#22C55E",
-  warning: "#FACC15",
-  danger: "#EF4444",
-  stripe: "#635BFF",
-};
 
 interface SettingsRowProps {
   icon: keyof typeof Ionicons.glyphMap;
