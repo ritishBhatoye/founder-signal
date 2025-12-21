@@ -42,7 +42,7 @@ const OnBoardingScreen = (): ReactElement => {
           duration: 2500,
           useNativeDriver: true,
         }),
-      ]),
+      ])
     ).start();
   }, [floatAnim]);
 
@@ -60,15 +60,17 @@ const OnBoardingScreen = (): ReactElement => {
           duration: 1500,
           useNativeDriver: true,
         }),
-      ]),
+      ])
     ).start();
   }, [pulseAnim]);
 
-  const viewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
-    if (viewableItems.length > 0) {
-      setCurrentIndex(viewableItems[0]?.index || 0);
+  const viewableItemsChanged = useRef(
+    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+      if (viewableItems.length > 0) {
+        setCurrentIndex(viewableItems[0]?.index || 0);
+      }
     }
-  }).current;
+  ).current;
 
   const gradientColors = onboardingData[currentIndex]?.backgroundColor || [
     "rgba(37, 99, 235, 0.95)",
@@ -113,13 +115,15 @@ const OnBoardingScreen = (): ReactElement => {
             }}
             className="items-center"
           >
-            {/* Clock Icon Logo */}
+            {/* Dashboard Icon Logo */}
             <View className="mb-3 h-16 w-16 items-center justify-center rounded-2xl bg-white/20 shadow-xl backdrop-blur-xl">
-              <Text className="text-4xl">⏰</Text>
+              <Text className="text-4xl">📊</Text>
             </View>
-            <Text className="text-3xl font-bold tracking-wider text-white">Clockio</Text>
+            <Text className="text-3xl font-bold tracking-wider text-white">
+              FounderOps
+            </Text>
             <Text className="mt-1 text-sm tracking-wide text-white/80">
-              Time Management Made Simple
+              See the truth in 60 seconds
             </Text>
           </Animated.View>
         </View>
@@ -141,7 +145,12 @@ const OnBoardingScreen = (): ReactElement => {
           <FlatList
             data={onboardingData}
             renderItem={({ item, index }) => (
-              <OnboardingItem item={item} width={width} scrollX={scrollX} index={index} />
+              <OnboardingItem
+                item={item}
+                width={width}
+                scrollX={scrollX}
+                index={index}
+              />
             )}
             keyExtractor={(item) => item.id.toString()}
             horizontal
@@ -152,9 +161,12 @@ const OnBoardingScreen = (): ReactElement => {
             ref={slidesRef}
             onViewableItemsChanged={viewableItemsChanged}
             viewabilityConfig={viewConfig}
-            onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
-              useNativeDriver: false,
-            })}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+              {
+                useNativeDriver: false,
+              }
+            )}
             contentContainerStyle={{ flexGrow: 0 }}
           />
         </View>

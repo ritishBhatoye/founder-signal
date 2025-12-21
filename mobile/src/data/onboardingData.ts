@@ -10,32 +10,33 @@ export interface OnboardingItem {
 export const onboardingData: OnboardingItem[] = [
   {
     id: 1,
-    title: "Smart Leave Management",
+    title: "The Truth Dashboard",
     description:
-      "Request, track, and manage your leaves effortlessly. Get instant approvals and stay updated on your leave balance.",
-    icon: "calendar-outline",
+      "See your real SaaS numbers in under 60 seconds. MRR, churn, subscriptions — no BS, just facts.",
+    icon: "pulse-outline",
     backgroundColor: ["rgba(37, 99, 235, 0.95)", "rgba(29, 78, 216, 0.98)"], // primary blue
   },
   {
     id: 2,
-    title: "Real-Time Attendance",
+    title: "Daily Founder Summary",
     description:
-      "Check in and out with a single tap. Track your working hours and attendance history with precision.",
-    icon: "time-outline",
+      "Get a short, brutal, honest update every morning. Revenue up? Churn spike? Or best message: 'No action needed'.",
+    icon: "document-text-outline",
     backgroundColor: ["rgba(16, 185, 129, 0.95)", "rgba(5, 150, 105, 0.98)"], // secondary green
   },
   {
     id: 3,
-    title: "Instant Approvals",
+    title: "Smart Alerts Only",
     description:
-      "Managers can review and approve requests on the go. Get notifications for pending approvals and updates.",
-    icon: "checkmark-circle-outline",
-    backgroundColor: ["rgba(168, 85, 247, 0.95)", "rgba(147, 51, 234, 0.98)"], // tertiary violet
+      "3 alerts that matter: Revenue drops, churn spikes, failed payments. No noise. No customization needed.",
+    icon: "notifications-outline",
+    backgroundColor: ["rgba(239, 68, 68, 0.95)", "rgba(220, 38, 38, 0.98)"], // danger red
   },
   {
     id: 4,
-    title: "Ready to Get Started?",
-    description: "Join thousands of employees managing their time efficiently with Clockio.",
+    title: "Ready to Stop Lying?",
+    description:
+      "Connect Stripe and see the real state of your SaaS. Built by a solo founder, for solo founders.",
     icon: "rocket-outline",
     backgroundColor: ["rgba(6, 182, 212, 0.95)", "rgba(8, 145, 178, 0.98)"], // info cyan
   },

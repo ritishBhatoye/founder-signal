@@ -13,9 +13,9 @@ export const AuthActionButtons = () => {
         <Button
           variant="primary"
           size="lg"
-          onPress={() => router.push("/(tabs)")}
+          onPress={() => router.push("/stripe-connect")}
           className="bg-white active:bg-white/90 shadow-xl"
-          label="Get Started"
+          label="Connect Stripe & Start"
           labelClassName="text-primary-600 font-bold text-lg"
         />
 
@@ -24,7 +24,7 @@ export const AuthActionButtons = () => {
           size="lg"
           onPress={() => router.push("/(tabs)")}
           className="border-2 border-white/50 bg-white/10 active:bg-white/20"
-          label="Sign In"
+          label="Skip for Now"
           labelClassName="text-white font-semibold text-lg"
         />
       </View>

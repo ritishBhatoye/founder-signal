@@ -38,38 +38,54 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Dashboard",
-          headerTitle: "Clockio",
+          headerTitle: "FounderOps",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon title="Dashboard" iconName="grid-outline" focused={focused} />
+            <TabBarIcon
+              title="Truth"
+              iconName="pulse-outline"
+              focused={focused}
+            />
           ),
         }}
       />
       <Tabs.Screen
-        name="leaves"
+        name="summary"
         options={{
-          title: "Leaves",
+          title: "Summary",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon title="Leaves" iconName="calendar-outline" focused={focused} />
+            <TabBarIcon
+              title="Summary"
+              iconName="document-text-outline"
+              focused={focused}
+            />
           ),
         }}
       />
       <Tabs.Screen
-        name="attendance"
+        name="alerts"
         options={{
-          title: "Attendance",
+          title: "Alerts",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon title="Attendance" iconName="time-outline" focused={focused} />
+            <TabBarIcon
+              title="Alerts"
+              iconName="notifications-outline"
+              focused={focused}
+            />
           ),
+          tabBarBadge: 2,
         }}
       />
       <Tabs.Screen
-        name="approvals"
+        name="settings"
         options={{
-          title: "Approvals",
+          title: "Settings",
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon title="Approvals" iconName="checkmark-circle-outline" focused={focused} />
+            <TabBarIcon
+              title="Settings"
+              iconName="settings-outline"
+              focused={focused}
+            />
           ),
-          tabBarBadge: 3,
         }}
       />
     </Tabs>

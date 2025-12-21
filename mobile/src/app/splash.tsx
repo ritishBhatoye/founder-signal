@@ -58,7 +58,7 @@ export default function SplashScreen() {
           duration: 1000,
           useNativeDriver: true,
         }),
-      ]),
+      ])
     ).start();
 
     // Navigate after 3 seconds
@@ -109,7 +109,7 @@ export default function SplashScreen() {
           >
             <View className="h-32 w-32 items-center justify-center rounded-3xl bg-white/20 shadow-2xl backdrop-blur-xl">
               <View className="h-28 w-28 items-center justify-center rounded-3xl bg-white/30">
-                <Text className="text-7xl">⏰</Text>
+                <Text className="text-7xl">📊</Text>
               </View>
             </View>
           </Animated.View>
@@ -122,8 +122,12 @@ export default function SplashScreen() {
             }}
             className="items-center"
           >
-            <Text className="mb-3 text-5xl font-bold tracking-wider text-white">Clockio</Text>
-            <Text className="text-lg tracking-wide text-white/90">Time Management Made Simple</Text>
+            <Text className="mb-3 text-5xl font-bold tracking-wider text-white">
+              FounderOps
+            </Text>
+            <Text className="text-lg tracking-wide text-white/90">
+              See the truth in 60 seconds
+            </Text>
           </Animated.View>
 
           {/* Loading Indicator */}
@@ -161,7 +165,9 @@ export default function SplashScreen() {
           }}
           className="pb-8"
         >
-          <Text className="text-center text-sm text-white/60">Powered by Innovation</Text>
+          <Text className="text-center text-sm text-white/60">
+            Powered by Innovation
+          </Text>
         </Animated.View>
       </LinearGradient>
     </View>
