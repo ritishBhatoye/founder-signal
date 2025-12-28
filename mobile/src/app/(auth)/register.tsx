@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Input, Button } from "@/components/atoms";
-import { authService } from "@/services/auth.service";
+import { useSignUp } from "@/hooks/auth/useSignUp";
 import { showToast } from "@/utils/toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -20,7 +20,7 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [agreeToTerms, setAgreeToTerms] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { signUp, isLoading } = useSignUp();
 
   const handleRegister = async () => {
     if (!name || !email || !password) {
@@ -44,62 +44,47 @@ export default function RegisterScreen() {
       return;
     }
 
-    setLoading(true);
-
     try {
-      const { user, error } = await authService.signUp({
+      const result = await signUp({
         email,
         password,
-        name,
+        options: {
+          data: { full_name: name },
+        },
       });
 
-      if (error) {
-        showToast.error(
-          "Registration Failed",
-          error.message || "Failed to create account"
-        );
-        setLoading(false);
-        return;
-      }
-
-      if (user) {
-        if (user.email_confirmed_at) {
-          showToast.success("Welcome!", "Account created successfully");
-          router.replace("/(tabs)/home");
-        } else {
+      if (result.success) {
+        if (result.needsEmailConfirmation) {
           showToast.info(
             "Verify Email",
-            "Please check your email to confirm your account"
+            result.message || "Please check your email"
           );
           router.replace("./sign-in");
+        } else {
+          showToast.success(
+            "Welcome!",
+            result.message || "Account created successfully"
+          );
+          router.replace("/(tabs)");
         }
+      } else {
+        showToast.error(
+          "Registration Failed",
+          result.error || "Failed to create account"
+        );
       }
-    } catch (error) {
-      showToast.error("Error", "An unexpected error occurred");
-      setLoading(false);
+    } catch (_err: any) {
+      showToast.error("Error", _err?.message || "An unexpected error occurred");
     }
   };
 
   const handleSocialSignUp = async (provider: "google" | "apple") => {
     try {
-      if (provider === "google") {
-        const result = await authService.signInWithGoogle();
-        if (result.error) {
-          showToast.error(
-            "Sign Up Failed",
-            result.error.message || "Failed to sign up with Google"
-          );
-        }
-      } else if (provider === "apple") {
-        const result = await authService.signInWithApple();
-        if (result.error) {
-          showToast.error(
-            "Sign Up Failed",
-            result.error.message || "Failed to sign up with Apple"
-          );
-        }
-      }
-    } catch (error) {
+      showToast.info(
+        "Coming Soon",
+        `${provider} sign-up will be available soon`
+      );
+    } catch (_error) {
       showToast.error("Error", "An unexpected error occurred");
     }
   };
@@ -219,9 +204,9 @@ export default function RegisterScreen() {
               </Pressable>
 
               <Button
-                label={loading ? "Creating..." : "Get Started"}
+                label={isLoading ? "Creating..." : "Get Started"}
                 onPress={handleRegister}
-                loading={loading}
+                loading={isLoading}
                 disabled={!isFormValid}
                 className="bg-primary-600 h-16 rounded-2xl border-0 mt-4"
                 labelClassName="text-lg font-bold"

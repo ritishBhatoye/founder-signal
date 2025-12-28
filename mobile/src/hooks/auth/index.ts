@@ -8,6 +8,7 @@ export { useUser } from "./useUser";
 export { useSession } from "./useSession";
 export { useAuthState } from "./useAuthState";
 export { useSignIn } from "./useSignIn";
+export { useSignUp } from "./useSignUp";
 export { useSignOut } from "./useSignOut";
 export { useProfile } from "./useProfile";
 export { useStripeAccount } from "./useStripeAccount";

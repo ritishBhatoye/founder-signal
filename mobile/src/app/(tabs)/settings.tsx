@@ -1,8 +1,10 @@
 import { Text } from "@/components/atoms";
 import { colors } from "@/constants/theme";
+import { useAuthContext } from "@/contexts";
+import { useProfile, useStripeAccount } from "@/hooks/auth";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface SettingsRowProps {
@@ -52,7 +54,65 @@ function SettingsRow({
 
 export default function SettingsScreen() {
   const router = useRouter();
-  const isStripeConnected = true; // Mock state
+  const { user, signOut, isLoading: authLoading } = useAuthContext();
+  const { profile } = useProfile(user?.id);
+  const {
+    stripeAccount,
+    isConnected: isStripeConnected,
+    connectStripeAccount,
+    disconnectStripeAccount,
+    isConnecting,
+  } = useStripeAccount(user?.id);
+
+  const handleSignOut = async () => {
+    Alert.alert("Sign Out", "Are you sure you want to sign out?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Sign Out",
+        style: "destructive",
+        onPress: async () => {
+          await signOut();
+          router.replace("/auth/sign-in");
+        },
+      },
+    ]);
+  };
+
+  const handleConnectStripe = async () => {
+    const result = await connectStripeAccount();
+    if (result.success && result.url) {
+      // TODO: Open Stripe OAuth URL
+      // For now, navigate to stripe-connect screen
+      router.push("/stripe-connect");
+    } else {
+      Alert.alert(
+        "Connection Failed",
+        result.error || "Failed to connect Stripe"
+      );
+    }
+  };
+
+  const handleDisconnectStripe = async () => {
+    Alert.alert(
+      "Disconnect Stripe",
+      "This will remove all your Stripe data and metrics. Are you sure?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Disconnect",
+          style: "destructive",
+          onPress: async () => {
+            const result = await disconnectStripeAccount();
+            if (result.success) {
+              Alert.alert("Success", "Stripe account disconnected");
+            } else {
+              Alert.alert("Error", result.error || "Failed to disconnect");
+            }
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: colors.bg }}>
@@ -116,32 +176,34 @@ export default function SettingsScreen() {
                 </View>
               ) : (
                 <TouchableOpacity
+                  onPress={handleConnectStripe}
+                  disabled={isConnecting}
                   className="px-4 py-2 rounded-full"
                   style={{ backgroundColor: colors.stripe }}
                 >
                   <Text className="text-white text-sm font-medium">
-                    Connect
+                    {isConnecting ? "Connecting..." : "Connect"}
                   </Text>
                 </TouchableOpacity>
               )}
             </View>
 
-            {isStripeConnected && (
+            {isStripeConnected && stripeAccount && (
               <View className="pt-3 border-t border">
                 <View className="flex-row justify-between mb-2">
                   <Text style={{ color: colors.textMuted }} className="text-sm">
                     Account
                   </Text>
                   <Text style={{ color: colors.text }} className="text-sm">
-                    acct_1234...xyz
+                    {stripeAccount.stripe_account_id.substring(0, 12)}...
                   </Text>
                 </View>
                 <View className="flex-row justify-between">
                   <Text style={{ color: colors.textMuted }} className="text-sm">
-                    Last sync
+                    Mode
                   </Text>
                   <Text style={{ color: colors.text }} className="text-sm">
-                    2 minutes ago
+                    {stripeAccount.livemode ? "Live" : "Test"}
                   </Text>
                 </View>
               </View>
@@ -232,7 +294,7 @@ export default function SettingsScreen() {
               <SettingsRow
                 icon="person"
                 title="Profile"
-                subtitle="founder@example.com"
+                subtitle={user?.email || profile?.email || "Not signed in"}
               />
               <SettingsRow
                 icon="diamond"
@@ -254,13 +316,17 @@ export default function SettingsScreen() {
                 icon="log-out"
                 iconColor={colors.danger[500]}
                 title="Sign Out"
+                onPress={handleSignOut}
               />
-              <SettingsRow
-                icon="trash"
-                iconColor={colors.danger[500]}
-                title="Disconnect Stripe"
-                subtitle="Remove all data"
-              />
+              {isStripeConnected && (
+                <SettingsRow
+                  icon="trash"
+                  iconColor={colors.danger[500]}
+                  title="Disconnect Stripe"
+                  subtitle="Remove all data"
+                  onPress={handleDisconnectStripe}
+                />
+              )}
             </View>
           </View>
 

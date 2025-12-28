@@ -1,5 +1,7 @@
 import { Text } from "@/components/atoms";
+import { ProtectedRoute } from "@/components/auth";
 import { colors } from "@/constants/theme";
+import { useAuthContext } from "@/contexts";
 import { mockSummaries } from "@/data/mockMetrics";
 import type { DaySummary, SummaryItemType } from "@/types/metrics";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -89,7 +91,8 @@ function DaySummaryCard({ summary, isToday }: DaySummaryCardProps) {
   );
 }
 
-export default function SummaryScreen() {
+function SummaryContent() {
+  const { user } = useAuthContext();
   const summaries = mockSummaries;
 
   return (
@@ -166,8 +169,25 @@ export default function SummaryScreen() {
               You will get your summary at 9:00 AM every day.
             </Text>
           </View>
+
+          {/* User Info */}
+          {user && (
+            <View className="mt-4 items-center">
+              <Text style={{ color: colors.textMuted }} className="text-xs">
+                Daily summaries for {user.email}
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+export default function SummaryScreen() {
+  return (
+    <ProtectedRoute>
+      <SummaryContent />
+    </ProtectedRoute>
   );
 }

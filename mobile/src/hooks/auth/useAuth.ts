@@ -1,227 +1,99 @@
 /**
- * Main authentication hook
- * Provides complete auth state and methods
+ * Main Authentication Hook using Redux Toolkit
  */
 
-import { useState, useEffect, useCallback } from "react";
-import {
-  AuthState,
-  AuthUser,
-  AuthSession,
-  UserProfile,
-  StripeAccount,
-} from "./types";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useGetCurrentSessionQuery } from "@/store/api/authApi";
+import { setAuth, setLoading, clearAuth } from "@/store/slices/authSlice";
+import { supabase } from "@/lib/supabase";
+import type { RootState } from "@/store";
+import { useSignIn } from "./useSignIn";
+import { useSignOut } from "./useSignOut";
 
-// TODO: Import from Supabase client when installed
-// import { supabase } from '@/lib/supabase';
+export function useAuth() {
+  const dispatch = useDispatch();
+  const authState = useSelector((state: RootState) => state.auth);
+  const { data: sessionData, isLoading: sessionLoading } =
+    useGetCurrentSessionQuery();
+  const { signIn, signInWithMagicLink, signInWithPassword } = useSignIn();
+  const { signOut } = useSignOut();
 
-export function useAuth(): AuthState & {
-  signIn: (email: string) => Promise<{ success: boolean; error?: string }>;
-  signOut: () => Promise<void>;
-  refreshSession: () => Promise<void>;
-} {
-  const [state, setState] = useState<AuthState>({
-    user: null,
-    session: null,
-    profile: null,
-    stripeAccount: null,
-    isLoading: true,
-    isAuthenticated: false,
-    error: null,
-  });
-
-  // Initialize auth state
+  // Initialize auth state and listen to changes
   useEffect(() => {
-    initializeAuth();
-  }, []);
+    // Set initial loading state
+    dispatch(setLoading(true));
 
-  const initializeAuth = async () => {
-    try {
-      setState((prev) => ({ ...prev, isLoading: true, error: null }));
+    // Listen to auth state changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log("Auth state changed:", event, session?.user?.id);
 
-      // TODO: Replace with actual Supabase session check
-      // const { data: { session }, error } = await supabase.auth.getSession();
-
-      // Mock implementation for now
-      const session = null;
-      const error = null;
-
-      if (error) {
-        setState((prev) => ({
-          ...prev,
-          error: error.message,
-          isLoading: false,
-        }));
-        return;
-      }
-
-      if (session) {
-        await loadUserData(session);
+      if (session?.user) {
+        dispatch(
+          setAuth({
+            user: session.user as any,
+            session: session as any,
+          })
+        );
       } else {
-        setState((prev) => ({
-          ...prev,
-          isLoading: false,
-          isAuthenticated: false,
-        }));
-      }
-    } catch (err) {
-      setState((prev) => ({
-        ...prev,
-        error: err instanceof Error ? err.message : "Authentication error",
-        isLoading: false,
-      }));
-    }
-  };
-
-  const loadUserData = async (session: AuthSession) => {
-    try {
-      // Load user profile
-      // TODO: Replace with actual Supabase query
-      // const { data: profile } = await supabase
-      //   .from('users')
-      //   .select('*')
-      //   .eq('id', session.user.id)
-      //   .single();
-
-      // Load Stripe account if exists
-      // const { data: stripeAccount } = await supabase
-      //   .from('stripe_accounts')
-      //   .select('*')
-      //   .eq('user_id', session.user.id)
-      //   .single();
-
-      setState((prev) => ({
-        ...prev,
-        user: session.user,
-        session,
-        profile: null, // profile || null,
-        stripeAccount: null, // stripeAccount || null,
-        isAuthenticated: true,
-        isLoading: false,
-        error: null,
-      }));
-    } catch (err) {
-      setState((prev) => ({
-        ...prev,
-        user: session.user,
-        session,
-        profile: null,
-        stripeAccount: null,
-        isAuthenticated: true,
-        isLoading: false,
-        error: err instanceof Error ? err.message : "Failed to load user data",
-      }));
-    }
-  };
-
-  const signIn = useCallback(async (email: string) => {
-    try {
-      setState((prev) => ({ ...prev, isLoading: true, error: null }));
-
-      // TODO: Replace with actual Supabase magic link
-      // const { error } = await supabase.auth.signInWithOtp({
-      //   email,
-      //   options: {
-      //     emailRedirectTo: `${window.location.origin}/auth/callback`,
-      //   },
-      // });
-
-      // Mock implementation
-      const error = null;
-
-      if (error) {
-        setState((prev) => ({
-          ...prev,
-          error: error.message,
-          isLoading: false,
-        }));
-        return { success: false, error: error.message };
+        dispatch(clearAuth());
       }
 
-      setState((prev) => ({ ...prev, isLoading: false }));
-      return { success: true };
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Sign in failed";
-      setState((prev) => ({
-        ...prev,
-        error: errorMessage,
-        isLoading: false,
-      }));
-      return { success: false, error: errorMessage };
+      dispatch(setLoading(false));
+    });
+
+    return () => subscription.unsubscribe();
+  }, [dispatch]);
+
+  // Update state when session data changes
+  useEffect(() => {
+    if (sessionData && !sessionLoading) {
+      if (sessionData.user && sessionData.session) {
+        dispatch(
+          setAuth({
+            user: sessionData.user,
+            session: sessionData.session,
+          })
+        );
+      } else {
+        dispatch(clearAuth());
+      }
+      dispatch(setLoading(false));
     }
-  }, []);
+  }, [sessionData, sessionLoading, dispatch]);
 
-  const signOut = useCallback(async () => {
+  const refreshSession = async () => {
     try {
-      setState((prev) => ({ ...prev, isLoading: true, error: null }));
-
-      // TODO: Replace with actual Supabase sign out
-      // const { error } = await supabase.auth.signOut();
-
-      const error = null;
+      dispatch(setLoading(true));
+      const { data, error } = await supabase.auth.refreshSession();
 
       if (error) {
-        setState((prev) => ({
-          ...prev,
-          error: error.message,
-          isLoading: false,
-        }));
+        dispatch(clearAuth());
         return;
       }
 
-      setState({
-        user: null,
-        session: null,
-        profile: null,
-        stripeAccount: null,
-        isLoading: false,
-        isAuthenticated: false,
-        error: null,
-      });
-    } catch (err) {
-      setState((prev) => ({
-        ...prev,
-        error: err instanceof Error ? err.message : "Sign out failed",
-        isLoading: false,
-      }));
-    }
-  }, []);
-
-  const refreshSession = useCallback(async () => {
-    try {
-      setState((prev) => ({ ...prev, isLoading: true, error: null }));
-
-      // TODO: Replace with actual Supabase session refresh
-      // const { data: { session }, error } = await supabase.auth.refreshSession();
-
-      const session = null;
-      const error = null;
-
-      if (error) {
-        setState((prev) => ({
-          ...prev,
-          error: error.message,
-          isLoading: false,
-        }));
-        return;
+      if (data.session) {
+        dispatch(
+          setAuth({
+            user: data.session.user as any,
+            session: data.session as any,
+          })
+        );
       }
-
-      if (session) {
-        await loadUserData(session);
-      }
-    } catch (err) {
-      setState((prev) => ({
-        ...prev,
-        error: err instanceof Error ? err.message : "Session refresh failed",
-        isLoading: false,
-      }));
+    } catch (_err) {
+      dispatch(clearAuth());
+    } finally {
+      dispatch(setLoading(false));
     }
-  }, []);
+  };
 
   return {
-    ...state,
+    ...authState,
     signIn,
+    signInWithMagicLink,
+    signInWithPassword,
     signOut,
     refreshSession,
   };

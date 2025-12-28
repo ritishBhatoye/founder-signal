@@ -1,10 +1,13 @@
 import { Text } from "@/components/atoms";
 import { colors } from "@/constants/theme";
+import { useAuthContext } from "@/contexts";
+import { useStripeAccount } from "@/hooks/auth";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   ScrollView,
   TouchableOpacity,
   View,
@@ -13,17 +16,95 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function StripeConnectScreen() {
   const router = useRouter();
-  const [isConnecting, setIsConnecting] = useState(false);
+  const { user, isAuthenticated } = useAuthContext();
+  const { connectStripeAccount, isConnecting, isConnected } = useStripeAccount(
+    user?.id
+  );
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.replace("/auth/sign-in");
+    }
+  }, [isAuthenticated, router]);
+
+  // If already connected, redirect to main app
+  useEffect(() => {
+    if (isConnected) {
+      router.replace("/(tabs)");
+    }
+  }, [isConnected, router]);
 
   const handleConnect = async () => {
-    setIsConnecting(true);
-    // TODO: Implement Stripe OAuth flow
-    // For now, simulate connection
-    setTimeout(() => {
-      setIsConnecting(false);
-      router.replace("/(tabs)");
-    }, 2000);
+    if (!user) {
+      Alert.alert("Error", "Please sign in first");
+      router.push("/auth/sign-in");
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      const result = await connectStripeAccount();
+
+      if (result.success && result.url) {
+        // TODO: Open Stripe OAuth URL in browser
+        // For now, simulate connection process
+        Alert.alert(
+          "Stripe Connection",
+          "In a real app, this would open Stripe's OAuth flow. For demo purposes, we'll simulate a successful connection.",
+          [
+            {
+              text: "Simulate Success",
+              onPress: () => {
+                setTimeout(() => {
+                  setIsProcessing(false);
+                  router.replace("/(tabs)");
+                }, 1000);
+              },
+            },
+            {
+              text: "Cancel",
+              style: "cancel",
+              onPress: () => setIsProcessing(false),
+            },
+          ]
+        );
+      } else {
+        Alert.alert(
+          "Connection Failed",
+          result.error || "Failed to connect to Stripe"
+        );
+        setIsProcessing(false);
+      }
+    } catch (error) {
+      Alert.alert("Error", "Something went wrong. Please try again.");
+      setIsProcessing(false);
+    }
   };
+
+  const handleSkip = () => {
+    Alert.alert(
+      "Skip Stripe Connection",
+      "You can connect Stripe later from Settings. Some features will be limited without Stripe data.",
+      [
+        {
+          text: "Connect Now",
+          style: "default",
+        },
+        {
+          text: "Skip for Now",
+          style: "cancel",
+          onPress: () => router.replace("/(tabs)"),
+        },
+      ]
+    );
+  };
+
+  if (!isAuthenticated) {
+    return null; // Will redirect in useEffect
+  }
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: colors.bg }}>
@@ -45,6 +126,34 @@ export default function StripeConnectScreen() {
           >
             We need access to your Stripe data to show you the truth
           </Text>
+        </View>
+
+        {/* User Info */}
+        <View
+          className="mb-6 rounded-2xl border p-4"
+          style={{
+            backgroundColor: colors.primary[500] + "10",
+            borderColor: colors.primary[500] + "30",
+          }}
+        >
+          <View className="flex-row items-center">
+            <Ionicons
+              name="person-circle"
+              size={24}
+              color={colors.primary[500]}
+            />
+            <View className="ml-3">
+              <Text
+                style={{ color: colors.text }}
+                className="text-base font-medium"
+              >
+                Signed in as
+              </Text>
+              <Text style={{ color: colors.textMuted }} className="text-sm">
+                {user?.email}
+              </Text>
+            </View>
+          </View>
         </View>
 
         {/* What We'll Access */}
@@ -135,11 +244,11 @@ export default function StripeConnectScreen() {
         {/* Connect Button */}
         <TouchableOpacity
           onPress={handleConnect}
-          disabled={isConnecting}
+          disabled={isConnecting || isProcessing}
           className="mb-4 rounded-2xl py-4"
           style={{ backgroundColor: colors.stripe }}
         >
-          {isConnecting ? (
+          {isConnecting || isProcessing ? (
             <ActivityIndicator color="white" />
           ) : (
             <Text className="text-center text-lg font-semibold text-white">
@@ -150,7 +259,8 @@ export default function StripeConnectScreen() {
 
         {/* Skip for now */}
         <TouchableOpacity
-          onPress={() => router.replace("/(tabs)")}
+          onPress={handleSkip}
+          disabled={isConnecting || isProcessing}
           className="py-3"
         >
           <Text

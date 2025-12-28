@@ -1,6 +1,8 @@
 import { Text } from "@/components/atoms";
+import { ProtectedRoute } from "@/components/auth";
 import { AlertCard } from "@/components/founderops";
 import { colors } from "@/constants/theme";
+import { useAuthContext } from "@/contexts";
 import { mockAlerts } from "@/data/mockMetrics";
 import type { AlertType } from "@/types/metrics";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -43,7 +45,8 @@ const alertTypes: { type: AlertType; label: string }[] = [
   { type: "failed_payments", label: "Failed Payments Surge" },
 ];
 
-export default function AlertsScreen() {
+function AlertsContent() {
+  const { user } = useAuthContext();
   const alerts = mockAlerts;
   const unreadCount = alerts.filter((a) => !a.isRead).length;
 
@@ -142,8 +145,25 @@ export default function AlertsScreen() {
               </Text>
             </View>
           )}
+
+          {/* User Info */}
+          {user && (
+            <View className="mt-8 items-center">
+              <Text style={{ color: colors.textMuted }} className="text-xs">
+                Monitoring alerts for {user.email}
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+export default function AlertsScreen() {
+  return (
+    <ProtectedRoute>
+      <AlertsContent />
+    </ProtectedRoute>
   );
 }
