@@ -11,14 +11,14 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Input, Button } from "@/components/atoms";
-import { authService } from "@/services/auth.service";
+import { useSignIn } from "@/hooks/auth";
 import { showToast } from "@/utils/toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignInScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { signInWithPassword, signInWithMagicLink, isLoading } = useSignIn();
 
   const handleSignIn = async () => {
     if (!email || !password) {
@@ -26,47 +26,47 @@ export default function SignInScreen() {
       return;
     }
 
-    setLoading(true);
+    const result = await signInWithPassword(email, password);
 
-    try {
-      const { user, error } = await authService.signIn({ email, password });
+    if (result.error) {
+      showToast.error("Sign In Failed", result.error);
+      return;
+    }
 
-      if (error) {
-        showToast.error("Sign In Failed", error.message || "Failed to sign in");
-        setLoading(false);
-        return;
-      }
+    if (result.success) {
+      showToast.success("Welcome Back!", "Successfully signed in");
+      router.replace("/(tabs)");
+    }
+  };
 
-      if (user) {
-        showToast.success("Welcome Back!", "Successfully signed in");
-        router.replace("/(tabs)");
-      }
-    } catch (error) {
-      showToast.error("Error", "An unexpected error occurred");
-      setLoading(false);
+  const handleMagicLinkSignIn = async () => {
+    if (!email) {
+      showToast.warning("Email Required", "Please enter your email address");
+      return;
+    }
+
+    const result = await signInWithMagicLink(email);
+
+    if (result.error) {
+      showToast.error("Magic Link Failed", result.error);
+      return;
+    }
+
+    if (result.success) {
+      showToast.success(
+        "Check Your Email",
+        result.message || "Magic link sent!"
+      );
     }
   };
 
   const handleSocialSignIn = async (provider: "google" | "apple") => {
     try {
-      if (provider === "google") {
-        const result = await authService.signInWithGoogle();
-        if (result.error) {
-          showToast.error(
-            "Sign In Failed",
-            result.error.message || "Failed to sign in with Google"
-          );
-        }
-      } else if (provider === "apple") {
-        const result = await authService.signInWithApple();
-        if (result.error) {
-          showToast.error(
-            "Sign In Failed",
-            result.error.message || "Failed to sign in with Apple"
-          );
-        }
-      }
-    } catch (error) {
+      showToast.info(
+        "Coming Soon",
+        `${provider} sign-in will be available soon`
+      );
+    } catch (_err) {
       showToast.error("Error", "An unexpected error occurred");
     }
   };
@@ -154,12 +154,24 @@ export default function SignInScreen() {
               </View>
 
               <Button
-                label={loading ? "Verifying..." : "Sign In"}
+                label={isLoading ? "Verifying..." : "Sign In"}
                 onPress={handleSignIn}
-                loading={loading}
+                loading={isLoading}
                 disabled={!email || !password}
                 className="bg-primary-600 h-16 rounded-2xl border-0 mt-2"
                 labelClassName="text-lg font-bold"
+                width="full"
+              />
+
+              {/* Magic Link Option */}
+              <Button
+                label="Send Magic Link Instead"
+                onPress={handleMagicLinkSignIn}
+                loading={isLoading}
+                disabled={!email}
+                className="bg-neutral-900 border-neutral-800 h-16 rounded-2xl mt-2"
+                labelClassName="text-lg font-bold text-primary-400"
+                variant="tertiary"
                 width="full"
               />
             </View>

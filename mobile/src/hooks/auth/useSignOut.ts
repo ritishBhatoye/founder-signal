@@ -1,15 +1,17 @@
 /**
- * Hook for handling sign out
+ * Sign Out Hook using Redux Toolkit
  */
 
 import { useState, useCallback } from "react";
-
-// TODO: Import from Supabase client when installed
-// import { supabase } from '@/lib/supabase';
+import { useSignOutMutation } from "@/store/api/authApi";
+import { useDispatch } from "react-redux";
+import { clearAuth, setError } from "@/store/slices/authSlice";
 
 export function useSignOut() {
+  const dispatch = useDispatch();
+  const [signOutMutation] = useSignOutMutation();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setErrorState] = useState<string | null>(null);
 
   const signOut = useCallback(async (): Promise<{
     success: boolean;
@@ -17,33 +19,35 @@ export function useSignOut() {
   }> => {
     try {
       setIsLoading(true);
-      setError(null);
+      setErrorState(null);
 
-      // TODO: Replace with actual Supabase sign out
-      // const { error } = await supabase.auth.signOut();
+      const result = await signOutMutation().unwrap();
 
-      // Mock implementation
-      const error = null;
-
-      if (error) {
-        setError(error.message);
-        return { success: false, error: error.message };
+      if (result.error) {
+        setErrorState(result.error.message);
+        dispatch(setError(result.error.message));
+        return { success: false, error: result.error.message };
       }
 
+      // Clear Redux auth state
+      dispatch(clearAuth());
+
       return { success: true };
-    } catch (err) {
+    } catch (err: any) {
       const errorMessage =
-        err instanceof Error ? err.message : "Sign out failed";
-      setError(errorMessage);
+        err?.data?.message || err?.message || "Sign out failed";
+      setErrorState(errorMessage);
+      dispatch(setError(errorMessage));
       return { success: false, error: errorMessage };
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [signOutMutation, dispatch]);
 
   const clearError = useCallback(() => {
-    setError(null);
-  }, []);
+    setErrorState(null);
+    dispatch(setError(null));
+  }, [dispatch]);
 
   return {
     signOut,

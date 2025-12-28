@@ -11,13 +11,13 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Input, Button } from "@/components/atoms";
-import { authService } from "@/services/auth.service";
+import { useResetPasswordMutation } from "@/store/api/authApi";
 import { showToast } from "@/utils/toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
   const [submitted, setSubmitted] = useState(false);
 
   const handleResetPassword = async () => {
@@ -26,17 +26,14 @@ export default function ForgotPasswordScreen() {
       return;
     }
 
-    setLoading(true);
-
     try {
-      const { error } = await authService.resetPassword(email);
+      const result = await resetPassword({ email }).unwrap();
 
-      if (error) {
+      if (result.error) {
         showToast.error(
           "Reset Failed",
-          error.message || "Failed to send reset link"
+          result.error.message || "Failed to send reset link"
         );
-        setLoading(false);
         return;
       }
 
@@ -45,9 +42,11 @@ export default function ForgotPasswordScreen() {
         "Link Sent",
         "Check your email for password reset instructions"
       );
-    } catch (error) {
-      showToast.error("Error", "An unexpected error occurred");
-      setLoading(false);
+    } catch (error: any) {
+      showToast.error(
+        "Error",
+        error?.data?.message || "An unexpected error occurred"
+      );
     }
   };
 
@@ -116,9 +115,9 @@ export default function ForgotPasswordScreen() {
                   </View>
 
                   <Button
-                    label={loading ? "Sending..." : "Reset Password"}
+                    label={isLoading ? "Sending..." : "Reset Password"}
                     onPress={handleResetPassword}
-                    loading={loading}
+                    loading={isLoading}
                     disabled={!email}
                     className="bg-primary-600 h-16 rounded-2xl border-0 mt-2"
                     labelClassName="text-lg font-bold"
