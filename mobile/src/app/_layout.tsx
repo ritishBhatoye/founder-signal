@@ -34,19 +34,13 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
-            name="auth/sign-in"
+            name="(auth)"
             options={{
               headerShown: false,
-              presentation: "modal",
+              // presentation: "modal",
             }}
           />
-          <Stack.Screen
-            name="auth/callback"
-            options={{
-              headerShown: false,
-              presentation: "modal",
-            }}
-          />
+
           <Stack.Screen
             name="stripe-connect"
             options={{
