@@ -10,7 +10,9 @@ import {
   StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Input, Button } from "@/components/atoms";
+import { LinearGradient } from "expo-linear-gradient";
+import { BlurView } from "expo-blur";
+import { Input } from "@/components/atoms";
 import { useSignUp } from "@/hooks/auth/useSignUp";
 import { showToast } from "@/utils/toast";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -84,7 +86,7 @@ export default function RegisterScreen() {
         "Coming Soon",
         `${provider} sign-up will be available soon`
       );
-    } catch (_error) {
+    } catch {
       showToast.error("Error", "An unexpected error occurred");
     }
   };
@@ -92,14 +94,30 @@ export default function RegisterScreen() {
   const isFormValid = name && email && password && agreeToTerms;
 
   return (
-    <View className="flex-1 bg-neutral-950">
+    <View className="flex-1 bg-black">
       <StatusBar barStyle="light-content" />
 
-      {/* Background Accent */}
-      <View
-        className="absolute top-[-100] right-[-100] w-[400] h-[400] rounded-full bg-tertiary-600/10 blur-3xl"
-        style={{ opacity: 0.3 }}
+      {/* Animated Background Gradients */}
+      <LinearGradient
+        colors={["#0f172a", "#1e293b", "#334155"]}
+        className="absolute inset-0"
       />
+
+      {/* Floating Gradient Orbs */}
+      <View className="absolute inset-0">
+        <LinearGradient
+          colors={["#8B5CF6", "#EC4899", "#F59E0B"]}
+          className="absolute top-16 right-12 w-36 h-36 rounded-full opacity-15 blur-3xl"
+        />
+        <LinearGradient
+          colors={["#06B6D4", "#3B82F6", "#6366F1"]}
+          className="absolute top-48 left-6 w-28 h-28 rounded-full opacity-20 blur-2xl"
+        />
+        <LinearGradient
+          colors={["#10B981", "#22C55E", "#84CC16"]}
+          className="absolute bottom-40 right-8 w-32 h-32 rounded-full opacity-12 blur-3xl"
+        />
+      </View>
 
       <SafeAreaView className="flex-1">
         <KeyboardAvoidingView
@@ -115,139 +133,282 @@ export default function RegisterScreen() {
             }}
             showsVerticalScrollIndicator={false}
           >
-            {/* Back Button */}
-            <Pressable
-              onPress={() => router.back()}
-              className="mt-4 h-12 w-12 items-center justify-center rounded-2xl bg-neutral-900 border border-neutral-800"
-            >
-              <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
-            </Pressable>
-
-            {/* Title Section */}
-            <View className="mt-10 mb-8">
-              <Text className="text-white text-4xl font-bold tracking-tight">
-                Create account
-              </Text>
-              <Text className="text-neutral-400 text-lg mt-2">
-                Join the elite circle of SaaS founders
-              </Text>
-            </View>
-
-            {/* Form Section */}
-            <View className="gap-5">
-              <View>
-                <Text className="text-neutral-300 font-semibold mb-2 ml-1 text-sm uppercase tracking-wider">
-                  Full Name
-                </Text>
-                <Input
-                  placeholder="John Doe"
-                  value={name}
-                  onChangeText={setName}
-                  className="bg-neutral-900 border-neutral-800 h-16 rounded-2xl px-5 text-white"
-                  placeholderTextColor="#4B5563"
-                />
-              </View>
-
-              <View>
-                <Text className="text-neutral-300 font-semibold mb-2 ml-1 text-sm uppercase tracking-wider">
-                  Work Email
-                </Text>
-                <Input
-                  placeholder="name@company.com"
-                  value={email}
-                  onChangeText={setEmail}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  className="bg-neutral-900 border-neutral-800 h-16 rounded-2xl px-5 text-white"
-                  placeholderTextColor="#4B5563"
-                />
-              </View>
-
-              <View>
-                <Text className="text-neutral-300 font-semibold mb-2 ml-1 text-sm uppercase tracking-wider">
-                  Password
-                </Text>
-                <Input
-                  placeholder="Min. 6 characters"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry
-                  className="bg-neutral-900 border-neutral-800 h-16 rounded-2xl px-5 text-white"
-                  placeholderTextColor="#4B5563"
-                />
-              </View>
-
-              {/* Terms Checkbox */}
+            {/* Header */}
+            <View className="flex-row justify-between items-center mt-4 mb-10">
               <Pressable
-                onPress={() => setAgreeToTerms(!agreeToTerms)}
-                className="flex-row items-center gap-3 mt-2 ml-1"
+                onPress={() => router.back()}
+                className="h-12 w-12 items-center justify-center rounded-2xl"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  borderWidth: 1,
+                  borderColor: "rgba(255, 255, 255, 0.2)",
+                }}
               >
-                <View
-                  className={`h-6 w-6 rounded-lg border-2 items-center justify-center ${
-                    agreeToTerms
-                      ? "bg-primary-600 border-primary-600"
-                      : "border-neutral-800 bg-neutral-900"
-                  }`}
-                >
-                  {agreeToTerms && (
-                    <Ionicons name="checkmark" size={16} color="white" />
-                  )}
-                </View>
-                <Text className="text-neutral-400 text-sm">
-                  I agree to the{" "}
-                  <Text className="text-primary-400 font-semibold">Terms</Text>{" "}
-                  and{" "}
-                  <Text className="text-primary-400 font-semibold">
-                    Privacy Policy
-                  </Text>
-                </Text>
+                <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
               </Pressable>
 
-              <Button
-                label={isLoading ? "Creating..." : "Get Started"}
-                onPress={handleRegister}
-                loading={isLoading}
-                disabled={!isFormValid}
-                className="bg-primary-600 h-16 rounded-2xl border-0 mt-4"
-                labelClassName="text-lg font-bold"
-                width="full"
-              />
+              <View className="items-center">
+                <View
+                  className="h-12 w-12 rounded-2xl items-center justify-center mb-2"
+                  style={{
+                    backgroundColor: "rgba(139, 92, 246, 0.2)",
+                    borderWidth: 1,
+                    borderColor: "rgba(139, 92, 246, 0.3)",
+                  }}
+                >
+                  <Ionicons
+                    name="person-add-outline"
+                    size={24}
+                    color="#8B5CF6"
+                  />
+                </View>
+              </View>
+
+              <View className="w-12" />
             </View>
 
-            {/* Social Auth */}
-            <View className="mt-8 gap-4">
-              <View className="flex-row items-center gap-4 mb-2">
-                <View className="flex-1 h-[1px] bg-neutral-900" />
-                <Text className="text-neutral-500 font-medium">
+            {/* Welcome Section */}
+            <View className="items-center mb-10">
+              <Text className="text-neutral-400 text-sm font-medium uppercase tracking-widest mb-2">
+                HELLO
+              </Text>
+              <Text className="text-white text-3xl font-bold text-center mb-3">
+                Sign Up Now
+              </Text>
+              <Text className="text-neutral-400 text-base text-center leading-6">
+                Join the elite circle of{"\n"}SaaS founders
+              </Text>
+            </View>
+
+            {/* Form Container with Glassmorphism */}
+            <BlurView
+              intensity={20}
+              tint="dark"
+              className="rounded-3xl overflow-hidden mb-8"
+            >
+              <View
+                className="p-6"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  borderWidth: 1,
+                  borderColor: "rgba(255, 255, 255, 0.1)",
+                }}
+              >
+                {/* Full Name Field */}
+                <View className="mb-5">
+                  <Text className="text-neutral-300 text-sm font-medium mb-3 ml-1">
+                    Full Name
+                  </Text>
+                  <View className="relative">
+                    <View className="absolute left-4 top-4 z-10">
+                      <Ionicons
+                        name="person-outline"
+                        size={20}
+                        color="#6B7280"
+                      />
+                    </View>
+                    <Input
+                      placeholder="John Doe"
+                      value={name}
+                      onChangeText={setName}
+                      className="h-14 rounded-2xl pl-12 pr-4 text-white border-0"
+                      style={{
+                        backgroundColor: "rgba(255, 255, 255, 0.08)",
+                        borderWidth: 1,
+                        borderColor: "rgba(255, 255, 255, 0.15)",
+                      }}
+                      placeholderTextColor="#6B7280"
+                    />
+                  </View>
+                </View>
+
+                {/* Email Field */}
+                <View className="mb-5">
+                  <Text className="text-neutral-300 text-sm font-medium mb-3 ml-1">
+                    Email
+                  </Text>
+                  <View className="relative">
+                    <View className="absolute left-4 top-4 z-10">
+                      <Ionicons name="mail-outline" size={20} color="#6B7280" />
+                    </View>
+                    <Input
+                      placeholder="canandoe@gmail.com"
+                      value={email}
+                      onChangeText={setEmail}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                      className="h-14 rounded-2xl pl-12 pr-4 text-white border-0"
+                      style={{
+                        backgroundColor: "rgba(255, 255, 255, 0.08)",
+                        borderWidth: 1,
+                        borderColor: "rgba(255, 255, 255, 0.15)",
+                      }}
+                      placeholderTextColor="#6B7280"
+                    />
+                  </View>
+                </View>
+
+                {/* Phone Field */}
+                <View className="mb-5">
+                  <Text className="text-neutral-300 text-sm font-medium mb-3 ml-1">
+                    Phone
+                  </Text>
+                  <View className="relative">
+                    <View className="absolute left-4 top-4 z-10">
+                      <Ionicons name="call-outline" size={20} color="#6B7280" />
+                    </View>
+                    <Input
+                      placeholder="Please enter your phone number"
+                      value=""
+                      onChangeText={() => {}}
+                      keyboardType="phone-pad"
+                      className="h-14 rounded-2xl pl-12 pr-4 text-white border-0"
+                      style={{
+                        backgroundColor: "rgba(255, 255, 255, 0.08)",
+                        borderWidth: 1,
+                        borderColor: "rgba(255, 255, 255, 0.15)",
+                      }}
+                      placeholderTextColor="#6B7280"
+                    />
+                  </View>
+                </View>
+
+                {/* Password Field */}
+                <View className="mb-6">
+                  <Text className="text-neutral-300 text-sm font-medium mb-3 ml-1">
+                    Password
+                  </Text>
+                  <View className="relative">
+                    <View className="absolute left-4 top-4 z-10">
+                      <Ionicons
+                        name="lock-closed-outline"
+                        size={20}
+                        color="#6B7280"
+                      />
+                    </View>
+                    <View className="absolute right-4 top-4 z-10">
+                      <Ionicons
+                        name="eye-off-outline"
+                        size={20}
+                        color="#6B7280"
+                      />
+                    </View>
+                    <Input
+                      placeholder="123456"
+                      value={password}
+                      onChangeText={setPassword}
+                      secureTextEntry
+                      className="h-14 rounded-2xl pl-12 pr-12 text-white border-0"
+                      style={{
+                        backgroundColor: "rgba(255, 255, 255, 0.08)",
+                        borderWidth: 1,
+                        borderColor: "rgba(255, 255, 255, 0.15)",
+                      }}
+                      placeholderTextColor="#6B7280"
+                    />
+                  </View>
+                </View>
+
+                {/* Terms Checkbox */}
+                <View className="flex-row items-start gap-3 mb-6">
+                  <Pressable
+                    onPress={() => setAgreeToTerms(!agreeToTerms)}
+                    className="mt-1"
+                  >
+                    <View
+                      className={`h-5 w-5 rounded-lg items-center justify-center ${
+                        agreeToTerms ? "bg-primary-600" : ""
+                      }`}
+                      style={{
+                        backgroundColor: agreeToTerms
+                          ? "#6366F1"
+                          : "rgba(255, 255, 255, 0.08)",
+                        borderWidth: 1,
+                        borderColor: agreeToTerms
+                          ? "#6366F1"
+                          : "rgba(255, 255, 255, 0.2)",
+                      }}
+                    >
+                      {agreeToTerms && (
+                        <Ionicons name="checkmark" size={14} color="white" />
+                      )}
+                    </View>
+                  </Pressable>
+                  <View className="flex-1">
+                    <Text className="text-neutral-400 text-sm leading-5">
+                      I will also accept these terms
+                    </Text>
+                    <Text className="text-primary-400 text-sm">
+                      I accept the terms
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Sign Up Button */}
+                <Pressable
+                  onPress={handleRegister}
+                  disabled={!isFormValid || isLoading}
+                  className="h-14 rounded-2xl items-center justify-center mb-4"
+                >
+                  <LinearGradient
+                    colors={["#8B5CF6", "#EC4899"]}
+                    className="h-14 rounded-2xl items-center justify-center w-full"
+                  >
+                    <Text className="text-white text-base font-bold">
+                      {isLoading ? "Creating Account..." : "Get Started"}
+                    </Text>
+                  </LinearGradient>
+                </Pressable>
+              </View>
+            </BlurView>
+
+            {/* Social Sign Up */}
+            <View className="mb-8">
+              <View className="flex-row items-center mb-6">
+                <View className="flex-1 h-px bg-neutral-800" />
+                <Text className="text-neutral-500 text-sm mx-4 font-medium">
                   social sign up
                 </Text>
-                <View className="flex-1 h-[1px] bg-neutral-900" />
+                <View className="flex-1 h-px bg-neutral-800" />
               </View>
 
               <View className="flex-row gap-4">
                 <Pressable
                   onPress={() => handleSocialSignUp("google")}
-                  className="flex-1 h-16 flex-row items-center justify-center gap-3 bg-neutral-900 border border-neutral-800 rounded-2xl"
+                  className="flex-1 h-14 rounded-2xl items-center justify-center flex-row gap-3"
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    borderWidth: 1,
+                    borderColor: "rgba(255, 255, 255, 0.1)",
+                  }}
                 >
-                  <Ionicons name="logo-google" size={24} color="white" />
-                  <Text className="text-white font-bold text-base">Google</Text>
+                  <Ionicons name="logo-google" size={20} color="white" />
+                  <Text className="text-white text-sm font-medium">Google</Text>
                 </Pressable>
+
                 <Pressable
                   onPress={() => handleSocialSignUp("apple")}
-                  className="flex-1 h-16 flex-row items-center justify-center gap-3 bg-neutral-900 border border-neutral-800 rounded-2xl"
+                  className="flex-1 h-14 rounded-2xl items-center justify-center flex-row gap-3"
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    borderWidth: 1,
+                    borderColor: "rgba(255, 255, 255, 0.1)",
+                  }}
                 >
-                  <Ionicons name="logo-apple" size={24} color="white" />
-                  <Text className="text-white font-bold text-base">Apple</Text>
+                  <Ionicons name="logo-apple" size={20} color="white" />
+                  <Text className="text-white text-sm font-medium">Apple</Text>
                 </Pressable>
               </View>
             </View>
 
             {/* Footer */}
-            <View className="mt-auto pt-10 items-center">
+            <View className="items-center mt-auto">
               <Pressable onPress={() => router.push("./sign-in")}>
                 <Text className="text-neutral-400 text-base">
                   Already a member?{" "}
-                  <Text className="text-primary-400 font-bold">Sign In</Text>
+                  <Text className="text-primary-400 font-semibold">
+                    Sign In
+                  </Text>
                 </Text>
               </Pressable>
             </View>
