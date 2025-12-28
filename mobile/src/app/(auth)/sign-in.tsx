@@ -12,7 +12,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
-import { Input } from "@/components/atoms";
+import { AuthInput } from "@/components/auth/AuthInput";
 import { useSignIn } from "@/hooks/auth";
 import { showToast } from "@/utils/toast";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -179,19 +179,16 @@ export default function SignInScreen() {
                     <View className="absolute left-4 top-4 z-10">
                       <Ionicons name="mail-outline" size={20} color="#6B7280" />
                     </View>
-                    <Input
+                    <AuthInput
                       placeholder="canandoe@gmail.com"
                       value={email}
                       onChangeText={setEmail}
                       keyboardType="email-address"
                       autoCapitalize="none"
-                      className="h-14 rounded-2xl pl-12 pr-4 text-white border-0"
                       style={{
-                        backgroundColor: "rgba(255, 255, 255, 0.08)",
-                        borderWidth: 1,
-                        borderColor: "rgba(255, 255, 255, 0.15)",
+                        paddingLeft: 48,
+                        paddingRight: 16,
                       }}
-                      placeholderTextColor="#6B7280"
                     />
                   </View>
                 </View>
@@ -218,18 +215,15 @@ export default function SignInScreen() {
                         color="#6B7280"
                       />
                     </View>
-                    <Input
+                    <AuthInput
                       placeholder="••••••••••••••••"
                       value={password}
                       onChangeText={setPassword}
                       secureTextEntry
-                      className="h-14 rounded-2xl pl-12 pr-4 text-white border-0"
                       style={{
-                        backgroundColor: "rgba(255, 255, 255, 0.08)",
-                        borderWidth: 1,
-                        borderColor: "rgba(255, 255, 255, 0.15)",
+                        paddingLeft: 48,
+                        paddingRight: 16,
                       }}
-                      placeholderTextColor="#6B7280"
                     />
                   </View>
                 </View>
