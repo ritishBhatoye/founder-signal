@@ -17,10 +17,11 @@ const THEME_STORAGE_KEY = "@clockio_theme";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const systemColorScheme = useRNColorScheme();
-  const [theme, setThemeState] = useState<Theme>("system");
+  const [theme, setThemeState] = useState<Theme>("light"); // Default to light mode for FounderOps
 
   // Determine if dark mode is active
-  const isDark = theme === "dark" || (theme === "system" && systemColorScheme === "dark");
+  const isDark =
+    theme === "dark" || (theme === "system" && systemColorScheme === "dark");
 
   // Load saved theme preference
   useEffect(() => {
@@ -32,7 +33,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       const savedTheme = await AsyncStorage.getItem(THEME_STORAGE_KEY);
       if (
         savedTheme &&
-        (savedTheme === "light" || savedTheme === "dark" || savedTheme === "system")
+        (savedTheme === "light" ||
+          savedTheme === "dark" ||
+          savedTheme === "system")
       ) {
         setThemeState(savedTheme as Theme);
       }
