@@ -12,7 +12,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
-import { Input } from "@/components/atoms";
+import { AuthInput } from "@/components/auth/AuthInput";
 import { useResetPasswordMutation } from "@/store/api/authApi";
 import { showToast } from "@/utils/toast";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -158,19 +158,16 @@ export default function ForgotPasswordScreen() {
                             color="#6B7280"
                           />
                         </View>
-                        <Input
+                        <AuthInput
                           placeholder="name@company.com"
                           value={email}
                           onChangeText={setEmail}
                           keyboardType="email-address"
                           autoCapitalize="none"
-                          className="h-14 rounded-2xl pl-12 pr-4 text-white border-0"
                           style={{
-                            backgroundColor: "rgba(255, 255, 255, 0.08)",
-                            borderWidth: 1,
-                            borderColor: "rgba(255, 255, 255, 0.15)",
+                            paddingLeft: 48,
+                            paddingRight: 16,
                           }}
-                          placeholderTextColor="#6B7280"
                         />
                       </View>
                     </View>

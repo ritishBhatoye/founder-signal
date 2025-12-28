@@ -2,7 +2,7 @@
  * Root Layout with Auth Provider
  */
 
-import { AuthProvider } from "@/contexts";
+import { AuthProvider, ThemeProvider } from "@/contexts";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -29,38 +29,40 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="auth/sign-in"
-          options={{
-            headerShown: false,
-            presentation: "modal",
-          }}
-        />
-        <Stack.Screen
-          name="auth/callback"
-          options={{
-            headerShown: false,
-            presentation: "modal",
-          }}
-        />
-        <Stack.Screen
-          name="stripe-connect"
-          options={{
-            headerShown: false,
-            presentation: "modal",
-          }}
-        />
-        <Stack.Screen
-          name="support-pressure"
-          options={{
-            title: "Support Pressure",
-            presentation: "modal",
-          }}
-        />
-      </Stack>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="auth/sign-in"
+            options={{
+              headerShown: false,
+              presentation: "modal",
+            }}
+          />
+          <Stack.Screen
+            name="auth/callback"
+            options={{
+              headerShown: false,
+              presentation: "modal",
+            }}
+          />
+          <Stack.Screen
+            name="stripe-connect"
+            options={{
+              headerShown: false,
+              presentation: "modal",
+            }}
+          />
+          <Stack.Screen
+            name="support-pressure"
+            options={{
+              title: "Support Pressure",
+              presentation: "modal",
+            }}
+          />
+        </Stack>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

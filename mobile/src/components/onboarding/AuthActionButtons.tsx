@@ -14,7 +14,7 @@ export const AuthActionButtons = () => {
       router.push("/stripe-connect");
     } else {
       // User needs to sign in first
-      router.push("/auth/sign-in");
+      router.push("/(auth)/sign-in");
     }
   };
 
@@ -24,7 +24,7 @@ export const AuthActionButtons = () => {
       router.push("/(tabs)");
     } else {
       // Show demo mode or require sign in
-      router.push("/auth/sign-in");
+      router.push("/(auth)/sign-in");
     }
   };
 
