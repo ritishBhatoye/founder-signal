@@ -10,7 +10,9 @@ import {
   StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Input, Button } from "@/components/atoms";
+import { LinearGradient } from "expo-linear-gradient";
+import { BlurView } from "expo-blur";
+import { Input } from "@/components/atoms";
 import { useResetPasswordMutation } from "@/store/api/authApi";
 import { showToast } from "@/utils/toast";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -51,14 +53,26 @@ export default function ForgotPasswordScreen() {
   };
 
   return (
-    <View className="flex-1 bg-neutral-950">
+    <View className="flex-1 bg-black">
       <StatusBar barStyle="light-content" />
 
-      {/* Background Accent */}
-      <View
-        className="absolute bottom-[-100] left-[-100] w-[400] h-[400] rounded-full bg-primary-600/10 blur-3xl"
-        style={{ opacity: 0.3 }}
+      {/* Animated Background Gradients */}
+      <LinearGradient
+        colors={["#1e1b4b", "#312e81", "#1e40af"]}
+        className="absolute inset-0"
       />
+
+      {/* Floating Gradient Orbs */}
+      <View className="absolute inset-0">
+        <LinearGradient
+          colors={["#EC4899", "#F59E0B", "#EF4444"]}
+          className="absolute top-24 left-8 w-32 h-32 rounded-full opacity-15 blur-3xl"
+        />
+        <LinearGradient
+          colors={["#3B82F6", "#06B6D4", "#10B981"]}
+          className="absolute bottom-32 right-12 w-28 h-28 rounded-full opacity-20 blur-2xl"
+        />
+      </View>
 
       <SafeAreaView className="flex-1">
         <KeyboardAvoidingView
@@ -74,91 +88,166 @@ export default function ForgotPasswordScreen() {
             }}
             showsVerticalScrollIndicator={false}
           >
-            {/* Back Button */}
-            <Pressable
-              onPress={() => router.back()}
-              className="mt-4 h-12 w-12 items-center justify-center rounded-2xl bg-neutral-900 border border-neutral-800"
-            >
-              <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
-            </Pressable>
+            {/* Header */}
+            <View className="flex-row justify-between items-center mt-4 mb-12">
+              <Pressable
+                onPress={() => router.back()}
+                className="h-12 w-12 items-center justify-center rounded-2xl"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  borderWidth: 1,
+                  borderColor: "rgba(255, 255, 255, 0.2)",
+                }}
+              >
+                <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
+              </Pressable>
+
+              <View className="w-12" />
+            </View>
 
             {!submitted ? (
               <>
-                {/* Title Section */}
-                <View className="mt-12 mb-10">
-                  <View className="h-20 w-20 items-center justify-center rounded-3xl bg-neutral-900 border border-neutral-800 mb-6">
+                {/* Icon and Title Section */}
+                <View className="items-center mb-12">
+                  <View
+                    className="h-20 w-20 rounded-3xl items-center justify-center mb-6"
+                    style={{
+                      backgroundColor: "rgba(99, 102, 241, 0.2)",
+                      borderWidth: 1,
+                      borderColor: "rgba(99, 102, 241, 0.3)",
+                    }}
+                  >
                     <Ionicons name="key-outline" size={32} color="#6366F1" />
                   </View>
-                  <Text className="text-white text-4xl font-bold tracking-tight">
-                    Forgot password?
+
+                  <Text className="text-neutral-400 text-sm font-medium uppercase tracking-widest mb-2">
+                    DON&apos;T WORRY
                   </Text>
-                  <Text className="text-neutral-400 text-lg mt-2">
-                    No worries, we&apos;ll send you reset instructions.
+                  <Text className="text-white text-3xl font-bold text-center mb-3">
+                    Did you forget{"\n"}your password?
+                  </Text>
+                  <Text className="text-neutral-400 text-base text-center leading-6">
+                    No worries, we&apos;ll send you{"\n"}reset instructions
                   </Text>
                 </View>
 
-                {/* Form Section */}
-                <View className="gap-6">
-                  <View>
-                    <Text className="text-neutral-300 font-semibold mb-2 ml-1 text-sm uppercase tracking-wider">
-                      Email Address
-                    </Text>
-                    <Input
-                      placeholder="name@company.com"
-                      value={email}
-                      onChangeText={setEmail}
-                      keyboardType="email-address"
-                      autoCapitalize="none"
-                      className="bg-neutral-900 border-neutral-800 h-16 rounded-2xl px-5 text-white"
-                      placeholderTextColor="#4B5563"
-                    />
+                {/* Form Container with Glassmorphism */}
+                <BlurView
+                  intensity={20}
+                  tint="dark"
+                  className="rounded-3xl overflow-hidden mb-8"
+                >
+                  <View
+                    className="p-6"
+                    style={{
+                      backgroundColor: "rgba(255, 255, 255, 0.05)",
+                      borderWidth: 1,
+                      borderColor: "rgba(255, 255, 255, 0.1)",
+                    }}
+                  >
+                    {/* Email Field */}
+                    <View className="mb-6">
+                      <Text className="text-neutral-300 text-sm font-medium mb-3 ml-1">
+                        Email Address
+                      </Text>
+                      <View className="relative">
+                        <View className="absolute left-4 top-4 z-10">
+                          <Ionicons
+                            name="mail-outline"
+                            size={20}
+                            color="#6B7280"
+                          />
+                        </View>
+                        <Input
+                          placeholder="name@company.com"
+                          value={email}
+                          onChangeText={setEmail}
+                          keyboardType="email-address"
+                          autoCapitalize="none"
+                          className="h-14 rounded-2xl pl-12 pr-4 text-white border-0"
+                          style={{
+                            backgroundColor: "rgba(255, 255, 255, 0.08)",
+                            borderWidth: 1,
+                            borderColor: "rgba(255, 255, 255, 0.15)",
+                          }}
+                          placeholderTextColor="#6B7280"
+                        />
+                      </View>
+                    </View>
+
+                    {/* Reset Button */}
+                    <Pressable
+                      onPress={handleResetPassword}
+                      disabled={!email || isLoading}
+                      className="h-14 rounded-2xl items-center justify-center"
+                    >
+                      <LinearGradient
+                        colors={["#6366F1", "#8B5CF6"]}
+                        className="h-14 rounded-2xl items-center justify-center w-full"
+                      >
+                        <Text className="text-white text-base font-bold">
+                          {isLoading ? "Sending..." : "Reset Password"}
+                        </Text>
+                      </LinearGradient>
+                    </Pressable>
                   </View>
-
-                  <Button
-                    label={isLoading ? "Sending..." : "Reset Password"}
-                    onPress={handleResetPassword}
-                    loading={isLoading}
-                    disabled={!email}
-                    className="bg-primary-600 h-16 rounded-2xl border-0 mt-2"
-                    labelClassName="text-lg font-bold"
-                    width="full"
-                  />
-                </View>
+                </BlurView>
               </>
             ) : (
-              <View className="mt-12 items-center">
-                <View className="h-20 w-20 items-center justify-center rounded-3xl bg-green-900/20 border border-green-800/30 mb-6">
+              <View className="items-center mt-12">
+                {/* Success Icon */}
+                <View
+                  className="h-20 w-20 rounded-3xl items-center justify-center mb-8"
+                  style={{
+                    backgroundColor: "rgba(16, 185, 129, 0.2)",
+                    borderWidth: 1,
+                    borderColor: "rgba(16, 185, 129, 0.3)",
+                  }}
+                >
                   <Ionicons
                     name="mail-unread-outline"
                     size={32}
                     color="#10B981"
                   />
                 </View>
-                <Text className="text-white text-3xl font-bold text-center">
-                  Check your email
+
+                {/* Success Message */}
+                <Text className="text-white text-3xl font-bold text-center mb-4">
+                  Check your Email!
                 </Text>
-                <Text className="text-neutral-400 text-lg mt-4 text-center">
+                <Text className="text-neutral-400 text-base text-center leading-6 mb-12">
                   We&apos;ve sent a password reset link to{"\n"}
                   <Text className="text-white font-semibold">{email}</Text>
                 </Text>
 
-                <Button
-                  label="Open Email App"
-                  onPress={() => {}} // Could add logic to open mail app
-                  className="bg-neutral-900 border-neutral-800 h-16 rounded-2xl mt-12 px-8"
-                  labelClassName="text-lg font-bold"
-                  variant="tertiary"
-                  width="full"
-                />
-
-                <Pressable onPress={() => setSubmitted(false)} className="mt-8">
-                  <Text className="text-neutral-500 text-base">
-                    Didn&apos;t receive the email?{" "}
-                    <Text className="text-primary-400 font-bold">
-                      Try again
+                {/* Action Buttons */}
+                <View className="w-full gap-4">
+                  <Pressable
+                    onPress={() => {}} // Could add logic to open mail app
+                    className="h-14 rounded-2xl items-center justify-center"
+                    style={{
+                      backgroundColor: "rgba(255, 255, 255, 0.1)",
+                      borderWidth: 1,
+                      borderColor: "rgba(255, 255, 255, 0.2)",
+                    }}
+                  >
+                    <Text className="text-white text-base font-medium">
+                      Open Email App
                     </Text>
-                  </Text>
-                </Pressable>
+                  </Pressable>
+
+                  <Pressable
+                    onPress={() => setSubmitted(false)}
+                    className="h-12 items-center justify-center"
+                  >
+                    <Text className="text-neutral-400 text-base">
+                      Didn&apos;t receive the email?{" "}
+                      <Text className="text-primary-400 font-semibold">
+                        Try again
+                      </Text>
+                    </Text>
+                  </Pressable>
+                </View>
               </View>
             )}
 
@@ -167,7 +256,9 @@ export default function ForgotPasswordScreen() {
               <Pressable onPress={() => router.replace("./sign-in")}>
                 <Text className="text-neutral-400 text-base">
                   Back to{" "}
-                  <Text className="text-primary-400 font-bold">Sign In</Text>
+                  <Text className="text-primary-400 font-semibold">
+                    Sign In
+                  </Text>
                 </Text>
               </Pressable>
             </View>
