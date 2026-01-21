@@ -40,7 +40,13 @@ export default function RootLayout() {
               // presentation: "modal",
             }}
           />
-
+          <Stack.Screen
+            name="(onboarding)"
+            options={{
+              headerShown: false,
+              // presentation: "modal",
+            }}
+          />
           <Stack.Screen
             name="stripe-connect"
             options={{
