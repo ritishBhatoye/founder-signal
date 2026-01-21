@@ -6,7 +6,13 @@ import { Colors } from "@/constants/colors";
 import { useTheme } from "@/contexts/ThemeContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState } from "react";
-import { Text, TextInput, TextInputProps, TouchableOpacity, View } from "react-native";
+import {
+  Text,
+  TextInput,
+  TextInputProps,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import PasswordStrength from "./PasswordStrength";
 
 interface InputGroupProps extends Omit<TextInputProps, "onChangeText"> {
@@ -82,7 +88,9 @@ const InputGroup: React.FC<InputGroupProps> = ({
           }}
           onFocus={() => setIsFocused(true)}
           placeholder={placeholder}
-          placeholderTextColor={isDark ? Colors.neutral[500] : Colors.neutral[400]}
+          placeholderTextColor={
+            isDark ? Colors.neutral[500] : Colors.neutral[400]
+          }
           editable={!isDisabled && !isReadOnly}
           secureTextEntry={isPassword && !showPassword}
           className="flex-1 text-base text-neutral-900 dark:text-neutral-100 py-3"
@@ -90,11 +98,18 @@ const InputGroup: React.FC<InputGroupProps> = ({
         />
         {value && value.length > 0 && !isPassword && onClear && (
           <TouchableOpacity onPress={onClear} className="ml-2">
-            <Ionicons name="close-circle" size={20} color={Colors.neutral[400]} />
+            <Ionicons
+              name="close-circle"
+              size={20}
+              color={Colors.neutral[400]}
+            />
           </TouchableOpacity>
         )}
         {isPassword && value && value.length > 0 && (
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="ml-2">
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            className="ml-2"
+          >
             <Ionicons
               name={showPassword ? "eye-off" : "eye"}
               size={22}
@@ -104,7 +119,9 @@ const InputGroup: React.FC<InputGroupProps> = ({
         )}
         {endContent && <View className="ml-3">{endContent}</View>}
       </View>
-      {isPassword && showPasswordStrength && <PasswordStrength value={value} error={error} />}
+      {isPassword && showPasswordStrength && (
+        <PasswordStrength value={value} error={error} />
+      )}
       {isInvalid && !showPasswordStrength && (
         <View className="flex-row items-center mt-1">
           <Ionicons name="alert-circle" size={14} color={Colors.error[500]} />

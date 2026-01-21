@@ -88,7 +88,7 @@ interface VerifyIdentityFormTypes {
   confirmLegalName: boolean;
 }
 
-interface LoginFormTypes {
+interface SignInFormTypes {
   email: string;
   password: string;
   rememberMe: boolean;
@@ -221,7 +221,7 @@ type MultiFactorFormProps = FormSubmissionProps<MultiFactorFormTypes>;
 type RecoveryEmailFormProps = FormSubmissionProps<RecoveryEmailFormTypes>;
 type FindAccountFormProps = FormSubmissionProps<FindAccountFormTypes>;
 type ResetPasswordFormProps = FormSubmissionProps<SetNewPasswordFormTypes>;
-type LoginFormProps = FormSubmissionProps<LoginFormTypes>;
+type SignInFormProps = FormSubmissionProps<SignInFormTypes>;
 type RegisterFormProps = FormSubmissionProps<RegisterFormTypes>;
 type VerifyOTPFormProps = FormSubmissionProps<VerifyOtpType>;
 type VerifyIdentityFormProps = FormSubmissionProps<VerifyIdentityFormTypes>;
@@ -229,4 +229,5 @@ type EditProfileFormProps = FormSubmissionProps<EditProfileFormTypes>;
 type AccountFormProps = FormSubmissionProps<AccountSecurityFormTypes>;
 type AddReviewFormProps = FormSubmissionProps<AddReviewFormTypes>;
 type PersonalInfoFormProps = FormSubmissionProps<PersonalInfoFormTypes>;
-type CompanyInformationFormProps = FormSubmissionProps<CompanyInformationFormTypes>;
+type CompanyInformationFormProps =
+  FormSubmissionProps<CompanyInformationFormTypes>;

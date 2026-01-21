@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -12,23 +12,21 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
-import { AuthInput } from "@/components/auth/AuthInput";
+import { SafeAreaView } from "react-native-safe-area-context";
+import SignInForm from "@/components/auth/SignInComponent";
 import { useSignIn } from "@/hooks/auth";
 import { showToast } from "@/utils/toast";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignInScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { signInWithPassword, signInWithMagicLink, isLoading } = useSignIn();
 
-  const handleSignIn = async () => {
-    if (!email || !password) {
+  const handleSignIn = async (values: SignInFormTypes) => {
+    if (!values.email || !values.password) {
       showToast.warning("Missing Fields", "Please fill in all fields");
       return;
     }
 
-    const result = await signInWithPassword(email, password);
+    const result = await signInWithPassword(values.email, values.password);
 
     if (result.error) {
       showToast.error("Sign In Failed", result.error);
@@ -41,7 +39,7 @@ export default function SignInScreen() {
     }
   };
 
-  const handleMagicLinkSignIn = async () => {
+  const handleMagicLinkSignIn = async (email: string) => {
     if (!email) {
       showToast.warning("Email Required", "Please enter your email address");
       return;
@@ -170,148 +168,14 @@ export default function SignInScreen() {
                   borderColor: "rgba(255, 255, 255, 0.1)",
                 }}
               >
-                {/* Email Field */}
-                <View className="mb-6">
-                  <Text className="text-neutral-300 text-sm font-medium mb-3 ml-1">
-                    Email
-                  </Text>
-                  <View className="relative">
-                    <View className="absolute left-4 top-4 z-10">
-                      <Ionicons name="mail-outline" size={20} color="#6B7280" />
-                    </View>
-                    <AuthInput
-                      placeholder="canandoe@gmail.com"
-                      value={email}
-                      onChangeText={setEmail}
-                      keyboardType="email-address"
-                      autoCapitalize="none"
-                      style={{
-                        paddingLeft: 48,
-                        paddingRight: 16,
-                      }}
-                    />
-                  </View>
-                </View>
-
-                {/* Password Field */}
-                <View className="mb-6">
-                  <View className="flex-row justify-between items-center mb-3">
-                    <Text className="text-neutral-300 text-sm font-medium ml-1">
-                      Password
-                    </Text>
-                    <Pressable
-                      onPress={() => router.push("/(auth)/forgot-password")}
-                    >
-                      <Text className="text-primary-400 text-sm font-medium">
-                        Forgot?
-                      </Text>
-                    </Pressable>
-                  </View>
-                  <View className="relative">
-                    <View className="absolute left-4 top-4 z-10">
-                      <Ionicons
-                        name="lock-closed-outline"
-                        size={20}
-                        color="#6B7280"
-                      />
-                    </View>
-                    <AuthInput
-                      placeholder="••••••••••••••••"
-                      value={password}
-                      onChangeText={setPassword}
-                      secureTextEntry
-                      style={{
-                        paddingLeft: 48,
-                        paddingRight: 16,
-                      }}
-                    />
-                  </View>
-                </View>
-
-                {/* Sign In Button */}
-                <Pressable
-                  onPress={handleSignIn}
-                  disabled={!email || !password || isLoading}
-                  className="h-14 rounded-2xl items-center justify-center mb-4"
-                >
-                  <LinearGradient
-                    colors={["#6366F1", "#8B5CF6"]}
-                    className="h-14 rounded-2xl items-center justify-center w-full"
-                  >
-                    <Text className="text-white text-base font-bold">
-                      {isLoading ? "Signing In..." : "Sign In"}
-                    </Text>
-                  </LinearGradient>
-                </Pressable>
-
-                {/* Magic Link Button */}
-                <Pressable
-                  onPress={handleMagicLinkSignIn}
-                  disabled={!email || isLoading}
-                  className="h-12 rounded-2xl items-center justify-center"
-                  style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.05)",
-                    borderWidth: 1,
-                    borderColor: "rgba(255, 255, 255, 0.1)",
-                  }}
-                >
-                  <Text className="text-primary-400 text-sm font-medium">
-                    Send Magic Link Instead
-                  </Text>
-                </Pressable>
+                <SignInForm
+                  isLoading={isLoading}
+                  onSubmit={handleSignIn}
+                  onMagicLinkSignIn={handleMagicLinkSignIn}
+                  onSocialSignIn={handleSocialSignIn}
+                />
               </View>
             </BlurView>
-
-            {/* Social Sign In */}
-            <View className="mb-8">
-              <View className="flex-row items-center mb-6">
-                <View className="flex-1 h-px bg-neutral-800" />
-                <Text className="text-neutral-500 text-sm mx-4 font-medium">
-                  or Login with
-                </Text>
-                <View className="flex-1 h-px bg-neutral-800" />
-              </View>
-
-              <View className="flex-row gap-4">
-                <Pressable
-                  onPress={() => handleSocialSignIn("google")}
-                  className="flex-1 h-14 rounded-2xl items-center justify-center flex-row gap-3"
-                  style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.05)",
-                    borderWidth: 1,
-                    borderColor: "rgba(255, 255, 255, 0.1)",
-                  }}
-                >
-                  <Ionicons name="logo-google" size={20} color="white" />
-                  <Text className="text-white text-sm font-medium">Google</Text>
-                </Pressable>
-
-                <Pressable
-                  onPress={() => handleSocialSignIn("apple")}
-                  className="flex-1 h-14 rounded-2xl items-center justify-center flex-row gap-3"
-                  style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.05)",
-                    borderWidth: 1,
-                    borderColor: "rgba(255, 255, 255, 0.1)",
-                  }}
-                >
-                  <Ionicons name="logo-apple" size={20} color="white" />
-                  <Text className="text-white text-sm font-medium">Apple</Text>
-                </Pressable>
-              </View>
-            </View>
-
-            {/* Footer */}
-            <View className="items-center mt-auto">
-              <Pressable onPress={() => router.push("./register")}>
-                <Text className="text-neutral-400 text-base">
-                  New here?{" "}
-                  <Text className="text-primary-400 font-semibold">
-                    Create Account
-                  </Text>
-                </Text>
-              </Pressable>
-            </View>
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
