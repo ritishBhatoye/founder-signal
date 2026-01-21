@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SignInForm from "@/components/auth/SignInComponent";
+import SignInForm from "@/components/auth/SignInForm";
 import { useSignIn } from "@/hooks/auth";
 import { showToast } from "@/utils/toast";
 
@@ -102,45 +102,40 @@ export default function SignInScreen() {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           className="flex-1"
         >
-          <ScrollView
-            className="flex-1"
-            contentContainerStyle={{
-              flexGrow: 1,
-              paddingHorizontal: 24,
-              paddingBottom: 40,
-            }}
-            showsVerticalScrollIndicator={false}
-          >
-            {/* Header */}
-            <View className="flex-row justify-between items-center mt-4 mb-12">
-              <Pressable
-                onPress={() => router.back()}
-                className="h-12 w-12 items-center justify-center rounded-2xl"
+          {/* Header */}
+          <View className="flex-row justify-between items-center mt-4 mb-12 px-5">
+            <Pressable
+              onPress={() => router.back()}
+              className="h-12 w-12 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                borderWidth: 1,
+                borderColor: "rgba(255, 255, 255, 0.2)",
+              }}
+            >
+              <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
+            </Pressable>
+
+            <View className="items-center">
+              <View
+                className="h-12 w-12 rounded-2xl items-center justify-center mb-2"
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  backgroundColor: "rgba(99, 102, 241, 0.2)",
                   borderWidth: 1,
-                  borderColor: "rgba(255, 255, 255, 0.2)",
+                  borderColor: "rgba(99, 102, 241, 0.3)",
                 }}
               >
-                <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
-              </Pressable>
-
-              <View className="items-center">
-                <View
-                  className="h-12 w-12 rounded-2xl items-center justify-center mb-2"
-                  style={{
-                    backgroundColor: "rgba(99, 102, 241, 0.2)",
-                    borderWidth: 1,
-                    borderColor: "rgba(99, 102, 241, 0.3)",
-                  }}
-                >
-                  <Ionicons name="log-in-outline" size={24} color="#6366F1" />
-                </View>
+                <Ionicons name="log-in-outline" size={24} color="#6366F1" />
               </View>
-
-              <View className="w-12" />
             </View>
 
+            <View className="w-12" />
+          </View>
+          <ScrollView
+            className="flex-1"
+            contentContainerClassName="px-10 pb-7"
+            showsVerticalScrollIndicator={false}
+          >
             {/* Welcome Section */}
             <View className="items-center mb-12">
               <Text className="text-neutral-400 text-sm font-medium uppercase tracking-widest mb-2">
@@ -154,7 +149,6 @@ export default function SignInScreen() {
               </Text>
             </View>
 
-            {/* Form Container with Glassmorphism */}
             <BlurView
               intensity={20}
               tint="dark"
