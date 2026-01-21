@@ -29,15 +29,16 @@ export const AuthActionButtons = () => {
   };
 
   return (
-    <View className="px-8">
-      <View className="gap-4">
+    <View className="w-full">
+      <View className="gap-5 px-5">
         {/* Get Started Button */}
         <Button
           variant="primary"
           size="lg"
+          width="full"
           onPress={handleGetStarted}
           disabled={isLoading}
-          className="bg-white active:bg-white/90 shadow-xl"
+          // className="bg-white active:bg-white/90 shadow-xl"
           label={
             isAuthenticated ? "Connect Stripe & Start" : "Sign In to Start"
           }
@@ -47,6 +48,7 @@ export const AuthActionButtons = () => {
         <Button
           variant="white"
           size="lg"
+          width="full"
           onPress={handleSkip}
           disabled={isLoading}
           className="border-2 border-white/50 bg-white/10 active:bg-white/20"
