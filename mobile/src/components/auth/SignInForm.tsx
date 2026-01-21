@@ -2,7 +2,7 @@ import { signInSchema } from "@/utils/validations/auth-schema";
 import { FormikProps, useFormik } from "formik";
 import React from "react";
 import { Keyboard, View, Text, Pressable } from "react-native";
-import { InputGroup } from "../atoms";
+import { Button, InputGroup } from "../atoms";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
@@ -96,22 +96,15 @@ const SignInForm = ({
       </View>
 
       {/* Sign In Button */}
-      <Pressable
-        onPress={() => formik.handleSubmit()}
-        disabled={!formik.values.email || !formik.values.password || isLoading}
-        className="h-14 rounded-2xl items-center justify-center mb-4"
-      >
-        <LinearGradient
-          colors={["#6366F1", "#8B5CF6"]}
-          className="h-14 rounded-2xl items-center justify-center w-full"
-        >
-          <Text className="text-white text-base font-bold">
-            {isLoading ? "Signing In..." : "Sign In"}
-          </Text>
-        </LinearGradient>
-      </Pressable>
+      <View className="items-center mb-7">
+        <Button
+          width="half"
+          loading={isLoading}
+          label={isLoading ? "Signing In..." : "Sign In"}
+          onPress={() => formik.handleSubmit()}
+        />
+      </View>
 
-      {/* Magic Link Button */}
       <Pressable
         onPress={handleMagicLinkSignIn}
         disabled={!formik.values.email || isLoading}
