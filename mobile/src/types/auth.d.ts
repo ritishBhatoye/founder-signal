@@ -1,6 +1,7 @@
 // ============================================
 // AUTH TYPES
 // ============================================
+type SocialProvider = "google" | "apple";
 
 interface AuthType {
   id: string;
@@ -95,23 +96,13 @@ interface SignInFormTypes {
 }
 
 interface RegisterFormTypes {
-  title: string;
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  gender: string;
-  dob: number;
-  aadhaar: number;
-  pan: number;
+  fullName: string;
   email: string;
-  designation: string;
-  department: string;
   phoneNumber: string;
   countryCode: string;
   password: string;
   confirmPassword: string;
   acceptTerms: boolean;
-  accountType: "INDIVIDUAL" | string;
 }
 
 interface CompanyInformationFormTypes {

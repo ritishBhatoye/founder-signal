@@ -4,7 +4,7 @@ import React from "react";
 import { Keyboard, View, Text, Pressable } from "react-native";
 import { Button, InputGroup } from "../atoms";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
+
 import { router } from "expo-router";
 
 interface SignInFormProps {
