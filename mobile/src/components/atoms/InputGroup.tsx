@@ -1,7 +1,3 @@
-/**
- * InputGroup - Form input with label, validation, and optional password features
- * Usage: <InputGroup label="Email" value={email} onChangeText={setEmail} isRequired />
- */
 import { Colors } from "@/constants/colors";
 import { useTheme } from "@/contexts/ThemeContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -64,10 +60,10 @@ const InputGroup: React.FC<InputGroupProps> = ({
   };
 
   return (
-    <View className={`mb-4 w-full ${className}`}>
+    <View className={`mb-4 gap-2.5 w-full ${className}`}>
       {label && (
         <View className="flex-row items-center mb-1.5">
-          <Text className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          <Text className="text-sm font-medium text-neutral-400 dark:text-neutral-100">
             {label}
           </Text>
           {isRequired && <Text className="text-error-500 ml-0.5">*</Text>}
@@ -76,7 +72,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
       <View
         className={`flex-row items-center rounded-xl border px-4 ${getBorderColor()} ${
           isDisabled ? "opacity-50" : ""
-        } bg-white dark:bg-neutral-800`}
+        }  dark:bg-neutral-800`}
       >
         {startContent && <View className="mr-3">{startContent}</View>}
         <TextInput
