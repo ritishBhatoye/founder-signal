@@ -16,6 +16,7 @@ import { AuthInput } from "@/components/auth/AuthInput";
 import { useSignUp } from "@/hooks/auth/useSignUp";
 import { showToast } from "@/utils/toast";
 import { SafeAreaView } from "react-native-safe-area-context";
+import RegisterForm from "@/components/auth/Register";
 
 export default function RegisterScreen() {
   const [name, setName] = useState("");
@@ -107,15 +108,42 @@ export default function RegisterScreen() {
       <View className="absolute inset-0">
         <LinearGradient
           colors={["#8B5CF6", "#EC4899", "#F59E0B"]}
-          className="absolute top-16 right-12 w-36 h-36 rounded-full opacity-15 blur-3xl"
+          style={{
+            position: "absolute",
+            top: 64,
+            right: 48,
+            width: 144,
+            height: 144,
+            borderRadius: "100%",
+            opacity: 0.15,
+          }}
+          // className="absolute top-16 right-12 w-36 h-36 rounded-full opacity-15 blur-3xl"
         />
         <LinearGradient
           colors={["#06B6D4", "#3B82F6", "#6366F1"]}
-          className="absolute top-48 left-6 w-28 h-28 rounded-full opacity-20 blur-2xl"
+          style={{
+            position: "absolute",
+            top: 192,
+            left: 24,
+            width: 112,
+            height: 112,
+            borderRadius: "100%",
+            opacity: 0.2,
+          }}
+          // className="absolute top-48 left-6 w-28 h-28 rounded-full opacity-20 blur-2xl"
         />
         <LinearGradient
           colors={["#10B981", "#22C55E", "#84CC16"]}
-          className="absolute bottom-40 right-8 w-32 h-32 rounded-full opacity-12 blur-3xl"
+          style={{
+            position: "absolute",
+            bottom: 160,
+            right: 32,
+            width: 128,
+            height: 128,
+            borderRadius: "100%",
+            opacity: 0.12,
+          }}
+          // className="absolute bottom-40 right-8 w-32 h-32 rounded-full opacity-12 blur-3xl"
         />
       </View>
 
@@ -124,6 +152,34 @@ export default function RegisterScreen() {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           className="flex-1"
         >
+          <View className="flex-row justify-between items-center mt-4 mb-10">
+            <Pressable
+              onPress={() => router.back()}
+              className="h-12 w-12 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                borderWidth: 1,
+                borderColor: "rgba(255, 255, 255, 0.2)",
+              }}
+            >
+              <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
+            </Pressable>
+
+            <View className="items-center">
+              <View
+                className="h-12 w-12 rounded-2xl items-center justify-center mb-2"
+                style={{
+                  backgroundColor: "rgba(139, 92, 246, 0.2)",
+                  borderWidth: 1,
+                  borderColor: "rgba(139, 92, 246, 0.3)",
+                }}
+              >
+                <Ionicons name="person-add-outline" size={24} color="#8B5CF6" />
+              </View>
+            </View>
+
+            <View className="w-12" />
+          </View>
           <ScrollView
             className="flex-1"
             contentContainerStyle={{
@@ -133,40 +189,6 @@ export default function RegisterScreen() {
             }}
             showsVerticalScrollIndicator={false}
           >
-            {/* Header */}
-            <View className="flex-row justify-between items-center mt-4 mb-10">
-              <Pressable
-                onPress={() => router.back()}
-                className="h-12 w-12 items-center justify-center rounded-2xl"
-                style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  borderWidth: 1,
-                  borderColor: "rgba(255, 255, 255, 0.2)",
-                }}
-              >
-                <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
-              </Pressable>
-
-              <View className="items-center">
-                <View
-                  className="h-12 w-12 rounded-2xl items-center justify-center mb-2"
-                  style={{
-                    backgroundColor: "rgba(139, 92, 246, 0.2)",
-                    borderWidth: 1,
-                    borderColor: "rgba(139, 92, 246, 0.3)",
-                  }}
-                >
-                  <Ionicons
-                    name="person-add-outline"
-                    size={24}
-                    color="#8B5CF6"
-                  />
-                </View>
-              </View>
-
-              <View className="w-12" />
-            </View>
-
             {/* Welcome Section */}
             <View className="items-center mb-10">
               <Text className="text-neutral-400 text-sm font-medium uppercase tracking-widest mb-2">
@@ -186,220 +208,21 @@ export default function RegisterScreen() {
               tint="dark"
               className="rounded-3xl overflow-hidden mb-8"
             >
-              <View
-                className="p-6"
-                style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  borderWidth: 1,
-                  borderColor: "rgba(255, 255, 255, 0.1)",
+              <RegisterForm
+                loading={false}
+                onSubmit={function (
+                  values: RegisterFormTypes,
+                  actions?: ResetFormType
+                ): void {
+                  throw new Error("Function not implemented.");
                 }}
-              >
-                {/* Full Name Field */}
-                <View className="mb-5">
-                  <Text className="text-neutral-300 text-sm font-medium mb-3 ml-1">
-                    Full Name
-                  </Text>
-                  <View className="relative">
-                    <View className="absolute left-4 top-4 z-10">
-                      <Ionicons
-                        name="person-outline"
-                        size={20}
-                        color="#6B7280"
-                      />
-                    </View>
-                    <AuthInput
-                      placeholder="John Doe"
-                      value={name}
-                      onChangeText={setName}
-                      style={{
-                        paddingLeft: 48,
-                        paddingRight: 16,
-                      }}
-                    />
-                  </View>
-                </View>
-
-                {/* Email Field */}
-                <View className="mb-5">
-                  <Text className="text-neutral-300 text-sm font-medium mb-3 ml-1">
-                    Email
-                  </Text>
-                  <View className="relative">
-                    <View className="absolute left-4 top-4 z-10">
-                      <Ionicons name="mail-outline" size={20} color="#6B7280" />
-                    </View>
-                    <AuthInput
-                      placeholder="canandoe@gmail.com"
-                      value={email}
-                      onChangeText={setEmail}
-                      keyboardType="email-address"
-                      autoCapitalize="none"
-                      style={{
-                        paddingLeft: 48,
-                        paddingRight: 16,
-                      }}
-                    />
-                  </View>
-                </View>
-
-                {/* Phone Field */}
-                <View className="mb-5">
-                  <Text className="text-neutral-300 text-sm font-medium mb-3 ml-1">
-                    Phone
-                  </Text>
-                  <View className="relative">
-                    <View className="absolute left-4 top-4 z-10">
-                      <Ionicons name="call-outline" size={20} color="#6B7280" />
-                    </View>
-                    <AuthInput
-                      placeholder="Please enter your phone number"
-                      value=""
-                      onChangeText={() => {}}
-                      keyboardType="phone-pad"
-                      style={{
-                        paddingLeft: 48,
-                        paddingRight: 16,
-                      }}
-                    />
-                  </View>
-                </View>
-
-                {/* Password Field */}
-                <View className="mb-6">
-                  <Text className="text-neutral-300 text-sm font-medium mb-3 ml-1">
-                    Password
-                  </Text>
-                  <View className="relative">
-                    <View className="absolute left-4 top-4 z-10">
-                      <Ionicons
-                        name="lock-closed-outline"
-                        size={20}
-                        color="#6B7280"
-                      />
-                    </View>
-                    <View className="absolute right-4 top-4 z-10">
-                      <Ionicons
-                        name="eye-off-outline"
-                        size={20}
-                        color="#6B7280"
-                      />
-                    </View>
-                    <AuthInput
-                      placeholder="123456"
-                      value={password}
-                      onChangeText={setPassword}
-                      secureTextEntry
-                      style={{
-                        paddingLeft: 48,
-                        paddingRight: 48,
-                      }}
-                    />
-                  </View>
-                </View>
-
-                {/* Terms Checkbox */}
-                <View className="flex-row items-start gap-3 mb-6">
-                  <Pressable
-                    onPress={() => setAgreeToTerms(!agreeToTerms)}
-                    className="mt-1"
-                  >
-                    <View
-                      className={`h-5 w-5 rounded-lg items-center justify-center ${
-                        agreeToTerms ? "bg-primary-600" : ""
-                      }`}
-                      style={{
-                        backgroundColor: agreeToTerms
-                          ? "#6366F1"
-                          : "rgba(255, 255, 255, 0.08)",
-                        borderWidth: 1,
-                        borderColor: agreeToTerms
-                          ? "#6366F1"
-                          : "rgba(255, 255, 255, 0.2)",
-                      }}
-                    >
-                      {agreeToTerms && (
-                        <Ionicons name="checkmark" size={14} color="white" />
-                      )}
-                    </View>
-                  </Pressable>
-                  <View className="flex-1">
-                    <Text className="text-neutral-400 text-sm leading-5">
-                      I will also accept these terms
-                    </Text>
-                    <Text className="text-primary-400 text-sm">
-                      I accept the terms
-                    </Text>
-                  </View>
-                </View>
-
-                {/* Sign Up Button */}
-                <Pressable
-                  onPress={handleRegister}
-                  disabled={!isFormValid || isLoading}
-                  className="h-14 rounded-2xl items-center justify-center mb-4"
-                >
-                  <LinearGradient
-                    colors={["#8B5CF6", "#EC4899"]}
-                    className="h-14 rounded-2xl items-center justify-center w-full"
-                  >
-                    <Text className="text-white text-base font-bold">
-                      {isLoading ? "Creating Account..." : "Get Started"}
-                    </Text>
-                  </LinearGradient>
-                </Pressable>
-              </View>
+                handleSocialSignUp={function (provider: SocialProvider): void {
+                  throw new Error("Function not implemented.");
+                }}
+              />
             </BlurView>
 
-            {/* Social Sign Up */}
-            <View className="mb-8">
-              <View className="flex-row items-center mb-6">
-                <View className="flex-1 h-px bg-neutral-800" />
-                <Text className="text-neutral-500 text-sm mx-4 font-medium">
-                  social sign up
-                </Text>
-                <View className="flex-1 h-px bg-neutral-800" />
-              </View>
-
-              <View className="flex-row gap-4">
-                <Pressable
-                  onPress={() => handleSocialSignUp("google")}
-                  className="flex-1 h-14 rounded-2xl items-center justify-center flex-row gap-3"
-                  style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.05)",
-                    borderWidth: 1,
-                    borderColor: "rgba(255, 255, 255, 0.1)",
-                  }}
-                >
-                  <Ionicons name="logo-google" size={20} color="white" />
-                  <Text className="text-white text-sm font-medium">Google</Text>
-                </Pressable>
-
-                <Pressable
-                  onPress={() => handleSocialSignUp("apple")}
-                  className="flex-1 h-14 rounded-2xl items-center justify-center flex-row gap-3"
-                  style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.05)",
-                    borderWidth: 1,
-                    borderColor: "rgba(255, 255, 255, 0.1)",
-                  }}
-                >
-                  <Ionicons name="logo-apple" size={20} color="white" />
-                  <Text className="text-white text-sm font-medium">Apple</Text>
-                </Pressable>
-              </View>
-            </View>
-
             {/* Footer */}
-            <View className="items-center mt-auto">
-              <Pressable onPress={() => router.push("./sign-in")}>
-                <Text className="text-neutral-400 text-base">
-                  Already a member?{" "}
-                  <Text className="text-primary-400 font-semibold">
-                    Sign In
-                  </Text>
-                </Text>
-              </Pressable>
-            </View>
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>

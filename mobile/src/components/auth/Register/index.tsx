@@ -42,6 +42,7 @@ const RegisterForm = ({
     >
       <View>
         <InputGroup
+          placeholder="Name"
           label="Full Name"
           startContent={
             <Ionicons name="person-outline" size={20} color="#6B7280" />
@@ -67,6 +68,7 @@ const RegisterForm = ({
         />
         <InputGroup
           label="Phone"
+          placeholder="91 *********"
           startContent={
             <Ionicons name="call-outline" size={20} color="#6B7280" />
           }
@@ -78,6 +80,7 @@ const RegisterForm = ({
         />
         <InputGroup
           label="Password"
+          placeholder="••••••••••••••••"
           value={formik.values.password}
           startContent={
             <Ionicons name="lock-closed-outline" size={20} color="#6B7280" />
@@ -88,6 +91,7 @@ const RegisterForm = ({
           touched={formik.touched.password}
         />
         <InputGroup
+          placeholder="••••••••••••••••"
           label="Confirm Password"
           value={formik.values.confirmPassword}
           startContent={
