@@ -73,7 +73,7 @@ const RegisterForm = ({
             <Ionicons name="call-outline" size={20} color="#6B7280" />
           }
           value={formik.values.phoneNumber}
-          onChangeText={formik.handleChange("phone")}
+          onChangeText={formik.handleChange("phoneNumber")}
           keyboardType="phone-pad"
           error={formik.errors.phoneNumber}
           touched={formik.touched.phoneNumber}

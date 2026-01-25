@@ -210,11 +210,9 @@ export default function RegisterScreen() {
             >
               <RegisterForm
                 loading={false}
-                onSubmit={function (
-                  values: RegisterFormTypes,
-                  actions?: ResetFormType
-                ): void {
-                  throw new Error("Function not implemented.");
+                onSubmit={() => {
+                  console.log("Hanji ");
+                  router.push("/(tabs)");
                 }}
                 handleSocialSignUp={function (provider: SocialProvider): void {
                   throw new Error("Function not implemented.");
