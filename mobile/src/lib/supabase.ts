@@ -5,7 +5,7 @@ const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "";
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.warn(
-    "Supabase URL and Anon Key are required. Please check your environment variables."
+    "Supabase URL and Anon Key are required. Please check your environment variables.",
   );
 }
 
