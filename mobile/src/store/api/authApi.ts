@@ -1,7 +1,3 @@
-/**
- * Auth API using RTK Query with Supabase
- */
-
 import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { supabase } from "@/lib/supabase";
 import type { AuthUser, AuthSession } from "@/hooks/auth/types";

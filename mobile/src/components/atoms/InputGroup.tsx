@@ -72,11 +72,15 @@ const InputGroup: React.FC<InputGroupProps> = ({
         </View>
       )}
       <View
-        className={`flex-row items-center py-3 rounded-xl border px-4 ${getBorderColor()} ${
+        className={`flex-row items-center h-10  rounded-xl border px-4 ${getBorderColor()} ${
           isDisabled ? "opacity-50" : ""
         }  dark:bg-neutral-800`}
       >
-        {startContent && <View className="mr-3">{startContent}</View>}
+        {startContent && (
+          <View className="mr-3 h-full justify-center items-center">
+            {startContent}
+          </View>
+        )}
         <TextInput
           value={value}
           onChangeText={onChangeText}
@@ -91,11 +95,17 @@ const InputGroup: React.FC<InputGroupProps> = ({
           }
           editable={!isDisabled && !isReadOnly}
           secureTextEntry={isPassword && !showPassword}
-          className={`flex-1 text-base text-neutral-900 dark:text-neutral-100 ${inputClassName}`}
+          className={`flex-1 h-full text-base text-neutral-900 dark:text-neutral-100 py-0 ${inputClassName}`}
+          textAlignVertical="center"
+          autoCapitalize="none"
+          style={[{ includeFontPadding: false }, (props as any).style]}
           {...props}
         />
         {value && value.length > 0 && !isPassword && onClear && (
-          <TouchableOpacity onPress={onClear} className="ml-2">
+          <TouchableOpacity
+            onPress={onClear}
+            className="ml-2 h-full justify-center items-center"
+          >
             <Ionicons
               name="close-circle"
               size={20}
@@ -106,7 +116,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
         {isPassword && value && value.length > 0 && (
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
-            className="ml-2"
+            className="ml-2 h-full justify-center items-center"
           >
             <Ionicons
               name={showPassword ? "eye-off" : "eye"}
@@ -115,7 +125,11 @@ const InputGroup: React.FC<InputGroupProps> = ({
             />
           </TouchableOpacity>
         )}
-        {endContent && <View className="ml-3">{endContent}</View>}
+        {endContent && (
+          <View className="ml-3 h-full justify-center items-center">
+            {endContent}
+          </View>
+        )}
       </View>
       {isPassword && showPasswordStrength && (
         <PasswordStrength value={value} error={error} />
