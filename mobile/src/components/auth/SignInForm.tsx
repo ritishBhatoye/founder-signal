@@ -47,10 +47,8 @@ const SignInForm = ({
     <View>
       {/* Email Field */}
       <View className="mb-6">
-        <Text className="text-neutral-300 text-sm font-medium mb-3 ml-1">
-          Email
-        </Text>
         <InputGroup
+          label="Email"
           placeholder="canandoe@gmail.com"
           startContent={
             <Ionicons name="mail-outline" size={20} color="#6B7280" />
@@ -59,27 +57,25 @@ const SignInForm = ({
           onChangeText={formik.handleChange("email")}
           keyboardType="email-address"
           autoCapitalize="none"
+          error={formik.errors.email}
+          touched={formik.touched.email}
         />
-        {formik.touched.email && formik.errors.email && (
-          <Text className="text-red-400 text-sm mt-1 ml-1">
-            {formik.errors.email}
-          </Text>
-        )}
       </View>
 
       {/* Password Field */}
       <View className="mb-6">
         <View className="flex-row justify-between items-center mb-3">
-          <Text className="text-neutral-300 text-sm font-medium ml-1">
-            Password
-          </Text>
-          <Pressable onPress={() => router.push("/(auth)/forgot-password")}>
-            <Text className="text-primary-400 text-sm font-medium">
+          <Pressable
+            className="ml-1 relative w-full"
+            onPress={() => router.push("/(auth)/forgot-password")}
+          >
+            <Text className="absolute right-0 top-3  text-primary-400 text-sm font-medium">
               Forgot?
             </Text>
           </Pressable>
         </View>
         <InputGroup
+          label="Password"
           placeholder="••••••••••••••••"
           startContent={
             <Ionicons name="lock-closed-outline" size={20} color="#6B7280" />
@@ -87,12 +83,9 @@ const SignInForm = ({
           value={formik.values.password}
           onChangeText={formik.handleChange("password")}
           secureTextEntry
+          error={formik.errors.password}
+          touched={formik.touched.password}
         />
-        {formik.touched.password && formik.errors.password && (
-          <Text className="text-red-400 text-sm mt-1 ml-1">
-            {formik.errors.password}
-          </Text>
-        )}
       </View>
 
       {/* Sign In Button */}
