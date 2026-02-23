@@ -33,6 +33,8 @@ export default function RootLayout() {
       <AuthProvider>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="splash" options={{ headerShown: false }} />
+
           <Stack.Screen
             name="(auth)"
             options={{
@@ -47,6 +49,7 @@ export default function RootLayout() {
               // presentation: "modal",
             }}
           />
+
           <Stack.Screen
             name="stripe-connect"
             options={{
