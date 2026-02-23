@@ -12,7 +12,7 @@
     "generate-icons": "node ./scripts/generate-icon.js"
   },
   "dependencies": {
-    "@apollo/client": "^4.0.11",
+    "@apollo/client": "^4.1.5",
     "@expo/vector-icons": "^15.0.3",
     "@gluestack-style/react": "^1.0.57",
     "@gluestack-ui/themed": "^1.1.73",

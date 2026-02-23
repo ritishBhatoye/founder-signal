@@ -1,6 +1,5 @@
-/**
- * Root Layout with Auth Provider
- */
+import { ApolloProvider } from "@apollo/client/react";
+import client from "@/lib/apollo";
 
 import { AuthProvider, ThemeProvider } from "@/contexts";
 import { useFonts } from "expo-font";
@@ -31,40 +30,42 @@ export default function RootLayout() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="splash" options={{ headerShown: false }} />
+        <ApolloProvider client={client}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="splash" options={{ headerShown: false }} />
 
-          <Stack.Screen
-            name="(auth)"
-            options={{
-              headerShown: false,
-              // presentation: "modal",
-            }}
-          />
-          <Stack.Screen
-            name="(onboarding)"
-            options={{
-              headerShown: false,
-              // presentation: "modal",
-            }}
-          />
+            <Stack.Screen
+              name="(auth)"
+              options={{
+                headerShown: false,
+                // presentation: "modal",
+              }}
+            />
+            <Stack.Screen
+              name="(onboarding)"
+              options={{
+                headerShown: false,
+                // presentation: "modal",
+              }}
+            />
 
-          <Stack.Screen
-            name="stripe-connect"
-            options={{
-              headerShown: false,
-              presentation: "modal",
-            }}
-          />
-          <Stack.Screen
-            name="support-pressure"
-            options={{
-              title: "Support Pressure",
-              presentation: "modal",
-            }}
-          />
-        </Stack>
+            <Stack.Screen
+              name="stripe-connect"
+              options={{
+                headerShown: false,
+                presentation: "modal",
+              }}
+            />
+            <Stack.Screen
+              name="support-pressure"
+              options={{
+                title: "Support Pressure",
+                presentation: "modal",
+              }}
+            />
+          </Stack>
+        </ApolloProvider>
       </AuthProvider>
     </ThemeProvider>
   );
