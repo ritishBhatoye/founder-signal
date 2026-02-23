@@ -1,7 +1,3 @@
-/**
- * Sign In Hook using Redux Toolkit
- */
-
 import { useState, useCallback } from "react";
 import {
   useSignInWithEmailMutation,
@@ -9,18 +5,6 @@ import {
 } from "@/store/api/authApi";
 import { useDispatch } from "react-redux";
 import { setAuth, setError } from "@/store/slices/authSlice";
-
-export interface SignInOptions {
-  email: string;
-  password?: string;
-  redirectTo?: string;
-}
-
-export interface SignInResult {
-  success: boolean;
-  error?: string;
-  message?: string;
-}
 
 export function useSignIn() {
   const dispatch = useDispatch();
@@ -82,21 +66,21 @@ export function useSignIn() {
         setIsLoading(false);
       }
     },
-    [signInWithEmailMutation, signInWithMagicLinkMutation, dispatch]
+    [signInWithEmailMutation, signInWithMagicLinkMutation, dispatch],
   );
 
   const signInWithMagicLink = useCallback(
     async (email: string, redirectTo?: string): Promise<SignInResult> => {
       return signIn({ email, redirectTo });
     },
-    [signIn]
+    [signIn],
   );
 
   const signInWithPassword = useCallback(
     async (email: string, password: string): Promise<SignInResult> => {
       return signIn({ email, password });
     },
-    [signIn]
+    [signIn],
   );
 
   const clearError = useCallback(() => {
