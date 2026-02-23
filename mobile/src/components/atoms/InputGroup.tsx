@@ -27,6 +27,7 @@ interface InputGroupProps extends Omit<TextInputProps, "onChangeText"> {
   startContent?: React.ReactNode;
   endContent?: React.ReactNode;
   className?: string;
+  inputClassName?: string;
 }
 
 const InputGroup: React.FC<InputGroupProps> = ({
@@ -46,6 +47,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
   endContent,
   className = "",
   placeholder,
+  inputClassName,
   ...props
 }) => {
   const { isDark } = useTheme();
@@ -60,7 +62,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
   };
 
   return (
-    <View className={`mb-4 gap-2.5 w-full ${className}`}>
+    <View className={`mb-4 gap-2 w-full ${className}`}>
       {label && (
         <View className="flex-row items-center mb-1.5">
           <Text className="text-sm font-medium text-neutral-400 dark:text-neutral-100">
@@ -70,7 +72,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
         </View>
       )}
       <View
-        className={`flex-row items-center rounded-xl border px-4 ${getBorderColor()} ${
+        className={`flex-row items-center py-3 rounded-xl border px-4 ${getBorderColor()} ${
           isDisabled ? "opacity-50" : ""
         }  dark:bg-neutral-800`}
       >
@@ -89,7 +91,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
           }
           editable={!isDisabled && !isReadOnly}
           secureTextEntry={isPassword && !showPassword}
-          className="flex-1 text-base text-neutral-900 dark:text-neutral-100 py-3"
+          className={`flex-1 text-base text-neutral-900 dark:text-neutral-100 ${inputClassName}`}
           {...props}
         />
         {value && value.length > 0 && !isPassword && onClear && (

@@ -48,6 +48,7 @@ const SignInForm = ({
       {/* Email Field */}
       <View className="mb-6">
         <InputGroup
+          inputClassName="text-white"
           label="Email"
           placeholder="canandoe@gmail.com"
           startContent={
@@ -80,6 +81,7 @@ const SignInForm = ({
           startContent={
             <Ionicons name="lock-closed-outline" size={20} color="#6B7280" />
           }
+          inputClassName="text-white"
           value={formik.values.password}
           onChangeText={formik.handleChange("password")}
           secureTextEntry
