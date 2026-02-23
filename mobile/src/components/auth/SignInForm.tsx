@@ -52,7 +52,7 @@ const SignInForm = ({
           label="Email"
           placeholder="canandoe@gmail.com"
           startContent={
-            <Ionicons name="mail-outline" size={20} color="#6B7280" />
+            <Ionicons name="mail-outline" size={24} color="#6B7280" />
           }
           value={formik.values.email}
           onChangeText={formik.handleChange("email")}
