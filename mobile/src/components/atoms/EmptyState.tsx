@@ -1,25 +1,26 @@
-import { Colors } from "@/constants/colors";
-import { useTheme } from "@/contexts/ThemeContext";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { Text, View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { Text, View } from 'react-native'
+
+import { Colors } from '@/constants/colors'
+import { useTheme } from '@/contexts/ThemeContext'
 
 interface EmptyStateProps {
-  icon?: keyof typeof Ionicons.glyphMap;
-  title: string;
-  description?: string;
-  action?: React.ReactNode;
-  className?: string;
+  icon?: keyof typeof Ionicons.glyphMap
+  title: string
+  description?: string
+  action?: React.ReactNode
+  className?: string
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({
-  icon = "folder-open-outline",
+  icon = 'folder-open-outline',
   title,
   description,
   action,
-  className = "",
+  className = '',
 }) => {
-  const { isDark } = useTheme();
+  const { isDark } = useTheme()
 
   return (
     <View className={`items-center justify-center py-12 ${className}`}>
@@ -40,7 +41,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({
       )}
       {action && <View>{action}</View>}
     </View>
-  );
-};
+  )
+}
 
-export default EmptyState;
+export default EmptyState

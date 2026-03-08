@@ -2,23 +2,25 @@
  * DashboardHeader - Main dashboard header with greeting and quick actions
  * Usage: <DashboardHeader userName="John" onNotificationPress={...} />
  */
-import { Colors } from "@/constants/colors";
-import { useTheme } from "@/contexts/ThemeContext";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import AvatarMedium from "../atoms/AvatarMedium";
-import NotificationDot from "../atoms/NotificationDot";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
+
+import { Colors } from '@/constants/colors'
+import { useTheme } from '@/contexts/ThemeContext'
+
+import AvatarMedium from '../atoms/AvatarMedium'
+import NotificationDot from '../atoms/NotificationDot'
 
 interface DashboardHeaderProps {
-  userName: string;
-  userRole?: string;
-  userImage?: string;
-  notificationCount?: number;
-  onProfilePress?: () => void;
-  onNotificationPress?: () => void;
-  onMenuPress?: () => void;
-  className?: string;
+  userName: string
+  userRole?: string
+  userImage?: string
+  notificationCount?: number
+  onProfilePress?: () => void
+  onNotificationPress?: () => void
+  onMenuPress?: () => void
+  className?: string
 }
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({
@@ -29,19 +31,19 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   onProfilePress,
   onNotificationPress,
   onMenuPress,
-  className = "",
+  className = '',
 }) => {
-  const { isDark } = useTheme();
+  const { isDark } = useTheme()
   const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good Morning";
-    if (hour < 17) return "Good Afternoon";
-    return "Good Evening";
-  };
+    const hour = new Date().getHours()
+    if (hour < 12) return 'Good Morning'
+    if (hour < 17) return 'Good Afternoon'
+    return 'Good Evening'
+  }
 
   return (
-    <View className={`flex-row items-center justify-between py-4 px-4 ${className}`}>
-      <View className="flex-row items-center flex-1">
+    <View className={`flex-row items-center justify-between px-4 py-4 ${className}`}>
+      <View className="flex-1 flex-row items-center">
         {onMenuPress && (
           <TouchableOpacity onPress={onMenuPress} className="mr-3 p-1">
             <Ionicons
@@ -51,7 +53,10 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             />
           </TouchableOpacity>
         )}
-        <TouchableOpacity onPress={onProfilePress} className="flex-row items-center flex-1">
+        <TouchableOpacity
+          onPress={onProfilePress}
+          className="flex-1 flex-row items-center"
+        >
           <AvatarMedium
             name={userName}
             imageUri={userImage}
@@ -59,7 +64,9 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             badgeColor="bg-success-500"
           />
           <View className="ml-3 flex-1">
-            <Text className="text-sm text-neutral-500 dark:text-neutral-400">{getGreeting()}</Text>
+            <Text className="text-sm text-neutral-500 dark:text-neutral-400">
+              {getGreeting()}
+            </Text>
             <Text
               className="text-lg font-bold text-neutral-900 dark:text-neutral-100"
               numberOfLines={1}
@@ -76,13 +83,13 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           color={isDark ? Colors.neutral[100] : Colors.neutral[900]}
         />
         {notificationCount > 0 && (
-          <View className="absolute top-1 right-1">
+          <View className="absolute right-1 top-1">
             <NotificationDot count={notificationCount} size="md" showCount />
           </View>
         )}
       </TouchableOpacity>
     </View>
-  );
-};
+  )
+}
 
-export default DashboardHeader;
+export default DashboardHeader

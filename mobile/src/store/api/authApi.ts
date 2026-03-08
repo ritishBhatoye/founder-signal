@@ -1,31 +1,33 @@
-import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
-import { supabase } from "@/lib/supabase";
-import type { AuthUser, AuthSession } from "@/hooks/auth/types";
+import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
+
+import { supabase } from '@/lib/supabase'
+
+import type { AuthUser, AuthSession } from '@/hooks/auth/types'
 
 export interface SignInRequest {
-  email: string;
-  password?: string;
+  email: string
+  password?: string
 }
 
 export interface SignUpRequest {
-  email: string;
-  password?: string;
+  email: string
+  password?: string
   options?: {
-    data?: Record<string, any>;
-    emailRedirectTo?: string;
-  };
+    data?: Record<string, any>
+    emailRedirectTo?: string
+  }
 }
 
 export interface AuthResponse {
-  user: AuthUser | null;
-  session: AuthSession | null;
-  error?: { message: string } | null;
+  user: AuthUser | null
+  session: AuthSession | null
+  error?: { message: string } | null
 }
 
 export const authApi = createApi({
-  reducerPath: "authApi",
+  reducerPath: 'authApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["User", "Session"],
+  tagTypes: ['User', 'Session'],
   endpoints: (builder) => ({
     // Sign in with email/password
     signInWithEmail: builder.mutation<AuthResponse, SignInRequest>({
@@ -33,11 +35,11 @@ export const authApi = createApi({
         try {
           const { data, error } = await supabase.auth.signInWithPassword({
             email,
-            password: password || "",
-          });
+            password: password || '',
+          })
 
           if (error) {
-            return { error: { message: error.message } };
+            return { error: { message: error.message } }
           }
 
           return {
@@ -46,17 +48,16 @@ export const authApi = createApi({
               session: data.session ? (data.session as AuthSession) : null,
               error: null,
             },
-          };
+          }
         } catch (error) {
           return {
             error: {
-              message:
-                error instanceof Error ? error.message : "Sign in failed",
+              message: error instanceof Error ? error.message : 'Sign in failed',
             },
-          };
+          }
         }
       },
-      invalidatesTags: ["User", "Session"],
+      invalidatesTags: ['User', 'Session'],
     }),
 
     // Sign in with magic link (OTP)
@@ -71,10 +72,10 @@ export const authApi = createApi({
             options: {
               emailRedirectTo: redirectTo,
             },
-          });
+          })
 
           if (error) {
-            return { error: { message: error.message } };
+            return { error: { message: error.message } }
           }
 
           return {
@@ -83,17 +84,16 @@ export const authApi = createApi({
               session: data.session ? (data.session as AuthSession) : null,
               error: null,
             },
-          };
+          }
         } catch (error) {
           return {
             error: {
-              message:
-                error instanceof Error ? error.message : "Magic link failed",
+              message: error instanceof Error ? error.message : 'Magic link failed',
             },
-          };
+          }
         }
       },
-      invalidatesTags: ["User", "Session"],
+      invalidatesTags: ['User', 'Session'],
     }),
 
     // Sign up with email
@@ -102,12 +102,12 @@ export const authApi = createApi({
         try {
           const { data, error } = await supabase.auth.signUp({
             email,
-            password: password || "",
+            password: password || '',
             options,
-          });
+          })
 
           if (error) {
-            return { error: { message: error.message } };
+            return { error: { message: error.message } }
           }
 
           return {
@@ -116,17 +116,16 @@ export const authApi = createApi({
               session: data.session ? (data.session as AuthSession) : null,
               error: null,
             },
-          };
+          }
         } catch (error) {
           return {
             error: {
-              message:
-                error instanceof Error ? error.message : "Sign up failed",
+              message: error instanceof Error ? error.message : 'Sign up failed',
             },
-          };
+          }
         }
       },
-      invalidatesTags: ["User", "Session"],
+      invalidatesTags: ['User', 'Session'],
     }),
 
     // Reset password
@@ -138,22 +137,19 @@ export const authApi = createApi({
         try {
           const { error } = await supabase.auth.resetPasswordForEmail(email, {
             redirectTo,
-          });
+          })
 
           if (error) {
-            return { error: { message: error.message } };
+            return { error: { message: error.message } }
           }
 
-          return { data: { error: null } };
+          return { data: { error: null } }
         } catch (error) {
           return {
             error: {
-              message:
-                error instanceof Error
-                  ? error.message
-                  : "Reset password failed",
+              message: error instanceof Error ? error.message : 'Reset password failed',
             },
-          };
+          }
         }
       },
     }),
@@ -162,23 +158,22 @@ export const authApi = createApi({
     signOut: builder.mutation<{ error?: { message: string } | null }, void>({
       queryFn: async () => {
         try {
-          const { error } = await supabase.auth.signOut();
+          const { error } = await supabase.auth.signOut()
 
           if (error) {
-            return { error: { message: error.message } };
+            return { error: { message: error.message } }
           }
 
-          return { data: { error: null } };
+          return { data: { error: null } }
         } catch (error) {
           return {
             error: {
-              message:
-                error instanceof Error ? error.message : "Sign out failed",
+              message: error instanceof Error ? error.message : 'Sign out failed',
             },
-          };
+          }
         }
       },
-      invalidatesTags: ["User", "Session"],
+      invalidatesTags: ['User', 'Session'],
     }),
 
     // Get current user
@@ -188,10 +183,10 @@ export const authApi = createApi({
     >({
       queryFn: async () => {
         try {
-          const { data, error } = await supabase.auth.getUser();
+          const { data, error } = await supabase.auth.getUser()
 
           if (error) {
-            return { error: { message: error.message } };
+            return { error: { message: error.message } }
           }
 
           return {
@@ -199,27 +194,26 @@ export const authApi = createApi({
               user: data.user ? (data.user as AuthUser) : null,
               error: null,
             },
-          };
+          }
         } catch (error) {
           return {
             error: {
-              message:
-                error instanceof Error ? error.message : "Failed to get user",
+              message: error instanceof Error ? error.message : 'Failed to get user',
             },
-          };
+          }
         }
       },
-      providesTags: ["User"],
+      providesTags: ['User'],
     }),
 
     // Get current session
     getCurrentSession: builder.query<AuthResponse, void>({
       queryFn: async () => {
         try {
-          const { data, error } = await supabase.auth.getSession();
+          const { data, error } = await supabase.auth.getSession()
 
           if (error) {
-            return { error: { message: error.message } };
+            return { error: { message: error.message } }
           }
 
           return {
@@ -228,22 +222,19 @@ export const authApi = createApi({
               session: data.session ? (data.session as AuthSession) : null,
               error: null,
             },
-          };
+          }
         } catch (error) {
           return {
             error: {
-              message:
-                error instanceof Error
-                  ? error.message
-                  : "Failed to get session",
+              message: error instanceof Error ? error.message : 'Failed to get session',
             },
-          };
+          }
         }
       },
-      providesTags: ["Session"],
+      providesTags: ['Session'],
     }),
   }),
-});
+})
 
 export const {
   useSignInWithEmailMutation,
@@ -253,4 +244,4 @@ export const {
   useSignOutMutation,
   useGetCurrentUserQuery,
   useGetCurrentSessionQuery,
-} = authApi;
+} = authApi

@@ -1,31 +1,32 @@
-import { Colors } from "@/constants/colors";
-import { useTheme } from "@/contexts/ThemeContext";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { TextInput, TouchableOpacity, View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { TextInput, TouchableOpacity, View } from 'react-native'
+
+import { Colors } from '@/constants/colors'
+import { useTheme } from '@/contexts/ThemeContext'
 
 interface SearchBarProps {
-  value: string;
-  onChangeText: (text: string) => void;
-  placeholder?: string;
-  onClear?: () => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  className?: string;
-  autoFocus?: boolean;
+  value: string
+  onChangeText: (text: string) => void
+  placeholder?: string
+  onClear?: () => void
+  onFocus?: () => void
+  onBlur?: () => void
+  className?: string
+  autoFocus?: boolean
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
   value,
   onChangeText,
-  placeholder = "Search...",
+  placeholder = 'Search...',
   onClear,
   onFocus,
   onBlur,
-  className = "",
+  className = '',
   autoFocus = false,
 }) => {
-  const { isDark } = useTheme();
+  const { isDark } = useTheme()
 
   return (
     <View
@@ -56,7 +57,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         </TouchableOpacity>
       )}
     </View>
-  );
-};
+  )
+}
 
-export default SearchBar;
+export default SearchBar

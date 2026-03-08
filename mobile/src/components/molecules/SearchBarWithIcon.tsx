@@ -2,36 +2,37 @@
  * SearchBarWithIcon - Search input with icon and clear button
  * Usage: <SearchBarWithIcon value={query} onChangeText={setQuery} placeholder="Search employees..." />
  */
-import { Colors } from "@/constants/colors";
-import { useTheme } from "@/contexts/ThemeContext";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { TextInput, TouchableOpacity, View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { TextInput, TouchableOpacity, View } from 'react-native'
+
+import { Colors } from '@/constants/colors'
+import { useTheme } from '@/contexts/ThemeContext'
 
 interface SearchBarWithIconProps {
-  value: string;
-  onChangeText: (text: string) => void;
-  placeholder?: string;
-  onClear?: () => void;
-  onSubmit?: () => void;
-  autoFocus?: boolean;
-  className?: string;
+  value: string
+  onChangeText: (text: string) => void
+  placeholder?: string
+  onClear?: () => void
+  onSubmit?: () => void
+  autoFocus?: boolean
+  className?: string
 }
 
 const SearchBarWithIcon: React.FC<SearchBarWithIconProps> = ({
   value,
   onChangeText,
-  placeholder = "Search...",
+  placeholder = 'Search...',
   onClear,
   onSubmit,
   autoFocus = false,
-  className = "",
+  className = '',
 }) => {
-  const { isDark } = useTheme();
+  const { isDark } = useTheme()
 
   return (
     <View
-      className={`flex-row items-center bg-neutral-100 dark:bg-neutral-800 rounded-xl px-4 py-3 ${className}`}
+      className={`flex-row items-center rounded-xl bg-neutral-100 px-4 py-3 dark:bg-neutral-800 ${className}`}
     >
       <Ionicons
         name="search"
@@ -43,13 +44,16 @@ const SearchBarWithIcon: React.FC<SearchBarWithIconProps> = ({
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor={isDark ? Colors.neutral[500] : Colors.neutral[400]}
-        className="flex-1 ml-3 text-base text-neutral-900 dark:text-neutral-100"
+        className="ml-3 flex-1 text-base text-neutral-900 dark:text-neutral-100"
         autoFocus={autoFocus}
         returnKeyType="search"
         onSubmitEditing={onSubmit}
       />
       {value.length > 0 && (
-        <TouchableOpacity onPress={onClear || (() => onChangeText(""))} activeOpacity={0.7}>
+        <TouchableOpacity
+          onPress={onClear || (() => onChangeText(''))}
+          activeOpacity={0.7}
+        >
           <Ionicons
             name="close-circle"
             size={20}
@@ -58,7 +62,7 @@ const SearchBarWithIcon: React.FC<SearchBarWithIconProps> = ({
         </TouchableOpacity>
       )}
     </View>
-  );
-};
+  )
+}
 
-export default SearchBarWithIcon;
+export default SearchBarWithIcon

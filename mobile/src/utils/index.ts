@@ -2,4 +2,4 @@
  * Utility functions for Clockio
  */
 
-export { tva } from "./tva";
+export { tva } from './tva'

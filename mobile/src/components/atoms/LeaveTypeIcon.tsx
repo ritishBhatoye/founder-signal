@@ -1,66 +1,71 @@
-import { Colors } from "@/constants/colors";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { View } from 'react-native'
+
+import { Colors } from '@/constants/colors'
 
 export type LeaveType =
-  | "sick"
-  | "casual"
-  | "annual"
-  | "unpaid"
-  | "maternity"
-  | "paternity"
-  | "other";
+  | 'sick'
+  | 'casual'
+  | 'annual'
+  | 'unpaid'
+  | 'maternity'
+  | 'paternity'
+  | 'other'
 
 interface LeaveTypeIconProps {
-  type: LeaveType;
-  size?: number;
-  className?: string;
+  type: LeaveType
+  size?: number
+  className?: string
 }
 
-const LeaveTypeIcon: React.FC<LeaveTypeIconProps> = ({ type, size = 24, className = "" }) => {
+const LeaveTypeIcon: React.FC<LeaveTypeIconProps> = ({
+  type,
+  size = 24,
+  className = '',
+}) => {
   const getIconConfig = () => {
     const configs = {
       sick: {
-        icon: "medical" as const,
+        icon: 'medical' as const,
         color: Colors.error[500],
         bg: Colors.error[100],
       },
       casual: {
-        icon: "cafe" as const,
+        icon: 'cafe' as const,
         color: Colors.info[500],
         bg: Colors.info[100],
       },
       annual: {
-        icon: "airplane" as const,
+        icon: 'airplane' as const,
         color: Colors.primary[500],
         bg: Colors.primary[100],
       },
       unpaid: {
-        icon: "wallet-outline" as const,
+        icon: 'wallet-outline' as const,
         color: Colors.warning[500],
         bg: Colors.warning[100],
       },
       maternity: {
-        icon: "heart" as const,
+        icon: 'heart' as const,
         color: Colors.secondary[500],
         bg: Colors.secondary[100],
       },
       paternity: {
-        icon: "people" as const,
+        icon: 'people' as const,
         color: Colors.tertiary[500],
         bg: Colors.tertiary[100],
       },
       other: {
-        icon: "ellipsis-horizontal-circle" as const,
+        icon: 'ellipsis-horizontal-circle' as const,
         color: Colors.neutral[500],
         bg: Colors.neutral[100],
       },
-    };
-    return configs[type];
-  };
+    }
+    return configs[type]
+  }
 
-  const config = getIconConfig();
+  const config = getIconConfig()
 
   return (
     <View
@@ -69,7 +74,7 @@ const LeaveTypeIcon: React.FC<LeaveTypeIconProps> = ({ type, size = 24, classNam
     >
       <Ionicons name={config.icon} size={size} color={config.color} />
     </View>
-  );
-};
+  )
+}
 
-export default LeaveTypeIcon;
+export default LeaveTypeIcon

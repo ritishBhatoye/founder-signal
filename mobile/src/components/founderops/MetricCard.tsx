@@ -1,24 +1,27 @@
-import { colors, getTrendColor, TrendType } from "@/constants/theme";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { Text, View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { Text, View } from 'react-native'
+
+import { colors, getTrendColor } from '@/constants/theme'
+
+import type { TrendType } from '@/constants/theme'
 
 interface MetricCardProps {
-  title: string;
-  value: string;
-  change?: string;
-  changeType?: TrendType;
-  subtitle?: string;
+  title: string
+  value: string
+  change?: string
+  changeType?: TrendType
+  subtitle?: string
 }
 
 const getTrendIcon = (type: TrendType): keyof typeof Ionicons.glyphMap => {
   const map: Record<TrendType, keyof typeof Ionicons.glyphMap> = {
-    up: "arrow-up",
-    down: "arrow-down",
-    neutral: "remove",
-  };
-  return map[type];
-};
+    up: 'arrow-up',
+    down: 'arrow-down',
+    neutral: 'remove',
+  }
+  return map[type]
+}
 
 export function MetricCard({
   title,
@@ -45,10 +48,7 @@ export function MetricCard({
             size={14}
             color={getTrendColor(changeType)}
           />
-          <Text
-            style={{ color: getTrendColor(changeType) }}
-            className="ml-1 text-sm"
-          >
+          <Text style={{ color: getTrendColor(changeType) }} className="ml-1 text-sm">
             {change}
           </Text>
         </View>
@@ -59,5 +59,5 @@ export function MetricCard({
         </Text>
       )}
     </View>
-  );
+  )
 }

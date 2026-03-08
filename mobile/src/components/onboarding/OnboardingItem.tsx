@@ -1,18 +1,20 @@
-import { Icon } from "@/components/atoms/Icon";
-import type { OnboardingItem as OnboardingItemType } from "@/data/onboardingData";
-import { useEffect, useRef } from "react";
-import { Animated, Text, View } from "react-native";
+import { useEffect, useRef } from 'react'
+import { Animated, Text, View } from 'react-native'
+
+import { Icon } from '@/components/atoms/Icon'
+
+import type { OnboardingItem as OnboardingItemType } from '@/data/onboardingData'
 
 interface OnboardingItemProps {
-  item: OnboardingItemType;
-  width: number;
-  scrollX: Animated.Value;
-  index: number;
+  item: OnboardingItemType
+  width: number
+  scrollX: Animated.Value
+  index: number
 }
 
 export const OnboardingItem = ({ item, width, scrollX, index }: OnboardingItemProps) => {
-  const scaleAnim = useRef(new Animated.Value(0)).current;
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(0)).current
+  const fadeAnim = useRef(new Animated.Value(0)).current
 
   useEffect(() => {
     Animated.parallel([
@@ -27,24 +29,24 @@ export const OnboardingItem = ({ item, width, scrollX, index }: OnboardingItemPr
         duration: 800,
         useNativeDriver: false,
       }),
-    ]).start();
+    ]).start()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   // Parallax effect
-  const inputRange = [(index - 1) * width, index * width, (index + 1) * width];
+  const inputRange = [(index - 1) * width, index * width, (index + 1) * width]
 
   const iconScale = scrollX.interpolate({
     inputRange,
     outputRange: [0.8, 1, 0.8],
-    extrapolate: "clamp",
-  });
+    extrapolate: 'clamp',
+  })
 
   const opacity = scrollX.interpolate({
     inputRange,
     outputRange: [0.3, 1, 0.3],
-    extrapolate: "clamp",
-  });
+    extrapolate: 'clamp',
+  })
 
   return (
     <View style={{ width }} className="items-center justify-center px-8">
@@ -63,11 +65,15 @@ export const OnboardingItem = ({ item, width, scrollX, index }: OnboardingItemPr
         </View>
 
         {/* Title */}
-        <Text className="mb-6 text-center text-4xl font-bold text-white">{item.title}</Text>
+        <Text className="mb-6 text-center text-4xl font-bold text-white">
+          {item.title}
+        </Text>
 
         {/* Description */}
-        <Text className="text-center text-lg leading-7 text-white/90">{item.description}</Text>
+        <Text className="text-center text-lg leading-7 text-white/90">
+          {item.description}
+        </Text>
       </Animated.View>
     </View>
-  );
-};
+  )
+}

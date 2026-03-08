@@ -1,43 +1,46 @@
-import { useState, useEffect } from "react";
-import { ScrollView, View, Text, StyleSheet, ActivityIndicator } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { colors } from "@/constants/theme";
-import { PaymentButton } from "@/payments/components";
-import { paymentService, Plan, ProviderAvailability } from "@/payments";
+import { useState, useEffect } from 'react'
+import { ScrollView, View, Text, StyleSheet, ActivityIndicator } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
+import { colors } from '@/constants/theme'
+import { paymentService } from '@/payments'
+import { PaymentButton } from '@/payments/components'
+
+import type { Plan, ProviderAvailability } from '@/payments'
 
 export default function PaymentDemoScreen() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [plans, setPlans] = useState<Plan[]>([]);
-  const [availability, setAvailability] = useState<ProviderAvailability[]>([]);
-  const [currentProvider, setCurrentProvider] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true)
+  const [plans, setPlans] = useState<Plan[]>([])
+  const [availability, setAvailability] = useState<ProviderAvailability[]>([])
+  const [currentProvider, setCurrentProvider] = useState<string>('')
 
   useEffect(() => {
-    initializePayment();
-  }, []);
+    initializePayment()
+  }, [])
 
   const initializePayment = async () => {
     try {
-      await paymentService.initialize();
-      const available = paymentService.checkProviderAvailability();
-      const availablePlans = await paymentService.listPlans();
-      
-      setAvailability(available);
-      setPlans(availablePlans);
-      setCurrentProvider(paymentService.getCurrentProviderName());
+      await paymentService.initialize()
+      const available = paymentService.checkProviderAvailability()
+      const availablePlans = await paymentService.listPlans()
+
+      setAvailability(available)
+      setPlans(availablePlans)
+      setCurrentProvider(paymentService.getCurrentProviderName())
     } catch (error) {
-      console.error("Failed to initialize payment:", error);
+      console.error('Failed to initialize payment:', error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const handlePaymentSuccess = (result: any) => {
-    console.log("Payment success:", result);
-  };
+    console.log('Payment success:', result)
+  }
 
   const handlePaymentError = (error: string) => {
-    console.error("Payment error:", error);
-  };
+    console.error('Payment error:', error)
+  }
 
   if (isLoading) {
     return (
@@ -49,22 +52,25 @@ export default function PaymentDemoScreen() {
           </Text>
         </View>
       </SafeAreaView>
-    );
+    )
   }
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.bg }]}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={[styles.title, { color: colors.text }]}>
-          Payment Demo
-        </Text>
-        
+        <Text style={[styles.title, { color: colors.text }]}>Payment Demo</Text>
+
         <Text style={[styles.subtitle, { color: colors.textMuted }]}>
           Current Provider: {currentProvider}
         </Text>
 
         {/* Provider Status */}
-        <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <View
+          style={[
+            styles.section,
+            { backgroundColor: colors.card, borderColor: colors.border },
+          ]}
+        >
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
             Available Providers
           </Text>
@@ -74,7 +80,11 @@ export default function PaymentDemoScreen() {
                 <View
                   style={[
                     styles.statusDot,
-                    { backgroundColor: item.available ? colors.success[500] : colors.danger[500] },
+                    {
+                      backgroundColor: item.available
+                        ? colors.success[500]
+                        : colors.danger[500],
+                    },
                   ]}
                 />
                 <Text style={[styles.providerName, { color: colors.text }]}>
@@ -82,14 +92,19 @@ export default function PaymentDemoScreen() {
                 </Text>
               </View>
               <Text style={[styles.providerStatus, { color: colors.textMuted }]}>
-                {item.configured ? "Configured" : "Not configured"}
+                {item.configured ? 'Configured' : 'Not configured'}
               </Text>
             </View>
           ))}
         </View>
 
         {/* One-time Payment */}
-        <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <View
+          style={[
+            styles.section,
+            { backgroundColor: colors.card, borderColor: colors.border },
+          ]}
+        >
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
             One-time Payment
           </Text>
@@ -108,16 +123,19 @@ export default function PaymentDemoScreen() {
         </View>
 
         {/* Subscription Plans */}
-        <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <View
+          style={[
+            styles.section,
+            { backgroundColor: colors.card, borderColor: colors.border },
+          ]}
+        >
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
             Subscription Plans
           </Text>
           {plans.map((plan) => (
             <View key={plan.id} style={[styles.planCard, { borderColor: colors.border }]}>
               <View style={styles.planInfo}>
-                <Text style={[styles.planName, { color: colors.text }]}>
-                  {plan.name}
-                </Text>
+                <Text style={[styles.planName, { color: colors.text }]}>{plan.name}</Text>
                 <Text style={[styles.planDescription, { color: colors.textMuted }]}>
                   {plan.description}
                 </Text>
@@ -144,7 +162,7 @@ export default function PaymentDemoScreen() {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -153,8 +171,8 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   loadingText: {
     marginTop: 12,
@@ -166,7 +184,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 4,
   },
   subtitle: {
@@ -181,7 +199,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     marginBottom: 12,
   },
   description: {
@@ -189,14 +207,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   providerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 8,
   },
   providerInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   statusDot: {
     width: 8,
@@ -214,9 +232,9 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   planCard: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 16,
     borderBottomWidth: 1,
   },
@@ -226,7 +244,7 @@ const styles = StyleSheet.create({
   },
   planName: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   planDescription: {
     fontSize: 14,
@@ -237,10 +255,10 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     marginTop: 16,
-    alignItems: "center",
+    alignItems: 'center',
   },
   infoText: {
     fontSize: 12,
     marginBottom: 4,
   },
-});
+})

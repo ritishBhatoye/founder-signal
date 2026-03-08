@@ -1,10 +1,10 @@
 /**
  * useColorScheme hook - Returns the current color scheme
  */
-import { useColorScheme as useRNColorScheme } from "react-native";
+import { useColorScheme as useRNColorScheme } from 'react-native'
 
 export function useColorScheme() {
-  return useRNColorScheme() ?? "light";
+  return useRNColorScheme() ?? 'light'
 }
 
-export default useColorScheme;
+export default useColorScheme

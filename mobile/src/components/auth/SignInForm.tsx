@@ -1,17 +1,20 @@
-import { signInSchema } from "@/utils/validations/auth-schema";
-import { FormikProps, useFormik } from "formik";
-import React from "react";
-import { Keyboard, View, Text, Pressable } from "react-native";
-import { Button, InputGroup } from "../atoms";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from '@expo/vector-icons'
+import { router } from 'expo-router'
+import { useFormik } from 'formik'
+import React from 'react'
+import { Keyboard, View, Text, Pressable } from 'react-native'
 
-import { router } from "expo-router";
+import { signInSchema } from '@/utils/validations/auth-schema'
+
+import { Button, InputGroup } from '../atoms'
+
+import type { FormikProps } from 'formik'
 
 interface SignInFormProps {
-  isLoading: boolean;
-  onSubmit: (values: SignInFormTypes) => void;
-  onMagicLinkSignIn: (email: string) => void;
-  onSocialSignIn: (provider: "google" | "apple") => void;
+  isLoading: boolean
+  onSubmit: (values: SignInFormTypes) => void
+  onMagicLinkSignIn: (email: string) => void
+  onSocialSignIn: (provider: 'google' | 'apple') => void
 }
 
 const SignInForm = ({
@@ -22,26 +25,26 @@ const SignInForm = ({
 }: SignInFormProps): React.JSX.Element => {
   const formik: FormikProps<SignInFormTypes> = useFormik<SignInFormTypes>({
     initialValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       rememberMe: false,
     },
     validationSchema: signInSchema,
     onSubmit: (values) => {
-      console.log("Submitting Form with Values:", values);
-      Keyboard.dismiss();
-      onSubmit(values);
+      console.log('Submitting Form with Values:', values)
+      Keyboard.dismiss()
+      onSubmit(values)
     },
     enableReinitialize: true,
-  });
+  })
 
   const handleMagicLinkSignIn = () => {
-    onMagicLinkSignIn(formik.values.email);
-  };
+    onMagicLinkSignIn(formik.values.email)
+  }
 
-  const handleSocialSignIn = (provider: "google" | "apple") => {
-    onSocialSignIn(provider);
-  };
+  const handleSocialSignIn = (provider: 'google' | 'apple') => {
+    onSocialSignIn(provider)
+  }
 
   return (
     <View>
@@ -51,11 +54,9 @@ const SignInForm = ({
           inputClassName="text-white"
           label="Email"
           placeholder="canandoe@gmail.com"
-          startContent={
-            <Ionicons name="mail-outline" size={20} color="#6B7280" />
-          }
+          startContent={<Ionicons name="mail-outline" size={20} color="#6B7280" />}
           value={formik.values.email}
-          onChangeText={formik.handleChange("email")}
+          onChangeText={formik.handleChange('email')}
           keyboardType="email-address"
           autoCapitalize="none"
           error={formik.errors.email}
@@ -65,12 +66,12 @@ const SignInForm = ({
 
       {/* Password Field */}
       <View className="mb-6">
-        <View className="flex-row justify-between items-center mb-3">
+        <View className="mb-3 flex-row items-center justify-between">
           <Pressable
-            className="ml-1 relative w-full"
-            onPress={() => router.push("/(auth)/forgot-password")}
+            className="relative ml-1 w-full"
+            onPress={() => router.push('/(auth)/forgot-password')}
           >
-            <Text className="absolute right-0 top-3  text-primary-400 text-sm font-medium">
+            <Text className="absolute right-0 top-3 text-sm font-medium text-primary-400">
               Forgot?
             </Text>
           </Pressable>
@@ -78,12 +79,10 @@ const SignInForm = ({
         <InputGroup
           label="Password"
           placeholder="••••••••••••••••"
-          startContent={
-            <Ionicons name="lock-closed-outline" size={20} color="#6B7280" />
-          }
+          startContent={<Ionicons name="lock-closed-outline" size={20} color="#6B7280" />}
           inputClassName="text-white"
           value={formik.values.password}
-          onChangeText={formik.handleChange("password")}
+          onChangeText={formik.handleChange('password')}
           secureTextEntry
           error={formik.errors.password}
           touched={formik.touched.password}
@@ -91,11 +90,11 @@ const SignInForm = ({
       </View>
 
       {/* Sign In Button */}
-      <View className="items-center mb-7">
+      <View className="mb-7 items-center">
         <Button
           width="half"
           loading={isLoading}
-          label={isLoading ? "Signing In..." : "Sign In"}
+          label={isLoading ? 'Signing In...' : 'Sign In'}
           onPress={() => formik.handleSubmit()}
         />
       </View>
@@ -103,70 +102,66 @@ const SignInForm = ({
       <Pressable
         onPress={handleMagicLinkSignIn}
         disabled={!formik.values.email || isLoading}
-        className="h-12 rounded-2xl items-center justify-center mb-8"
+        className="mb-8 h-12 items-center justify-center rounded-2xl"
         style={{
-          backgroundColor: "rgba(255, 255, 255, 0.05)",
+          backgroundColor: 'rgba(255, 255, 255, 0.05)',
           borderWidth: 1,
-          borderColor: "rgba(255, 255, 255, 0.1)",
+          borderColor: 'rgba(255, 255, 255, 0.1)',
         }}
       >
-        <Text className="text-primary-400 text-sm font-medium">
+        <Text className="text-sm font-medium text-primary-400">
           Send Magic Link Instead
         </Text>
       </Pressable>
 
       {/* Social Sign In */}
       <View className="mb-8">
-        <View className="flex-row items-center mb-6">
-          <View className="flex-1 h-px bg-neutral-800" />
-          <Text className="text-neutral-500 text-sm mx-4 font-medium">
-            or Login with
-          </Text>
-          <View className="flex-1 h-px bg-neutral-800" />
+        <View className="mb-6 flex-row items-center">
+          <View className="h-px flex-1 bg-neutral-800" />
+          <Text className="mx-4 text-sm font-medium text-neutral-500">or Login with</Text>
+          <View className="h-px flex-1 bg-neutral-800" />
         </View>
 
         <View className="flex-row gap-4">
           <Pressable
-            onPress={() => handleSocialSignIn("google")}
-            className="flex-1 h-14 rounded-2xl items-center justify-center flex-row gap-3"
+            onPress={() => handleSocialSignIn('google')}
+            className="h-14 flex-1 flex-row items-center justify-center gap-3 rounded-2xl"
             style={{
-              backgroundColor: "rgba(255, 255, 255, 0.05)",
+              backgroundColor: 'rgba(255, 255, 255, 0.05)',
               borderWidth: 1,
-              borderColor: "rgba(255, 255, 255, 0.1)",
+              borderColor: 'rgba(255, 255, 255, 0.1)',
             }}
           >
             <Ionicons name="logo-google" size={20} color="white" />
-            <Text className="text-white text-sm font-medium">Google</Text>
+            <Text className="text-sm font-medium text-white">Google</Text>
           </Pressable>
 
           <Pressable
-            onPress={() => handleSocialSignIn("apple")}
-            className="flex-1 h-14 rounded-2xl items-center justify-center flex-row gap-3"
+            onPress={() => handleSocialSignIn('apple')}
+            className="h-14 flex-1 flex-row items-center justify-center gap-3 rounded-2xl"
             style={{
-              backgroundColor: "rgba(255, 255, 255, 0.05)",
+              backgroundColor: 'rgba(255, 255, 255, 0.05)',
               borderWidth: 1,
-              borderColor: "rgba(255, 255, 255, 0.1)",
+              borderColor: 'rgba(255, 255, 255, 0.1)',
             }}
           >
             <Ionicons name="logo-apple" size={20} color="white" />
-            <Text className="text-white text-sm font-medium">Apple</Text>
+            <Text className="text-sm font-medium text-white">Apple</Text>
           </Pressable>
         </View>
       </View>
 
       {/* Footer */}
       <View className="items-center">
-        <Pressable onPress={() => router.push("/(auth)/register")}>
-          <Text className="text-neutral-400 text-base">
-            New here?{" "}
-            <Text className="text-primary-400 font-semibold">
-              Create Account
-            </Text>
+        <Pressable onPress={() => router.push('/(auth)/register')}>
+          <Text className="text-base text-neutral-400">
+            New here?{' '}
+            <Text className="font-semibold text-primary-400">Create Account</Text>
           </Text>
         </Pressable>
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default SignInForm;
+export default SignInForm

@@ -2,91 +2,92 @@
  * SecondaryButton - Outlined/ghost button for secondary actions
  * Usage: <SecondaryButton onPress={handleCancel}>Cancel</SecondaryButton>
  */
-import { Colors } from "@/constants/colors";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { tva } from "@/utils/tva";
-import React from "react";
-import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { ActivityIndicator, Text, TouchableOpacity } from 'react-native'
 
-type ButtonSize = "sm" | "md" | "lg";
-type ButtonVariant = "outlined" | "ghost";
+import { Colors } from '@/constants/colors'
+import { tva } from '@/utils/tva'
+
+type ButtonSize = 'sm' | 'md' | 'lg'
+type ButtonVariant = 'outlined' | 'ghost'
 
 interface SecondaryButtonProps {
-  children: React.ReactNode;
-  onPress: () => void;
-  size?: ButtonSize;
-  variant?: ButtonVariant;
-  disabled?: boolean;
-  loading?: boolean;
-  icon?: keyof typeof Ionicons.glyphMap;
-  iconPosition?: "left" | "right";
-  fullWidth?: boolean;
-  danger?: boolean;
-  className?: string;
+  children: React.ReactNode
+  onPress: () => void
+  size?: ButtonSize
+  variant?: ButtonVariant
+  disabled?: boolean
+  loading?: boolean
+  icon?: keyof typeof Ionicons.glyphMap
+  iconPosition?: 'left' | 'right'
+  fullWidth?: boolean
+  danger?: boolean
+  className?: string
 }
 
 const buttonStyle = tva({
-  base: "flex-row items-center justify-center rounded-xl",
+  base: 'flex-row items-center justify-center rounded-xl',
   variants: {
     variant: {
-      outlined: "border-2 border-primary-600 bg-transparent",
-      ghost: "bg-transparent",
+      outlined: 'border-2 border-primary-600 bg-transparent',
+      ghost: 'bg-transparent',
     },
     size: {
-      sm: "px-4 py-2",
-      md: "px-6 py-3",
-      lg: "px-8 py-4",
+      sm: 'px-4 py-2',
+      md: 'px-6 py-3',
+      lg: 'px-8 py-4',
     },
     disabled: {
-      true: "opacity-50",
+      true: 'opacity-50',
     },
     fullWidth: {
-      true: "w-full",
+      true: 'w-full',
     },
     danger: {
-      true: "border-error-500",
+      true: 'border-error-500',
     },
   },
   defaultVariants: {
-    variant: "outlined",
-    size: "md",
+    variant: 'outlined',
+    size: 'md',
   },
-});
+})
 
 const textStyle = tva({
-  base: "font-semibold",
+  base: 'font-semibold',
   variants: {
     size: {
-      sm: "text-sm",
-      md: "text-base",
-      lg: "text-lg",
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'text-lg',
     },
     danger: {
-      true: "text-error-500",
-      false: "text-primary-600 dark:text-primary-400",
+      true: 'text-error-500',
+      false: 'text-primary-600 dark:text-primary-400',
     },
   },
   defaultVariants: {
-    size: "md",
+    size: 'md',
     danger: false,
   },
-});
+})
 
 const SecondaryButton: React.FC<SecondaryButtonProps> = ({
   children,
   onPress,
-  size = "md",
-  variant = "outlined",
+  size = 'md',
+  variant = 'outlined',
   disabled = false,
   loading = false,
   icon,
-  iconPosition = "left",
+  iconPosition = 'left',
   fullWidth = false,
   danger = false,
-  className = "",
+  className = '',
 }) => {
-  const iconSizes = { sm: 16, md: 20, lg: 24 };
-  const iconColor = danger ? Colors.error[500] : Colors.primary[600];
+  const iconSizes = { sm: 16, md: 20, lg: 24 }
+  const iconColor = danger ? Colors.error[500] : Colors.primary[600]
 
   return (
     <TouchableOpacity
@@ -106,7 +107,7 @@ const SecondaryButton: React.FC<SecondaryButtonProps> = ({
         <ActivityIndicator color={iconColor} size="small" />
       ) : (
         <>
-          {icon && iconPosition === "left" && (
+          {icon && iconPosition === 'left' && (
             <Ionicons
               name={icon}
               size={iconSizes[size]}
@@ -115,7 +116,7 @@ const SecondaryButton: React.FC<SecondaryButtonProps> = ({
             />
           )}
           <Text className={textStyle({ size, danger })}>{children}</Text>
-          {icon && iconPosition === "right" && (
+          {icon && iconPosition === 'right' && (
             <Ionicons
               name={icon}
               size={iconSizes[size]}
@@ -126,7 +127,7 @@ const SecondaryButton: React.FC<SecondaryButtonProps> = ({
         </>
       )}
     </TouchableOpacity>
-  );
-};
+  )
+}
 
-export default SecondaryButton;
+export default SecondaryButton

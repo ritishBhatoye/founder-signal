@@ -1,8 +1,7 @@
-import { Ionicons } from "@expo/vector-icons";
-import { ComponentProps } from "react";
+import { Ionicons } from '@expo/vector-icons'
 
-type IconProps = ComponentProps<typeof Ionicons>;
+import type { ComponentProps } from 'react'
 
-export const Icon = (props: IconProps) => {
-  return <Ionicons {...props} />;
-};
+type IconProps = ComponentProps<typeof Ionicons>
+
+export const Icon = (props: IconProps) => <Ionicons {...props} />

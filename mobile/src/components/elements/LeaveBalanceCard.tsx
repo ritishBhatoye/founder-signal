@@ -1,14 +1,16 @@
-import React from "react";
-import { Text, View } from "react-native";
-import { LeaveTypeIcon, ProgressBar } from "../atoms";
-import type { LeaveType } from "../atoms/LeaveTypeIcon";
+import React from 'react'
+import { Text, View } from 'react-native'
+
+import { LeaveTypeIcon, ProgressBar } from '../atoms'
+
+import type { LeaveType } from '../atoms/LeaveTypeIcon'
 
 interface LeaveBalanceCardProps {
-  leaveType: LeaveType;
-  total: number;
-  used: number;
-  pending?: number;
-  className?: string;
+  leaveType: LeaveType
+  total: number
+  used: number
+  pending?: number
+  className?: string
 }
 
 const LeaveBalanceCard: React.FC<LeaveBalanceCardProps> = ({
@@ -16,10 +18,10 @@ const LeaveBalanceCard: React.FC<LeaveBalanceCardProps> = ({
   total,
   used,
   pending = 0,
-  className = "",
+  className = '',
 }) => {
-  const available = total - used - pending;
-  const usedPercentage = (used / total) * 100;
+  const available = total - used - pending
+  const usedPercentage = (used / total) * 100
 
   return (
     <View
@@ -40,7 +42,9 @@ const LeaveBalanceCard: React.FC<LeaveBalanceCardProps> = ({
       <ProgressBar
         value={used}
         max={total}
-        variant={usedPercentage > 80 ? "error" : usedPercentage > 50 ? "warning" : "success"}
+        variant={
+          usedPercentage > 80 ? 'error' : usedPercentage > 50 ? 'warning' : 'success'
+        }
         size="md"
         className="mb-3"
       />
@@ -54,17 +58,21 @@ const LeaveBalanceCard: React.FC<LeaveBalanceCardProps> = ({
         </View>
         {pending > 0 && (
           <View className="flex-1">
-            <Text className="text-xs text-neutral-500 dark:text-neutral-500">Pending</Text>
+            <Text className="text-xs text-neutral-500 dark:text-neutral-500">
+              Pending
+            </Text>
             <Text className="text-sm font-semibold text-warning-600">{pending}</Text>
           </View>
         )}
         <View className="flex-1">
-          <Text className="text-xs text-neutral-500 dark:text-neutral-500">Available</Text>
+          <Text className="text-xs text-neutral-500 dark:text-neutral-500">
+            Available
+          </Text>
           <Text className="text-sm font-semibold text-success-600">{available}</Text>
         </View>
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default LeaveBalanceCard;
+export default LeaveBalanceCard

@@ -1,18 +1,17 @@
-import { colors, getStatusColor, StatusType } from "@/constants/theme";
-import React from "react";
-import { Text, View } from "react-native";
+import React from 'react'
+import { Text, View } from 'react-native'
+
+import { colors, getStatusColor } from '@/constants/theme'
+
+import type { StatusType } from '@/constants/theme'
 
 interface StatusIndicatorProps {
-  label: string;
-  value: string;
-  status: StatusType;
+  label: string
+  value: string
+  status: StatusType
 }
 
-export function StatusIndicator({
-  label,
-  value,
-  status,
-}: StatusIndicatorProps) {
+export function StatusIndicator({ label, value, status }: StatusIndicatorProps) {
   return (
     <View
       className="flex-row items-center justify-between border-b py-3"
@@ -31,5 +30,5 @@ export function StatusIndicator({
         </Text>
       </View>
     </View>
-  );
+  )
 }

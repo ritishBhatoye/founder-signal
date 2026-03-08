@@ -2,50 +2,52 @@
  * Main Authentication Hook using Redux Toolkit
  */
 
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useGetCurrentSessionQuery } from "@/store/api/authApi";
-import { setAuth, setLoading, clearAuth } from "@/store/slices/authSlice";
-import { supabase } from "@/lib/supabase";
-import type { RootState } from "@/store";
-import { useSignIn } from "./useSignIn";
-import { useSignOut } from "./useSignOut";
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+
+import { supabase } from '@/lib/supabase'
+import { useGetCurrentSessionQuery } from '@/store/api/authApi'
+import { setAuth, setLoading, clearAuth } from '@/store/slices/authSlice'
+
+import { useSignIn } from './useSignIn'
+import { useSignOut } from './useSignOut'
+
+import type { RootState } from '@/store'
 
 export function useAuth() {
-  const dispatch = useDispatch();
-  const authState = useSelector((state: RootState) => state.auth);
-  const { data: sessionData, isLoading: sessionLoading } =
-    useGetCurrentSessionQuery();
-  const { signIn, signInWithMagicLink, signInWithPassword } = useSignIn();
-  const { signOut } = useSignOut();
+  const dispatch = useDispatch()
+  const authState = useSelector((state: RootState) => state.auth)
+  const { data: sessionData, isLoading: sessionLoading } = useGetCurrentSessionQuery()
+  const { signIn, signInWithMagicLink, signInWithPassword } = useSignIn()
+  const { signOut } = useSignOut()
 
   // Initialize auth state and listen to changes
   useEffect(() => {
     // Set initial loading state
-    dispatch(setLoading(true));
+    dispatch(setLoading(true))
 
     // Listen to auth state changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("Auth state changed:", event, session?.user?.id);
+      console.log('Auth state changed:', event, session?.user?.id)
 
       if (session?.user) {
         dispatch(
           setAuth({
             user: session.user as any,
             session: session as any,
-          })
-        );
+          }),
+        )
       } else {
-        dispatch(clearAuth());
+        dispatch(clearAuth())
       }
 
-      dispatch(setLoading(false));
-    });
+      dispatch(setLoading(false))
+    })
 
-    return () => subscription.unsubscribe();
-  }, [dispatch]);
+    return () => subscription.unsubscribe()
+  }, [dispatch])
 
   // Update state when session data changes
   useEffect(() => {
@@ -55,23 +57,23 @@ export function useAuth() {
           setAuth({
             user: sessionData.user,
             session: sessionData.session,
-          })
-        );
+          }),
+        )
       } else {
-        dispatch(clearAuth());
+        dispatch(clearAuth())
       }
-      dispatch(setLoading(false));
+      dispatch(setLoading(false))
     }
-  }, [sessionData, sessionLoading, dispatch]);
+  }, [sessionData, sessionLoading, dispatch])
 
   const refreshSession = async () => {
     try {
-      dispatch(setLoading(true));
-      const { data, error } = await supabase.auth.refreshSession();
+      dispatch(setLoading(true))
+      const { data, error } = await supabase.auth.refreshSession()
 
       if (error) {
-        dispatch(clearAuth());
-        return;
+        dispatch(clearAuth())
+        return
       }
 
       if (data.session) {
@@ -79,15 +81,15 @@ export function useAuth() {
           setAuth({
             user: data.session.user as any,
             session: data.session as any,
-          })
-        );
+          }),
+        )
       }
     } catch (_err) {
-      dispatch(clearAuth());
+      dispatch(clearAuth())
     } finally {
-      dispatch(setLoading(false));
+      dispatch(setLoading(false))
     }
-  };
+  }
 
   return {
     ...authState,
@@ -96,5 +98,5 @@ export function useAuth() {
     signInWithPassword,
     signOut,
     refreshSession,
-  };
+  }
 }

@@ -2,55 +2,57 @@
  * TeamListView - List of team members with search
  * Usage: <TeamListView members={members} onMemberPress={handlePress} />
  */
-import { Colors } from "@/constants/colors";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React, { useState } from "react";
-import { FlatList, View } from "react-native";
-import Badge from "../atoms/Badge";
-import EmptyStateText from "../atoms/EmptyStateText";
-import SearchBarWithIcon from "../molecules/SearchBarWithIcon";
-import UserInfoRow from "../molecules/UserInfoRow";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React, { useState } from 'react'
+import { FlatList, View } from 'react-native'
+
+import { Colors } from '@/constants/colors'
+
+import Badge from '../atoms/Badge'
+import EmptyStateText from '../atoms/EmptyStateText'
+import SearchBarWithIcon from '../molecules/SearchBarWithIcon'
+import UserInfoRow from '../molecules/UserInfoRow'
 
 interface TeamMember {
-  id: string;
-  name: string;
-  role: string;
-  department?: string;
-  imageUri?: string;
-  status?: "active" | "on-leave" | "wfh";
+  id: string
+  name: string
+  role: string
+  department?: string
+  imageUri?: string
+  status?: 'active' | 'on-leave' | 'wfh'
 }
 
 interface TeamListViewProps {
-  members: TeamMember[];
-  onMemberPress?: (id: string) => void;
-  showSearch?: boolean;
-  className?: string;
+  members: TeamMember[]
+  onMemberPress?: (id: string) => void
+  showSearch?: boolean
+  className?: string
 }
 
 const TeamListView: React.FC<TeamListViewProps> = ({
   members,
   onMemberPress,
   showSearch = true,
-  className = "",
+  className = '',
 }) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('')
   const filteredMembers = members.filter(
     (m) =>
       m.name.toLowerCase().includes(search.toLowerCase()) ||
       m.role.toLowerCase().includes(search.toLowerCase()),
-  );
+  )
 
   const statusBadge = (status?: string) => {
-    if (!status) return null;
-    const config = { active: "success", "on-leave": "warning", wfh: "info" } as const;
+    if (!status) return null
+    const config = { active: 'success', 'on-leave': 'warning', wfh: 'info' } as const
     return (
       <Badge
-        label={status === "on-leave" ? "On Leave" : status.toUpperCase()}
+        label={status === 'on-leave' ? 'On Leave' : status.toUpperCase()}
         variant={config[status as keyof typeof config]}
         size="sm"
       />
-    );
-  };
+    )
+  }
 
   return (
     <View className={`flex-1 ${className}`}>
@@ -73,7 +75,7 @@ const TeamListView: React.FC<TeamListViewProps> = ({
             imageUri={item.imageUri}
             onPress={() => onMemberPress?.(item.id)}
             rightContent={statusBadge(item.status)}
-            className="py-3 border-b border-neutral-100 dark:border-neutral-800"
+            className="border-b border-neutral-100 py-3 dark:border-neutral-800"
           />
         )}
         ListEmptyComponent={
@@ -85,7 +87,7 @@ const TeamListView: React.FC<TeamListViewProps> = ({
         showsVerticalScrollIndicator={false}
       />
     </View>
-  );
-};
+  )
+}
 
-export default TeamListView;
+export default TeamListView

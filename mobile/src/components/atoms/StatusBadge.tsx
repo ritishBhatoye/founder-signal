@@ -1,68 +1,69 @@
-import { StatusColors } from "@/constants/colors";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { Text, View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { Text, View } from 'react-native'
 
-export type LeaveStatus = "approved" | "pending" | "rejected" | "draft";
+import { StatusColors } from '@/constants/colors'
+
+export type LeaveStatus = 'approved' | 'pending' | 'rejected' | 'draft'
 
 interface StatusBadgeProps {
-  status: LeaveStatus;
-  size?: "sm" | "md" | "lg";
-  showIcon?: boolean;
-  className?: string;
+  status: LeaveStatus
+  size?: 'sm' | 'md' | 'lg'
+  showIcon?: boolean
+  className?: string
 }
 
 const StatusBadge: React.FC<StatusBadgeProps> = ({
   status,
-  size = "md",
+  size = 'md',
   showIcon = true,
-  className = "",
+  className = '',
 }) => {
   const getStatusConfig = () => {
     const configs = {
       approved: {
-        label: "Approved",
-        icon: "checkmark-circle" as const,
+        label: 'Approved',
+        icon: 'checkmark-circle' as const,
         bg: StatusColors.approved.bg,
         text: StatusColors.approved.text,
         border: StatusColors.approved.border,
       },
       pending: {
-        label: "Pending",
-        icon: "time" as const,
+        label: 'Pending',
+        icon: 'time' as const,
         bg: StatusColors.pending.bg,
         text: StatusColors.pending.text,
         border: StatusColors.pending.border,
       },
       rejected: {
-        label: "Rejected",
-        icon: "close-circle" as const,
+        label: 'Rejected',
+        icon: 'close-circle' as const,
         bg: StatusColors.rejected.bg,
         text: StatusColors.rejected.text,
         border: StatusColors.rejected.border,
       },
       draft: {
-        label: "Draft",
-        icon: "document-text" as const,
+        label: 'Draft',
+        icon: 'document-text' as const,
         bg: StatusColors.draft.bg,
         text: StatusColors.draft.text,
         border: StatusColors.draft.border,
       },
-    };
-    return configs[status];
-  };
+    }
+    return configs[status]
+  }
 
   const getSizeStyles = () => {
     const sizes = {
-      sm: { container: "px-2 py-0.5", text: "text-xs", icon: 12 },
-      md: { container: "px-3 py-1", text: "text-sm", icon: 14 },
-      lg: { container: "px-4 py-1.5", text: "text-base", icon: 16 },
-    };
-    return sizes[size];
-  };
+      sm: { container: 'px-2 py-0.5', text: 'text-xs', icon: 12 },
+      md: { container: 'px-3 py-1', text: 'text-sm', icon: 14 },
+      lg: { container: 'px-4 py-1.5', text: 'text-base', icon: 16 },
+    }
+    return sizes[size]
+  }
 
-  const config = getStatusConfig();
-  const sizeStyles = getSizeStyles();
+  const config = getStatusConfig()
+  const sizeStyles = getSizeStyles()
 
   return (
     <View
@@ -84,7 +85,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
         {config.label}
       </Text>
     </View>
-  );
-};
+  )
+}
 
-export default StatusBadge;
+export default StatusBadge

@@ -1,18 +1,18 @@
-import { LinearGradient } from "expo-linear-gradient";
-import { useRouter } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { useEffect, useRef } from "react";
-import { Animated, Text, View } from "react-native";
+import { LinearGradient } from 'expo-linear-gradient'
+import { useRouter } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
+import { useEffect, useRef } from 'react'
+import { Animated, Text, View } from 'react-native'
 
 export default function SplashScreen() {
-  const router = useRouter();
+  const router = useRouter()
 
   // Animations
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0.3)).current;
-  const rotateAnim = useRef(new Animated.Value(0)).current;
-  const pulseAnim = useRef(new Animated.Value(1)).current;
-  const slideUpAnim = useRef(new Animated.Value(50)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current
+  const scaleAnim = useRef(new Animated.Value(0.3)).current
+  const rotateAnim = useRef(new Animated.Value(0)).current
+  const pulseAnim = useRef(new Animated.Value(1)).current
+  const slideUpAnim = useRef(new Animated.Value(50)).current
 
   useEffect(() => {
     // Sequence of animations
@@ -43,7 +43,7 @@ export default function SplashScreen() {
         duration: 600,
         useNativeDriver: true,
       }),
-    ]).start();
+    ]).start()
 
     // Pulse animation loop
     Animated.loop(
@@ -58,27 +58,27 @@ export default function SplashScreen() {
           duration: 1000,
           useNativeDriver: true,
         }),
-      ])
-    ).start();
+      ]),
+    ).start()
 
     // Navigate after 3 seconds
     const timer = setTimeout(() => {
-      router.replace("/(onboarding)");
-    }, 3500);
+      router.replace('/(onboarding)')
+    }, 3500)
 
-    return () => clearTimeout(timer);
-  }, [fadeAnim, scaleAnim, rotateAnim, slideUpAnim, pulseAnim, router]);
+    return () => clearTimeout(timer)
+  }, [fadeAnim, scaleAnim, rotateAnim, slideUpAnim, pulseAnim, router])
 
   const spin = rotateAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"],
-  });
+    outputRange: ['0deg', '360deg'],
+  })
 
   return (
     <View className="flex-1">
       <StatusBar style="light" />
       <LinearGradient
-        colors={["#2563EB", "#1D4ED8", "#1E40AF"]}
+        colors={['#2563EB', '#1D4ED8', '#1E40AF']}
         style={{ flex: 1 }}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -165,11 +165,9 @@ export default function SplashScreen() {
           }}
           className="pb-8"
         >
-          <Text className="text-center text-sm text-white/60">
-            Powered by Innovation
-          </Text>
+          <Text className="text-center text-sm text-white/60">Powered by Innovation</Text>
         </Animated.View>
       </LinearGradient>
     </View>
-  );
+  )
 }

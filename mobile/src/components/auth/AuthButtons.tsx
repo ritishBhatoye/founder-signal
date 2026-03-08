@@ -1,39 +1,47 @@
-import { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import { Platform, ActivityIndicator } from "react-native";
-import { Pressable, View, Text, StyleSheet, Alert } from "react-native";
-import * as WebBrowser from "expo-web-browser";
-import { supabase } from "@/lib/supabase";
-import { colors } from "@/constants/theme";
+import { Ionicons } from '@expo/vector-icons'
+import * as WebBrowser from 'expo-web-browser'
+import { useState } from 'react'
+import {
+  Platform,
+  ActivityIndicator,
+  Pressable,
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+} from 'react-native'
 
-export type SocialProvider = "google" | "apple";
+import { colors } from '@/constants/theme'
+import { supabase } from '@/lib/supabase'
+
+export type SocialProvider = 'google' | 'apple'
 
 interface AuthButtonProps {
-  provider: SocialProvider;
-  onPress: () => void;
-  disabled?: boolean;
-  loading?: boolean;
+  provider: SocialProvider
+  onPress: () => void
+  disabled?: boolean
+  loading?: boolean
 }
 
 const AUTH_BUTTON_CONFIG = {
   google: {
-    icon: "logo-google" as const,
-    label: "Continue with Google",
-    bgColor: "#FFFFFF",
-    textColor: "#1F2937",
-    borderColor: "#E5E7EB",
+    icon: 'logo-google' as const,
+    label: 'Continue with Google',
+    bgColor: '#FFFFFF',
+    textColor: '#1F2937',
+    borderColor: '#E5E7EB',
   },
   apple: {
-    icon: "logo-apple" as const,
-    label: "Continue with Apple",
-    bgColor: "#000000",
-    textColor: "#FFFFFF",
-    borderColor: "#374151",
+    icon: 'logo-apple' as const,
+    label: 'Continue with Apple',
+    bgColor: '#000000',
+    textColor: '#FFFFFF',
+    borderColor: '#374151',
   },
-};
+}
 
 function AuthButton({ provider, onPress, disabled, loading }: AuthButtonProps) {
-  const config = AUTH_BUTTON_CONFIG[provider];
+  const config = AUTH_BUTTON_CONFIG[provider]
 
   return (
     <Pressable
@@ -57,37 +65,33 @@ function AuthButton({ provider, onPress, disabled, loading }: AuthButtonProps) {
         </>
       )}
     </Pressable>
-  );
+  )
 }
 
 interface AuthButtonsProps {
-  onSuccess?: () => void;
-  onError?: (error: string) => void;
-  disabled?: boolean;
+  onSuccess?: () => void
+  onError?: (error: string) => void
+  disabled?: boolean
 }
 
-export function AuthButtons({
-  onSuccess,
-  onError,
-  disabled,
-}: AuthButtonsProps) {
-  const [loading, setLoading] = useState<SocialProvider | null>(null);
+export function AuthButtons({ onSuccess, onError, disabled }: AuthButtonsProps) {
+  const [loading, setLoading] = useState<SocialProvider | null>(null)
 
-  const isIOS = Platform.OS === "ios";
-  const isWeb = Platform.OS === "web";
+  const isIOS = Platform.OS === 'ios'
+  const isWeb = Platform.OS === 'web'
 
   const getRedirectURL = (): string => {
     if (isWeb) {
-      return typeof window !== "undefined"
+      return typeof window !== 'undefined'
         ? window.location.origin
-        : "http://localhost:8081";
+        : 'http://localhost:8081'
     }
-    return "founderops://";
-  };
+    return 'founderops://'
+  }
 
   const handleOAuthSignIn = async (provider: SocialProvider) => {
     try {
-      setLoading(provider);
+      setLoading(provider)
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
@@ -95,32 +99,32 @@ export function AuthButtons({
           redirectTo: getRedirectURL(),
           skipBrowserRedirect: isWeb,
         },
-      });
+      })
 
       if (error) {
-        throw error;
+        throw error
       }
 
       if (!isWeb && data?.url) {
-        await WebBrowser.openAuthSessionAsync(data.url, getRedirectURL());
+        await WebBrowser.openAuthSessionAsync(data.url, getRedirectURL())
       }
 
-      onSuccess?.();
+      onSuccess?.()
     } catch (error: any) {
-      const message = error?.message || "Authentication failed";
-      console.error(`OAuth error (${provider}):`, error);
-      Alert.alert("Sign In Error", message);
-      onError?.(message);
+      const message = error?.message || 'Authentication failed'
+      console.error(`OAuth error (${provider}):`, error)
+      Alert.alert('Sign In Error', message)
+      onError?.(message)
     } finally {
-      setLoading(null);
+      setLoading(null)
     }
-  };
+  }
 
-  const showGoogle = true;
-  const showApple = isIOS;
+  const showGoogle = true
+  const showApple = isIOS
 
   if (!showGoogle && !showApple) {
-    return null;
+    return null
   }
 
   return (
@@ -135,32 +139,32 @@ export function AuthButtons({
         {showGoogle && (
           <AuthButton
             provider="google"
-            onPress={() => handleOAuthSignIn("google")}
+            onPress={() => handleOAuthSignIn('google')}
             disabled={disabled}
-            loading={loading === "google"}
+            loading={loading === 'google'}
           />
         )}
 
         {showApple && (
           <AuthButton
             provider="apple"
-            onPress={() => handleOAuthSignIn("apple")}
+            onPress={() => handleOAuthSignIn('apple')}
             disabled={disabled}
-            loading={loading === "apple"}
+            loading={loading === 'apple'}
           />
         )}
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: '100%',
   },
   divider: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginVertical: 24,
   },
   dividerLine: {
@@ -172,15 +176,15 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     fontSize: 14,
     marginHorizontal: 16,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   buttonsContainer: {
     gap: 12,
   },
   button: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 56,
     borderRadius: 16,
     borderWidth: 1,
@@ -194,8 +198,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
-});
+})
 
-export default AuthButtons;
+export default AuthButtons

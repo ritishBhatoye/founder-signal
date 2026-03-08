@@ -1,24 +1,24 @@
-import React, { useEffect, useRef } from "react";
-import { Animated } from "react-native";
+import React, { useEffect, useRef } from 'react'
+import { Animated } from 'react-native'
 
-type SkeletonVariant = "text" | "circular" | "rectangular" | "rounded";
+type SkeletonVariant = 'text' | 'circular' | 'rectangular' | 'rounded'
 
 interface SkeletonProps {
-  variant?: SkeletonVariant;
-  width?: number | string;
-  height?: number | string;
-  className?: string;
-  animate?: boolean;
+  variant?: SkeletonVariant
+  width?: number | string
+  height?: number | string
+  className?: string
+  animate?: boolean
 }
 
 const Skeleton: React.FC<SkeletonProps> = ({
-  variant = "rectangular",
-  width = "100%",
+  variant = 'rectangular',
+  width = '100%',
   height = 20,
-  className = "",
+  className = '',
   animate = true,
 }) => {
-  const opacity = useRef(new Animated.Value(0.3)).current;
+  const opacity = useRef(new Animated.Value(0.3)).current
 
   useEffect(() => {
     if (animate) {
@@ -35,19 +35,19 @@ const Skeleton: React.FC<SkeletonProps> = ({
             useNativeDriver: true,
           }),
         ]),
-      ).start();
+      ).start()
     }
-  }, [animate, opacity]);
+  }, [animate, opacity])
 
   const getVariantStyles = () => {
     const styles = {
-      text: "rounded",
-      circular: "rounded-full",
-      rectangular: "rounded-none",
-      rounded: "rounded-lg",
-    };
-    return styles[variant];
-  };
+      text: 'rounded',
+      circular: 'rounded-full',
+      rectangular: 'rounded-none',
+      rounded: 'rounded-lg',
+    }
+    return styles[variant]
+  }
 
   return (
     <Animated.View
@@ -58,7 +58,7 @@ const Skeleton: React.FC<SkeletonProps> = ({
       }}
       className={`bg-neutral-300 dark:bg-neutral-700 ${getVariantStyles()} ${className}`}
     />
-  );
-};
+  )
+}
 
-export default Skeleton;
+export default Skeleton

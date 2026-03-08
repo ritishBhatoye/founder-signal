@@ -2,48 +2,52 @@
  * LeaveHistoryList - List of past leave requests with filters
  * Usage: <LeaveHistoryList leaves={leaves} onLeavePress={handlePress} />
  */
-import { Colors } from "@/constants/colors";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { FlatList, View } from "react-native";
-import EmptyStateText from "../atoms/EmptyStateText";
-import type { LeaveType } from "../atoms/LeaveTypeTag";
-import type { LeaveStatus } from "../atoms/StatusBadge";
-import FilterChipGroup from "../molecules/FilterChipGroup";
-import LeaveStatusRow from "../molecules/LeaveStatusRow";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { FlatList, View } from 'react-native'
+
+import { Colors } from '@/constants/colors'
+
+import EmptyStateText from '../atoms/EmptyStateText'
+import FilterChipGroup from '../molecules/FilterChipGroup'
+import LeaveStatusRow from '../molecules/LeaveStatusRow'
+
+import type { LeaveType } from '../atoms/LeaveTypeTag'
+import type { LeaveStatus } from '../atoms/StatusBadge'
 
 interface LeaveRecord {
-  id: string;
-  type: LeaveType;
-  startDate: string;
-  endDate: string;
-  status: LeaveStatus;
-  duration: string;
+  id: string
+  type: LeaveType
+  startDate: string
+  endDate: string
+  status: LeaveStatus
+  duration: string
 }
 
 interface LeaveHistoryListProps {
-  leaves: LeaveRecord[];
-  onLeavePress?: (id: string) => void;
-  filter?: string;
-  onFilterChange?: (filter: string) => void;
-  className?: string;
+  leaves: LeaveRecord[]
+  onLeavePress?: (id: string) => void
+  filter?: string
+  onFilterChange?: (filter: string) => void
+  className?: string
 }
 
 const filterOptions = [
-  { label: "All", value: "all" },
-  { label: "Approved", value: "approved" },
-  { label: "Pending", value: "pending" },
-  { label: "Rejected", value: "rejected" },
-];
+  { label: 'All', value: 'all' },
+  { label: 'Approved', value: 'approved' },
+  { label: 'Pending', value: 'pending' },
+  { label: 'Rejected', value: 'rejected' },
+]
 
 const LeaveHistoryList: React.FC<LeaveHistoryListProps> = ({
   leaves,
   onLeavePress,
-  filter = "all",
+  filter = 'all',
   onFilterChange,
-  className = "",
+  className = '',
 }) => {
-  const filteredLeaves = filter === "all" ? leaves : leaves.filter((l) => l.status === filter);
+  const filteredLeaves =
+    filter === 'all' ? leaves : leaves.filter((l) => l.status === filter)
 
   return (
     <View className={`flex-1 ${className}`}>
@@ -59,7 +63,11 @@ const LeaveHistoryList: React.FC<LeaveHistoryListProps> = ({
         data={filteredLeaves}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <LeaveStatusRow {...item} onPress={() => onLeavePress?.(item.id)} className="mb-3" />
+          <LeaveStatusRow
+            {...item}
+            onPress={() => onLeavePress?.(item.id)}
+            className="mb-3"
+          />
         )}
         ListEmptyComponent={
           <View className="items-center py-12">
@@ -70,7 +78,7 @@ const LeaveHistoryList: React.FC<LeaveHistoryListProps> = ({
         showsVerticalScrollIndicator={false}
       />
     </View>
-  );
-};
+  )
+}
 
-export default LeaveHistoryList;
+export default LeaveHistoryList

@@ -1,5 +1,8 @@
-import { router } from "expo-router";
-import React, { useState } from "react";
+import { Ionicons } from '@expo/vector-icons'
+import { BlurView } from 'expo-blur'
+import { LinearGradient } from 'expo-linear-gradient'
+import { router } from 'expo-router'
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -8,43 +11,35 @@ import {
   Platform,
   ScrollView,
   StatusBar,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import { BlurView } from "expo-blur";
-import { AuthInput } from "@/components/auth/AuthInput";
-import { useSignUp } from "@/hooks/auth/useSignUp";
-import { showToast } from "@/utils/toast";
-import { SafeAreaView } from "react-native-safe-area-context";
-import RegisterForm from "@/components/auth/Register";
+} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
+import { AuthInput } from '@/components/auth/AuthInput'
+import RegisterForm from '@/components/auth/Register'
+import { useSignUp } from '@/hooks/auth/useSignUp'
+import { showToast } from '@/utils/toast'
 
 export default function RegisterScreen() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [agreeToTerms, setAgreeToTerms] = useState(false);
-  const { signUp, isLoading } = useSignUp();
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [agreeToTerms, setAgreeToTerms] = useState(false)
+  const { signUp, isLoading } = useSignUp()
 
   const handleRegister = async () => {
     if (!name || !email || !password) {
-      showToast.warning("Missing Fields", "Please fill in all fields");
-      return;
+      showToast.warning('Missing Fields', 'Please fill in all fields')
+      return
     }
 
     if (password.length < 6) {
-      showToast.warning(
-        "Weak Password",
-        "Password must be at least 6 characters"
-      );
-      return;
+      showToast.warning('Weak Password', 'Password must be at least 6 characters')
+      return
     }
 
     if (!agreeToTerms) {
-      showToast.warning(
-        "Terms Required",
-        "Please agree to Terms & Privacy Policy"
-      );
-      return;
+      showToast.warning('Terms Required', 'Please agree to Terms & Privacy Policy')
+      return
     }
 
     try {
@@ -54,45 +49,33 @@ export default function RegisterScreen() {
         options: {
           data: { full_name: name },
         },
-      });
+      })
 
       if (result.success) {
         if (result.needsEmailConfirmation) {
-          showToast.info(
-            "Verify Email",
-            result.message || "Please check your email"
-          );
-          router.replace("./sign-in");
+          showToast.info('Verify Email', result.message || 'Please check your email')
+          router.replace('./sign-in')
         } else {
-          showToast.success(
-            "Welcome!",
-            result.message || "Account created successfully"
-          );
-          router.replace("/(tabs)");
+          showToast.success('Welcome!', result.message || 'Account created successfully')
+          router.replace('/(tabs)')
         }
       } else {
-        showToast.error(
-          "Registration Failed",
-          result.error || "Failed to create account"
-        );
+        showToast.error('Registration Failed', result.error || 'Failed to create account')
       }
     } catch (_err: any) {
-      showToast.error("Error", _err?.message || "An unexpected error occurred");
+      showToast.error('Error', _err?.message || 'An unexpected error occurred')
     }
-  };
+  }
 
-  const handleSocialSignUp = async (provider: "google" | "apple") => {
+  const handleSocialSignUp = async (provider: 'google' | 'apple') => {
     try {
-      showToast.info(
-        "Coming Soon",
-        `${provider} sign-up will be available soon`
-      );
+      showToast.info('Coming Soon', `${provider} sign-up will be available soon`)
     } catch {
-      showToast.error("Error", "An unexpected error occurred");
+      showToast.error('Error', 'An unexpected error occurred')
     }
-  };
+  }
 
-  const isFormValid = name && email && password && agreeToTerms;
+  const isFormValid = name && email && password && agreeToTerms
 
   return (
     <View className="flex-1 bg-black">
@@ -100,47 +83,47 @@ export default function RegisterScreen() {
 
       {/* Animated Background Gradients */}
       <LinearGradient
-        colors={["#0f172a", "#1e293b", "#334155"]}
+        colors={['#0f172a', '#1e293b', '#334155']}
         className="absolute inset-0"
       />
 
       {/* Floating Gradient Orbs */}
       <View className="absolute inset-0">
         <LinearGradient
-          colors={["#8B5CF6", "#EC4899", "#F59E0B"]}
+          colors={['#8B5CF6', '#EC4899', '#F59E0B']}
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 64,
             right: 48,
             width: 144,
             height: 144,
-            borderRadius: "100%",
+            borderRadius: '100%',
             opacity: 0.15,
           }}
           // className="absolute top-16 right-12 w-36 h-36 rounded-full opacity-15 blur-3xl"
         />
         <LinearGradient
-          colors={["#06B6D4", "#3B82F6", "#6366F1"]}
+          colors={['#06B6D4', '#3B82F6', '#6366F1']}
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: 192,
             left: 24,
             width: 112,
             height: 112,
-            borderRadius: "100%",
+            borderRadius: '100%',
             opacity: 0.2,
           }}
           // className="absolute top-48 left-6 w-28 h-28 rounded-full opacity-20 blur-2xl"
         />
         <LinearGradient
-          colors={["#10B981", "#22C55E", "#84CC16"]}
+          colors={['#10B981', '#22C55E', '#84CC16']}
           style={{
-            position: "absolute",
+            position: 'absolute',
             bottom: 160,
             right: 32,
             width: 128,
             height: 128,
-            borderRadius: "100%",
+            borderRadius: '100%',
             opacity: 0.12,
           }}
           // className="absolute bottom-40 right-8 w-32 h-32 rounded-full opacity-12 blur-3xl"
@@ -149,17 +132,17 @@ export default function RegisterScreen() {
 
       <SafeAreaView className="flex-1">
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           className="flex-1"
         >
-          <View className="flex-row justify-between items-center mt-4 mb-10">
+          <View className="mb-10 mt-4 flex-row items-center justify-between">
             <Pressable
               onPress={() => router.back()}
               className="h-12 w-12 items-center justify-center rounded-2xl"
               style={{
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
                 borderWidth: 1,
-                borderColor: "rgba(255, 255, 255, 0.2)",
+                borderColor: 'rgba(255, 255, 255, 0.2)',
               }}
             >
               <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
@@ -167,11 +150,11 @@ export default function RegisterScreen() {
 
             <View className="items-center">
               <View
-                className="h-12 w-12 rounded-2xl items-center justify-center mb-2"
+                className="mb-2 h-12 w-12 items-center justify-center rounded-2xl"
                 style={{
-                  backgroundColor: "rgba(139, 92, 246, 0.2)",
+                  backgroundColor: 'rgba(139, 92, 246, 0.2)',
                   borderWidth: 1,
-                  borderColor: "rgba(139, 92, 246, 0.3)",
+                  borderColor: 'rgba(139, 92, 246, 0.3)',
                 }}
               >
                 <Ionicons name="person-add-outline" size={24} color="#8B5CF6" />
@@ -190,15 +173,15 @@ export default function RegisterScreen() {
             showsVerticalScrollIndicator={false}
           >
             {/* Welcome Section */}
-            <View className="items-center mb-10">
-              <Text className="text-neutral-400 text-sm font-medium uppercase tracking-widest mb-2">
+            <View className="mb-10 items-center">
+              <Text className="mb-2 text-sm font-medium uppercase tracking-widest text-neutral-400">
                 HELLO
               </Text>
-              <Text className="text-white text-3xl font-bold text-center mb-3">
+              <Text className="mb-3 text-center text-3xl font-bold text-white">
                 Sign Up Now
               </Text>
-              <Text className="text-neutral-400 text-base text-center leading-6">
-                Join the elite circle of{"\n"}SaaS founders
+              <Text className="text-center text-base leading-6 text-neutral-400">
+                Join the elite circle of{'\n'}SaaS founders
               </Text>
             </View>
 
@@ -206,16 +189,16 @@ export default function RegisterScreen() {
             <BlurView
               intensity={20}
               tint="dark"
-              className="rounded-3xl overflow-hidden mb-8"
+              className="mb-8 overflow-hidden rounded-3xl"
             >
               <RegisterForm
                 loading={false}
                 onSubmit={() => {
-                  console.log("Hanji ");
-                  router.push("/(tabs)");
+                  console.log('Hanji ')
+                  router.push('/(tabs)')
                 }}
                 handleSocialSignUp={function (provider: SocialProvider): void {
-                  throw new Error("Function not implemented.");
+                  throw new Error('Function not implemented.')
                 }}
               />
             </BlurView>
@@ -225,5 +208,5 @@ export default function RegisterScreen() {
         </KeyboardAvoidingView>
       </SafeAreaView>
     </View>
-  );
+  )
 }

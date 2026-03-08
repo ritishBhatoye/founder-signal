@@ -1,17 +1,20 @@
-import { useTheme } from "@/contexts/ThemeContext";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import React, { useState } from "react";
-import { Platform, Text, TouchableOpacity, View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import React, { useState } from 'react'
+import { Platform, Text, TouchableOpacity, View } from 'react-native'
+
+import { useTheme } from '@/contexts/ThemeContext'
+
+import type { DateTimePickerEvent } from '@react-native-community/datetimepicker'
 
 interface TimeInputProps {
-  value: Date;
-  onChange: (time: Date) => void;
-  label?: string;
-  error?: string;
-  touched?: boolean;
-  disabled?: boolean;
-  className?: string;
+  value: Date
+  onChange: (time: Date) => void
+  label?: string
+  error?: string
+  touched?: boolean
+  disabled?: boolean
+  className?: string
 }
 
 const TimeInput: React.FC<TimeInputProps> = ({
@@ -21,26 +24,25 @@ const TimeInput: React.FC<TimeInputProps> = ({
   error,
   touched,
   disabled = false,
-  className = "",
+  className = '',
 }) => {
-  const { isDark } = useTheme();
-  const [showPicker, setShowPicker] = useState(false);
-  const isInvalid = !!error && !!touched;
+  const { isDark } = useTheme()
+  const [showPicker, setShowPicker] = useState(false)
+  const isInvalid = !!error && !!touched
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
+  const formatTime = (date: Date) =>
+    date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
       hour12: true,
-    });
-  };
+    })
 
   const handleTimeChange = (event: DateTimePickerEvent, selectedTime?: Date) => {
-    setShowPicker(Platform.OS === "ios");
-    if (event.type === "set" && selectedTime) {
-      onChange(selectedTime);
+    setShowPicker(Platform.OS === 'ios')
+    if (event.type === 'set' && selectedTime) {
+      onChange(selectedTime)
     }
-  };
+  }
 
   return (
     <View className={`mb-4 w-full ${className}`}>
@@ -53,25 +55,25 @@ const TimeInput: React.FC<TimeInputProps> = ({
         onPress={() => !disabled && setShowPicker(true)}
         disabled={disabled}
         className={`flex-row items-center justify-between rounded-lg border px-4 py-3 ${
-          isInvalid ? "border-error-500" : "border-neutral-300 dark:border-neutral-600"
-        } ${disabled ? "opacity-50" : ""} bg-white dark:bg-neutral-800`}
+          isInvalid ? 'border-error-500' : 'border-neutral-300 dark:border-neutral-600'
+        } ${disabled ? 'opacity-50' : ''} bg-white dark:bg-neutral-800`}
       >
         <Text className="text-base text-neutral-900 dark:text-neutral-100">
           {formatTime(value)}
         </Text>
-        <Ionicons name="time-outline" size={20} color={isDark ? "#9CA3AF" : "#6B7280"} />
+        <Ionicons name="time-outline" size={20} color={isDark ? '#9CA3AF' : '#6B7280'} />
       </TouchableOpacity>
       {isInvalid && <Text className="mt-1 text-xs text-error-500">{error}</Text>}
       {showPicker && (
         <DateTimePicker
           value={value}
           mode="time"
-          display={Platform.OS === "ios" ? "spinner" : "default"}
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
           onChange={handleTimeChange}
         />
       )}
     </View>
-  );
-};
+  )
+}
 
-export default TimeInput;
+export default TimeInput

@@ -1,3 +1,3 @@
-export { AuthActionButtons } from './AuthActionButtons';
-export { OnboardingItem } from './OnboardingItem';
-export { Pagination } from './Pagination';
+export { AuthActionButtons } from './AuthActionButtons'
+export { OnboardingItem } from './OnboardingItem'
+export { Pagination } from './Pagination'

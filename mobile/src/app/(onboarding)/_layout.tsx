@@ -1,14 +1,14 @@
-import { Stack } from "expo-router";
+import { Stack } from 'expo-router'
 
 export default function OnboardingLayout() {
   return (
     <Stack
       screenOptions={{
         headerShown: false,
-        animation: "fade",
+        animation: 'fade',
       }}
     >
       <Stack.Screen name="index" />
     </Stack>
-  );
+  )
 }
