@@ -2,10 +2,11 @@ import { Text } from "@/components/atoms";
 import { ProtectedRoute } from "@/components/auth";
 import { colors } from "@/constants/theme";
 import { useAuthContext } from "@/contexts";
-import { mockSummaries } from "@/data/mockMetrics";
-import type { DaySummary, SummaryItemType } from "@/types/metrics";
+import { useGetTodaysSummaryQuery, useGetRecentSummariesQuery } from "@/hooks/useData";
+import { useStripeAccount } from "@/hooks/auth";
+import type { SummaryItemType } from "@/types/metrics";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { ScrollView, View } from "react-native";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // Summary item config
@@ -55,11 +56,22 @@ function SummaryItem({ type, message }: SummaryItemProps) {
 }
 
 interface DaySummaryCardProps {
-  summary: DaySummary;
+  date: string;
+  headline: string;
+  items: { type: SummaryItemType; message: string }[];
+  status: string;
   isToday?: boolean;
 }
 
-function DaySummaryCard({ summary, isToday }: DaySummaryCardProps) {
+function DaySummaryCard({ date, headline, items, status, isToday }: DaySummaryCardProps) {
+  const statusColors = {
+    good: colors.success,
+    warning: colors.warning,
+    danger: colors.danger,
+  };
+  
+  const statusColor = statusColors[status as keyof typeof statusColors] || colors.success;
+
   return (
     <View
       className="mb-4 rounded-2xl border p-4"
@@ -67,7 +79,7 @@ function DaySummaryCard({ summary, isToday }: DaySummaryCardProps) {
     >
       <View className="mb-3 flex-row items-center justify-between">
         <Text style={{ color: colors.text }} className="text-lg font-semibold">
-          {summary.date}
+          {date}
         </Text>
         {isToday && (
           <View
@@ -84,7 +96,7 @@ function DaySummaryCard({ summary, isToday }: DaySummaryCardProps) {
         )}
       </View>
 
-      {summary.items.map((item, index) => (
+      {items.map((item, index) => (
         <SummaryItem key={index} type={item.type} message={item.message} />
       ))}
     </View>
@@ -93,7 +105,39 @@ function DaySummaryCard({ summary, isToday }: DaySummaryCardProps) {
 
 function SummaryContent() {
   const { user } = useAuthContext();
-  const summaries = mockSummaries;
+  const { isConnected: isStripeConnected } = useStripeAccount(user?.id);
+  
+  const { data: todaysSummary, isLoading: isLoadingToday } = useGetTodaysSummaryQuery(undefined, {
+    skip: !isStripeConnected,
+  });
+  
+  const { data: recentSummaries, isLoading: isLoadingHistory } = useGetRecentSummariesQuery(7, {
+    skip: !isStripeConnected,
+  });
+
+  const isLoading = isLoadingToday || isLoadingHistory;
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  const getHeadlineForStatus = (status: string) => {
+    switch (status) {
+      case "good":
+        return "Looking Good Today";
+      case "warning":
+        return "Needs Attention";
+      case "danger":
+        return "Action Required";
+      default:
+        return "Daily Update";
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: colors.bg }}>
@@ -112,40 +156,104 @@ function SummaryContent() {
             </Text>
           </View>
 
-          {/* Today Highlight */}
-          <View
-            className="mb-6 rounded-2xl border p-4"
-            style={{
-              backgroundColor: colors.success[50],
-              borderColor: colors.success[200],
-            }}
-          >
-            <View className="flex-row items-center">
-              <Ionicons
-                name="checkmark-circle"
-                size={24}
-                color={colors.success[500]}
-              />
-              <Text
-                style={{ color: colors.success[700] }}
-                className="ml-2 text-lg font-semibold"
-              >
-                Looking Good Today
+          {!isStripeConnected && (
+            <View
+              className="mb-6 rounded-2xl border p-4"
+              style={{
+                backgroundColor: colors.warning[500] + "10",
+                borderColor: colors.warning[500] + "30",
+              }}
+            >
+              <View className="flex-row items-center">
+                <Ionicons name="warning" size={20} color={colors.warning[500]} />
+                <Text style={{ color: colors.warning[500] }} className="ml-2 text-sm font-semibold">
+                  Connect Stripe to see your daily summary
+                </Text>
+              </View>
+            </View>
+          )}
+
+          {/* Loading State */}
+          {isStripeConnected && isLoading && (
+            <View className="items-center justify-center py-8">
+              <ActivityIndicator size="large" color={colors.primary[500]} />
+              <Text style={{ color: colors.textMuted }} className="mt-2">
+                Loading summaries...
               </Text>
             </View>
-            <Text style={{ color: colors.text }} className="mt-2 text-sm">
-              Revenue is up, no churn, and support is quiet. Focus on building.
-            </Text>
-          </View>
+          )}
 
-          {/* Daily Summaries */}
-          {summaries.map((summary, index) => (
-            <DaySummaryCard
-              key={summary.date}
-              summary={summary}
-              isToday={index === 0}
-            />
-          ))}
+          {/* Today Highlight */}
+          {isStripeConnected && !isLoading && todaysSummary && (
+            <View
+              className="mb-6 rounded-2xl border p-4"
+              style={{
+                backgroundColor: todaysSummary.status === "good" 
+                  ? colors.success[500] + "10" 
+                  : todaysSummary.status === "warning"
+                  ? colors.warning[500] + "10"
+                  : colors.danger[500] + "10",
+                borderColor: todaysSummary.status === "good" 
+                  ? colors.success[500] + "30" 
+                  : todaysSummary.status === "warning"
+                  ? colors.warning[500] + "30"
+                  : colors.danger[500] + "30",
+              }}
+            >
+              <View className="flex-row items-center">
+                <Ionicons
+                  name={todaysSummary.status === "good" ? "checkmark-circle" : todaysSummary.status === "warning" ? "warning" : "alert-circle"}
+                  size={24}
+                  color={todaysSummary.status === "good" ? colors.success[500] : todaysSummary.status === "warning" ? colors.warning[500] : colors.danger[500]}
+                />
+                <Text
+                  style={{ color: todaysSummary.status === "good" ? colors.success[500] : todaysSummary.status === "warning" ? colors.warning[500] : colors.danger[500] }}
+                  className="ml-2 text-lg font-semibold"
+                >
+                  {getHeadlineForStatus(todaysSummary.status)}
+                </Text>
+              </View>
+              <Text style={{ color: colors.text }} className="mt-2 text-sm">
+                {todaysSummary.summary_text}
+              </Text>
+            </View>
+          )}
+
+          {/* No Summary Available */}
+          {isStripeConnected && !isLoading && !todaysSummary && (
+            <View
+              className="mb-6 rounded-2xl border p-4"
+              style={{ backgroundColor: colors.card, borderColor: colors.border }}
+            >
+              <View className="flex-row items-center">
+                <Ionicons name="document-text-outline" size={24} color={colors.textMuted} />
+                <Text style={{ color: colors.textMuted }} className="ml-2 text-base">
+                  No summary available yet
+                </Text>
+              </View>
+              <Text style={{ color: colors.textMuted }} className="mt-2 text-sm">
+                Your daily summary will appear here once your data is processed.
+              </Text>
+            </View>
+          )}
+
+          {/* Daily Summaries History */}
+          {isStripeConnected && !isLoading && recentSummaries && recentSummaries.length > 0 && (
+            <>
+              <Text style={{ color: colors.text }} className="mb-3 text-lg font-semibold">
+                Recent Summaries
+              </Text>
+              {recentSummaries.map((summary) => (
+                <DaySummaryCard
+                  key={summary.date}
+                  date={formatDate(summary.date)}
+                  headline={summary.headline}
+                  items={summary.items}
+                  status={summary.status}
+                />
+              ))}
+            </>
+          )}
 
           {/* Push Notification Status */}
           <View
