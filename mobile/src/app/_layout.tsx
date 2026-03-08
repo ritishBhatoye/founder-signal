@@ -1,5 +1,7 @@
 import { ApolloProvider } from "@apollo/client/react";
 import client from "@/lib/apollo";
+import { Provider } from "react-redux";
+import { store } from "@/store";
 
 import { AuthProvider, ThemeProvider } from "@/contexts";
 import { useFonts } from "expo-font";
@@ -28,10 +30,11 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <ApolloProvider client={client}>
-          <Stack>
+    <Provider store={store}>
+      <ThemeProvider>
+        <AuthProvider>
+          <ApolloProvider client={client}>
+            <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="splash" options={{ headerShown: false }} />
 
@@ -65,8 +68,9 @@ export default function RootLayout() {
               }}
             />
           </Stack>
-        </ApolloProvider>
-      </AuthProvider>
-    </ThemeProvider>
+          </ApolloProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </Provider>
   );
 }
