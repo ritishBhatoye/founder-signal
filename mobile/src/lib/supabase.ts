@@ -2,17 +2,19 @@ import { createClient } from "@supabase/supabase-js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 
-const supabaseUrl =
+const supabaseUrlRaw =
   Constants.expoConfig?.extra?.supabaseUrl ||
   process.env.EXPO_PUBLIC_SUPABASE_URL ||
   "";
+
+const supabaseUrl = supabaseUrlRaw.replace(/\/graphql\/v1$/, "").replace(/\/$/, "");
+
 const supabaseAnonKey =
   Constants.expoConfig?.extra?.supabaseAnonKey ||
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
   "";
 
-console.log(`[Supabase] URL starting with: ${supabaseUrl}`);
-console.log(`[Supabase] Anon Key present: ${!!supabaseAnonKey}`);
+console.log(`[Supabase] URL: ${supabaseUrl}`);
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.warn(
