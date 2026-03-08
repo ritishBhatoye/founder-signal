@@ -67,6 +67,13 @@ export default function RootLayout() {
                 presentation: "modal",
               }}
             />
+            <Stack.Screen
+              name="payment-demo"
+              options={{
+                title: "Payment Demo",
+                presentation: "modal",
+              }}
+            />
           </Stack>
           </ApolloProvider>
         </AuthProvider>
