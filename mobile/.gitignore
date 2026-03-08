@@ -4,7 +4,7 @@
 
 expo-env.d.ts
 # @end expo-cli
-
+auto_commit_push.sh
 # Environment variables
 .env
 .env.local
