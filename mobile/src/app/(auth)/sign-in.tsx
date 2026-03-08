@@ -35,7 +35,7 @@ export default function SignInScreen() {
 
     if (result.success) {
       showToast.success("Welcome Back!", "Successfully signed in");
-      router.replace("/(tabs)");
+      router.replace("/(tabs)/index");
     }
   };
 
@@ -55,7 +55,7 @@ export default function SignInScreen() {
     if (result.success) {
       showToast.success(
         "Check Your Email",
-        result.message || "Magic link sent!"
+        result.message || "Magic link sent!",
       );
     }
   };
@@ -64,7 +64,7 @@ export default function SignInScreen() {
     try {
       showToast.info(
         "Coming Soon",
-        `${provider} sign-in will be available soon`
+        `${provider} sign-in will be available soon`,
       );
     } catch {
       showToast.error("Error", "An unexpected error occurred");
