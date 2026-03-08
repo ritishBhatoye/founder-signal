@@ -1,12 +1,14 @@
-/**
- * InputGroup - Form input with label, validation, and optional password features
- * Usage: <InputGroup label="Email" value={email} onChangeText={setEmail} isRequired />
- */
 import { Colors } from "@/constants/colors";
 import { useTheme } from "@/contexts/ThemeContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState } from "react";
-import { Text, TextInput, TextInputProps, TouchableOpacity, View } from "react-native";
+import {
+  Text,
+  TextInput,
+  TextInputProps,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import PasswordStrength from "./PasswordStrength";
 
 interface InputGroupProps extends Omit<TextInputProps, "onChangeText"> {
@@ -25,6 +27,7 @@ interface InputGroupProps extends Omit<TextInputProps, "onChangeText"> {
   startContent?: React.ReactNode;
   endContent?: React.ReactNode;
   className?: string;
+  inputClassName?: string;
 }
 
 const InputGroup: React.FC<InputGroupProps> = ({
@@ -44,6 +47,7 @@ const InputGroup: React.FC<InputGroupProps> = ({
   endContent,
   className = "",
   placeholder,
+  inputClassName,
   ...props
 }) => {
   const { isDark } = useTheme();
@@ -58,21 +62,25 @@ const InputGroup: React.FC<InputGroupProps> = ({
   };
 
   return (
-    <View className={`mb-4 w-full ${className}`}>
+    <View className={`mb-4 gap-2 w-full ${className}`}>
       {label && (
         <View className="flex-row items-center mb-1.5">
-          <Text className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          <Text className="text-sm font-medium text-neutral-400 dark:text-neutral-100">
             {label}
           </Text>
           {isRequired && <Text className="text-error-500 ml-0.5">*</Text>}
         </View>
       )}
       <View
-        className={`flex-row items-center rounded-xl border px-4 ${getBorderColor()} ${
+        className={`flex-row items-center h-10  rounded-xl border px-4 ${getBorderColor()} ${
           isDisabled ? "opacity-50" : ""
-        } bg-white dark:bg-neutral-800`}
+        }  dark:bg-neutral-800`}
       >
-        {startContent && <View className="mr-3">{startContent}</View>}
+        {startContent && (
+          <View className="mr-3 h-full justify-center items-center">
+            {startContent}
+          </View>
+        )}
         <TextInput
           value={value}
           onChangeText={onChangeText}
@@ -82,19 +90,34 @@ const InputGroup: React.FC<InputGroupProps> = ({
           }}
           onFocus={() => setIsFocused(true)}
           placeholder={placeholder}
-          placeholderTextColor={isDark ? Colors.neutral[500] : Colors.neutral[400]}
+          placeholderTextColor={
+            isDark ? Colors.neutral[500] : Colors.neutral[400]
+          }
           editable={!isDisabled && !isReadOnly}
           secureTextEntry={isPassword && !showPassword}
-          className="flex-1 text-base text-neutral-900 dark:text-neutral-100 py-3"
+          className={`flex-1 h-full text-base text-neutral-900 dark:text-neutral-100 py-0 ${inputClassName}`}
+          textAlignVertical="center"
+          autoCapitalize="none"
+          style={[{ includeFontPadding: false }, (props as any).style]}
           {...props}
         />
         {value && value.length > 0 && !isPassword && onClear && (
-          <TouchableOpacity onPress={onClear} className="ml-2">
-            <Ionicons name="close-circle" size={20} color={Colors.neutral[400]} />
+          <TouchableOpacity
+            onPress={onClear}
+            className="ml-2 h-full justify-center items-center"
+          >
+            <Ionicons
+              name="close-circle"
+              size={20}
+              color={Colors.neutral[400]}
+            />
           </TouchableOpacity>
         )}
         {isPassword && value && value.length > 0 && (
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="ml-2">
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            className="ml-2 h-full justify-center items-center"
+          >
             <Ionicons
               name={showPassword ? "eye-off" : "eye"}
               size={22}
@@ -102,9 +125,15 @@ const InputGroup: React.FC<InputGroupProps> = ({
             />
           </TouchableOpacity>
         )}
-        {endContent && <View className="ml-3">{endContent}</View>}
+        {endContent && (
+          <View className="ml-3 h-full justify-center items-center">
+            {endContent}
+          </View>
+        )}
       </View>
-      {isPassword && showPasswordStrength && <PasswordStrength value={value} error={error} />}
+      {isPassword && showPasswordStrength && (
+        <PasswordStrength value={value} error={error} />
+      )}
       {isInvalid && !showPasswordStrength && (
         <View className="flex-row items-center mt-1">
           <Ionicons name="alert-circle" size={14} color={Colors.error[500]} />

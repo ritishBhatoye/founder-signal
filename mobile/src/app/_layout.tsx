@@ -1,35 +1,83 @@
-import { ThemeProvider, useTheme } from "@/contexts/ThemeContext";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider as NavThemeProvider,
-} from "@react-navigation/native";
+import { ApolloProvider } from "@apollo/client/react";
+import client from "@/lib/apollo";
+import { Provider } from "react-redux";
+import { store } from "@/store";
+
+import { AuthProvider, ThemeProvider } from "@/contexts";
+import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import "react-native-reanimated";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+
 import "../global.css";
 
-function RootLayoutNav() {
-  const { isDark } = useTheme();
-
-  return (
-    <NavThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="splash" />
-        <Stack.Screen name="(onboarding)" />
-        <Stack.Screen name="index" />
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="(drawer)" />
-      </Stack>
-      <StatusBar style={isDark ? "light" : "dark"} />
-    </NavThemeProvider>
-  );
-}
+// Prevent the splash screen from auto-hiding before asset loading is complete.
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const [loaded] = useFonts({
+    // SpaceMono: require("../../assets/fonts/SpaceMono-Regular.ttf"),
+  });
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
+
+  if (!loaded) {
+    return null;
+  }
+
   return (
-    <ThemeProvider>
-      <RootLayoutNav />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider>
+        <AuthProvider>
+          <ApolloProvider client={client}>
+            <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="splash" options={{ headerShown: false }} />
+
+            <Stack.Screen
+              name="(auth)"
+              options={{
+                headerShown: false,
+                // presentation: "modal",
+              }}
+            />
+            <Stack.Screen
+              name="(onboarding)"
+              options={{
+                headerShown: false,
+                // presentation: "modal",
+              }}
+            />
+
+            <Stack.Screen
+              name="stripe-connect"
+              options={{
+                headerShown: false,
+                presentation: "modal",
+              }}
+            />
+            <Stack.Screen
+              name="support-pressure"
+              options={{
+                title: "Support Pressure",
+                presentation: "modal",
+              }}
+            />
+            <Stack.Screen
+              name="payment-demo"
+              options={{
+                title: "Payment Demo",
+                presentation: "modal",
+              }}
+            />
+          </Stack>
+          </ApolloProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </Provider>
   );
 }
