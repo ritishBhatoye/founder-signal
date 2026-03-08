@@ -67,14 +67,6 @@ function AlertsContent() {
     }
   };
 
-  const handleDismiss = async (alertId: string) => {
-    try {
-      await dismissAlert(alertId).unwrap();
-    } catch (err) {
-      console.error("Failed to dismiss alert:", err);
-    }
-  };
-
   const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
     const now = new Date();
