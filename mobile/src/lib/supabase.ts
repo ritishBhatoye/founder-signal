@@ -11,7 +11,7 @@ const supabaseAnonKey =
   process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ||
   "";
 
-console.log(`[Supabase] URL starting with: ${supabaseUrl.substring(0, 10)}...`);
+console.log(`[Supabase] URL starting with: ${supabaseUrl}`);
 console.log(`[Supabase] Anon Key present: ${!!supabaseAnonKey}`);
 
 if (!supabaseUrl || !supabaseAnonKey) {
