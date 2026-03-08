@@ -3,7 +3,11 @@ import { ProtectedRoute } from "@/components/auth";
 import { AlertCard } from "@/components/founderops";
 import { colors } from "@/constants/theme";
 import { useAuthContext } from "@/contexts";
-import { useGetAlertsQuery, useMarkAlertAsReadMutation, useDismissAlertMutation } from "@/hooks/useData";
+import {
+  useGetAlertsQuery,
+  useMarkAlertAsReadMutation,
+  useDismissAlertMutation,
+} from "@/hooks/useData";
 import { useStripeAccount } from "@/hooks/auth";
 import type { AlertType as AlertTypeEnum } from "@/types/metrics";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -49,11 +53,11 @@ const alertTypes: { type: AlertTypeEnum; label: string }[] = [
 function AlertsContent() {
   const { user } = useAuthContext();
   const { isConnected: isStripeConnected } = useStripeAccount(user?.id);
-  
+
   const { data, isLoading, error } = useGetAlertsQuery(undefined, {
     skip: !isStripeConnected,
   });
-  
+
   const [markAsRead] = useMarkAlertAsReadMutation();
 
   const alerts = data?.alerts || [];
@@ -74,7 +78,7 @@ function AlertsContent() {
     const diffMins = Math.floor(diffMs / 60000);
     const diffHours = Math.floor(diffMins / 60);
     const diffDays = Math.floor(diffHours / 24);
-    
+
     if (diffMins < 1) return "Just now";
     if (diffMins < 60) return `${diffMins}m ago`;
     if (diffHours < 24) return `${diffHours}h ago`;
@@ -123,15 +127,21 @@ function AlertsContent() {
               }}
             >
               <View className="flex-row items-center">
-                <Ionicons name="warning" size={20} color={colors.warning[500]} />
-                <Text style={{ color: colors.warning[500] }} className="ml-2 text-sm font-semibold">
+                <Ionicons
+                  name="warning"
+                  size={20}
+                  color={colors.warning[500]}
+                />
+                <Text
+                  style={{ color: colors.warning[500] }}
+                  className="ml-2 text-sm font-semibold"
+                >
                   Connect Stripe to see alerts
                 </Text>
               </View>
             </View>
           )}
 
-          {/* Loading State */}
           {isStripeConnected && isLoading && (
             <View className="items-center justify-center py-8">
               <ActivityIndicator size="large" color={colors.primary[500]} />
@@ -151,8 +161,15 @@ function AlertsContent() {
               }}
             >
               <View className="flex-row items-center">
-                <Ionicons name="alert-circle" size={20} color={colors.danger[500]} />
-                <Text style={{ color: colors.danger[500] }} className="ml-2 text-sm">
+                <Ionicons
+                  name="alert-circle"
+                  size={20}
+                  color={colors.danger[500]}
+                />
+                <Text
+                  style={{ color: colors.danger[500] }}
+                  className="ml-2 text-sm"
+                >
                   Failed to load alerts
                 </Text>
               </View>
