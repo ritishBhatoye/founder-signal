@@ -1,15 +1,16 @@
-import { Colors } from "@/constants/colors";
-import { useTheme } from "@/contexts/ThemeContext";
-import React from "react";
-import { Switch as RNSwitch, Text, View } from "react-native";
+import React from 'react'
+import { Switch as RNSwitch, Text, View } from 'react-native'
+
+import { Colors } from '@/constants/colors'
+import { useTheme } from '@/contexts/ThemeContext'
 
 interface SwitchProps {
-  value: boolean;
-  onValueChange: (value: boolean) => void;
-  label?: string;
-  disabled?: boolean;
-  className?: string;
-  labelPosition?: "left" | "right";
+  value: boolean
+  onValueChange: (value: boolean) => void
+  label?: string
+  disabled?: boolean
+  className?: string
+  labelPosition?: 'left' | 'right'
 }
 
 const Switch: React.FC<SwitchProps> = ({
@@ -17,10 +18,10 @@ const Switch: React.FC<SwitchProps> = ({
   onValueChange,
   label,
   disabled = false,
-  className = "",
-  labelPosition = "right",
+  className = '',
+  labelPosition = 'right',
 }) => {
-  const { isDark } = useTheme();
+  const { isDark } = useTheme()
 
   const switchComponent = (
     <RNSwitch
@@ -34,23 +35,27 @@ const Switch: React.FC<SwitchProps> = ({
       thumbColor={value ? Colors.primary[100] : Colors.neutral[50]}
       ios_backgroundColor={isDark ? Colors.neutral[700] : Colors.neutral[300]}
     />
-  );
+  )
 
   if (!label) {
-    return switchComponent;
+    return switchComponent
   }
 
   return (
     <View className={`flex-row items-center ${className}`}>
-      {labelPosition === "left" && (
-        <Text className="mr-3 text-base text-neutral-900 dark:text-neutral-100">{label}</Text>
+      {labelPosition === 'left' && (
+        <Text className="mr-3 text-base text-neutral-900 dark:text-neutral-100">
+          {label}
+        </Text>
       )}
       {switchComponent}
-      {labelPosition === "right" && (
-        <Text className="ml-3 text-base text-neutral-900 dark:text-neutral-100">{label}</Text>
+      {labelPosition === 'right' && (
+        <Text className="ml-3 text-base text-neutral-900 dark:text-neutral-100">
+          {label}
+        </Text>
       )}
     </View>
-  );
-};
+  )
+}
 
-export default Switch;
+export default Switch

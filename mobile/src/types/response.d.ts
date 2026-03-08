@@ -1,11 +1,11 @@
 interface SignInOptions {
-  email: string;
-  password?: string;
-  redirectTo?: string;
+  email: string
+  password?: string
+  redirectTo?: string
 }
 
 interface SignInResult {
-  success: boolean;
-  error?: string;
-  message?: string;
+  success: boolean
+  error?: string
+  message?: string
 }

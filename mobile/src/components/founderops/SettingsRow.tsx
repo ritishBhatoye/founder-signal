@@ -1,15 +1,16 @@
-import { colors } from "@/constants/theme";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
+
+import { colors } from '@/constants/theme'
 
 interface SettingsRowProps {
-  icon: keyof typeof Ionicons.glyphMap;
-  iconColor?: string;
-  title: string;
-  subtitle?: string;
-  rightElement?: React.ReactNode;
-  onPress?: () => void;
+  icon: keyof typeof Ionicons.glyphMap
+  iconColor?: string
+  title: string
+  subtitle?: string
+  rightElement?: React.ReactNode
+  onPress?: () => void
 }
 
 export function SettingsRow({
@@ -27,7 +28,7 @@ export function SettingsRow({
     >
       <View
         className="mr-3 h-10 w-10 items-center justify-center rounded-full"
-        style={{ backgroundColor: iconColor + "20" }}
+        style={{ backgroundColor: `${iconColor}20` }}
       >
         <Ionicons name={icon} size={20} color={iconColor} />
       </View>
@@ -45,5 +46,5 @@ export function SettingsRow({
         <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
       )}
     </TouchableOpacity>
-  );
+  )
 }

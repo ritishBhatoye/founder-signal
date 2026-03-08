@@ -1,17 +1,19 @@
-import { Colors } from "@/constants/colors";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { Text, View } from "react-native";
-import { Badge, Divider } from "../atoms";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { Text, View } from 'react-native'
+
+import { Colors } from '@/constants/colors'
+
+import { Badge, Divider } from '../atoms'
 
 interface AttendanceCardProps {
-  date: string;
-  checkIn?: string;
-  checkOut?: string;
-  totalHours?: string;
-  status: "present" | "absent" | "late" | "half-day" | "leave";
-  location?: string;
-  className?: string;
+  date: string
+  checkIn?: string
+  checkOut?: string
+  totalHours?: string
+  status: 'present' | 'absent' | 'late' | 'half-day' | 'leave'
+  location?: string
+  className?: string
 }
 
 const AttendanceCard: React.FC<AttendanceCardProps> = ({
@@ -21,20 +23,20 @@ const AttendanceCard: React.FC<AttendanceCardProps> = ({
   totalHours,
   status,
   location,
-  className = "",
+  className = '',
 }) => {
   const getStatusBadge = () => {
     const statusMap = {
-      present: { variant: "success" as const, label: "Present" },
-      absent: { variant: "error" as const, label: "Absent" },
-      late: { variant: "warning" as const, label: "Late" },
-      "half-day": { variant: "info" as const, label: "Half Day" },
-      leave: { variant: "info" as const, label: "On Leave" },
-    };
-    return statusMap[status];
-  };
+      present: { variant: 'success' as const, label: 'Present' },
+      absent: { variant: 'error' as const, label: 'Absent' },
+      late: { variant: 'warning' as const, label: 'Late' },
+      'half-day': { variant: 'info' as const, label: 'Half Day' },
+      leave: { variant: 'info' as const, label: 'On Leave' },
+    }
+    return statusMap[status]
+  }
 
-  const badgeConfig = getStatusBadge();
+  const badgeConfig = getStatusBadge()
 
   return (
     <View
@@ -92,11 +94,13 @@ const AttendanceCard: React.FC<AttendanceCardProps> = ({
       {location && (
         <View className="mt-2 flex-row items-center">
           <Ionicons name="location" size={14} color={Colors.neutral[500]} />
-          <Text className="ml-1 text-xs text-neutral-500 dark:text-neutral-500">{location}</Text>
+          <Text className="ml-1 text-xs text-neutral-500 dark:text-neutral-500">
+            {location}
+          </Text>
         </View>
       )}
     </View>
-  );
-};
+  )
+}
 
-export default AttendanceCard;
+export default AttendanceCard

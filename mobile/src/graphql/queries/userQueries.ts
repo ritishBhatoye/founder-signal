@@ -1,13 +1,13 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export interface User {
-  id: string;
-  email: string;
-  created_at: string;
+  id: string
+  email: string
+  created_at: string
 }
 
 export interface UsersData {
-  users: User[];
+  users: User[]
 }
 
 export const GET_USERS = gql`
@@ -18,7 +18,7 @@ export const GET_USERS = gql`
       created_at
     }
   }
-`;
+`
 
 export const GET_CURRENT_USER = gql`
   query GetCurrentUser {
@@ -29,4 +29,4 @@ export const GET_CURRENT_USER = gql`
       created_at
     }
   }
-`;
+`

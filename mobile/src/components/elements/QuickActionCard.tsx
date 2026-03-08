@@ -1,17 +1,18 @@
-import { Colors } from "@/constants/colors";
-import { useTheme } from "@/contexts/ThemeContext";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
+
+import { Colors } from '@/constants/colors'
+import { useTheme } from '@/contexts/ThemeContext'
 
 interface QuickActionCardProps {
-  title: string;
-  icon: keyof typeof Ionicons.glyphMap;
-  iconColor?: string;
-  iconBg?: string;
-  onPress: () => void;
-  disabled?: boolean;
-  className?: string;
+  title: string
+  icon: keyof typeof Ionicons.glyphMap
+  iconColor?: string
+  iconBg?: string
+  onPress: () => void
+  disabled?: boolean
+  className?: string
 }
 
 const QuickActionCard: React.FC<QuickActionCardProps> = ({
@@ -21,16 +22,16 @@ const QuickActionCard: React.FC<QuickActionCardProps> = ({
   iconBg = Colors.primary[100],
   onPress,
   disabled = false,
-  className = "",
+  className = '',
 }) => {
-  useTheme();
+  useTheme()
 
   return (
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
       className={`flex-1 items-center rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-800 ${
-        disabled ? "opacity-50" : ""
+        disabled ? 'opacity-50' : ''
       } ${className}`}
     >
       <View
@@ -43,7 +44,7 @@ const QuickActionCard: React.FC<QuickActionCardProps> = ({
         {title}
       </Text>
     </TouchableOpacity>
-  );
-};
+  )
+}
 
-export default QuickActionCard;
+export default QuickActionCard

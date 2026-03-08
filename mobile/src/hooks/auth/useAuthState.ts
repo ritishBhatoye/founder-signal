@@ -2,34 +2,35 @@
  * Hook for tracking authentication state changes
  */
 
-import { useState, useEffect } from "react";
-import { AuthUser, AuthSession } from "./types";
+import { useState, useEffect } from 'react'
+
+import type { AuthUser, AuthSession } from './types'
 
 // TODO: Import from Supabase client when installed
 // import { supabase } from '@/lib/supabase';
 
 type AuthEvent =
-  | "SIGNED_IN"
-  | "SIGNED_OUT"
-  | "TOKEN_REFRESHED"
-  | "USER_UPDATED"
-  | "PASSWORD_RECOVERY";
+  | 'SIGNED_IN'
+  | 'SIGNED_OUT'
+  | 'TOKEN_REFRESHED'
+  | 'USER_UPDATED'
+  | 'PASSWORD_RECOVERY'
 
 interface AuthStateChange {
-  event: AuthEvent;
-  session: AuthSession | null;
+  event: AuthEvent
+  session: AuthSession | null
 }
 
 export function useAuthState() {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [session, setSession] = useState<AuthSession | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [lastEvent, setLastEvent] = useState<AuthEvent | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null)
+  const [session, setSession] = useState<AuthSession | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [lastEvent, setLastEvent] = useState<AuthEvent | null>(null)
 
   useEffect(() => {
     // Get initial session
-    getInitialSession();
+    getInitialSession()
 
     // TODO: Set up auth state listener when Supabase is installed
     // const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -39,7 +40,7 @@ export function useAuthState() {
     // );
 
     // return () => subscription.unsubscribe();
-  }, []);
+  }, [])
 
   const getInitialSession = async () => {
     try {
@@ -47,28 +48,28 @@ export function useAuthState() {
       // const { data: { session } } = await supabase.auth.getSession();
 
       // Mock implementation
-      const session = null;
+      const session = null
 
       handleAuthStateChange({
-        event: session ? "SIGNED_IN" : "SIGNED_OUT",
+        event: session ? 'SIGNED_IN' : 'SIGNED_OUT',
         session,
-      });
+      })
     } catch (err) {
-      console.error("Failed to get initial session:", err);
-      setIsLoading(false);
+      console.error('Failed to get initial session:', err)
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleAuthStateChange = ({ event, session }: AuthStateChange) => {
-    setLastEvent(event);
-    setSession(session);
-    setUser(session?.user || null);
-    setIsAuthenticated(!!session);
-    setIsLoading(false);
+    setLastEvent(event)
+    setSession(session)
+    setUser(session?.user || null)
+    setIsAuthenticated(!!session)
+    setIsLoading(false)
 
     // Log auth events for debugging
-    console.log("Auth state changed:", { event, userId: session?.user?.id });
-  };
+    console.log('Auth state changed:', { event, userId: session?.user?.id })
+  }
 
   return {
     user,
@@ -76,5 +77,5 @@ export function useAuthState() {
     isAuthenticated,
     isLoading,
     lastEvent,
-  };
+  }
 }

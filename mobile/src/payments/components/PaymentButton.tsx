@@ -1,30 +1,26 @@
-import { useState, useCallback } from "react";
-import {
-  ActivityIndicator,
-  Alert,
-  Pressable,
-  Text,
-  StyleSheet,
-  ViewStyle,
-  TextStyle,
-} from "react-native";
-import { paymentService, Plan, PaymentResult, SubscriptionResult } from "../index";
+import { useState, useCallback } from 'react'
+import { ActivityIndicator, Alert, Pressable, Text, StyleSheet } from 'react-native'
+
+import { paymentService } from '../index'
+
+import type { Plan, PaymentResult, SubscriptionResult } from '../index'
+import type { ViewStyle, TextStyle } from 'react-native'
 
 interface PaymentButtonProps {
-  amount?: number;
-  currency?: string;
-  description?: string;
-  plan?: Plan;
-  onSuccess?: (result: PaymentResult | SubscriptionResult) => void;
-  onError?: (error: string) => void;
-  style?: ViewStyle;
-  textStyle?: TextStyle;
-  disabled?: boolean;
+  amount?: number
+  currency?: string
+  description?: string
+  plan?: Plan
+  onSuccess?: (result: PaymentResult | SubscriptionResult) => void
+  onError?: (error: string) => void
+  style?: ViewStyle
+  textStyle?: TextStyle
+  disabled?: boolean
 }
 
 export function PaymentButton({
   amount = 0,
-  currency = "usd",
+  currency = 'usd',
   description,
   plan,
   onSuccess,
@@ -33,76 +29,73 @@ export function PaymentButton({
   textStyle,
   disabled = false,
 }: PaymentButtonProps) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const formatAmount = useCallback((cents: number, curr: string) => {
-    const value = (cents / 100).toFixed(2);
+    const value = (cents / 100).toFixed(2)
     const symbols: Record<string, string> = {
-      usd: "$",
-      inr: "₹",
-      eur: "€",
-      gbp: "£",
-    };
-    return `${symbols[curr] || curr} ${value}`;
-  }, []);
+      usd: '$',
+      inr: '₹',
+      eur: '€',
+      gbp: '£',
+    }
+    return `${symbols[curr] || curr} ${value}`
+  }, [])
 
   const handlePayment = useCallback(async () => {
-    if (disabled || loading) return;
+    if (disabled || loading) return
 
-    setLoading(true);
+    setLoading(true)
 
     try {
-      let result: PaymentResult | SubscriptionResult;
+      let result: PaymentResult | SubscriptionResult
 
       if (plan) {
         result = await paymentService.createSubscription({
           planId: plan.id,
           plan,
-        });
+        })
       } else {
         result = await paymentService.createPayment({
           amount,
           currency,
-          description: description || "Payment",
-        });
+          description: description || 'Payment',
+        })
       }
 
       if (result.success) {
         Alert.alert(
-          "Payment Successful",
+          'Payment Successful',
           `Transaction ID: ${(result as PaymentResult).transactionId || (result as SubscriptionResult).subscriptionId}`,
           [
             {
-              text: "OK",
+              text: 'OK',
               onPress: () => onSuccess?.(result),
             },
-          ]
-        );
+          ],
+        )
       } else {
-        Alert.alert(
-          "Payment Failed",
-          result.errorMessage || "An error occurred",
-          [
-            {
-              text: "OK",
-              onPress: () => onError?.(result.errorMessage || "Payment failed"),
-            },
-          ]
-        );
+        Alert.alert('Payment Failed', result.errorMessage || 'An error occurred', [
+          {
+            text: 'OK',
+            onPress: () => onError?.(result.errorMessage || 'Payment failed'),
+          },
+        ])
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-      Alert.alert("Error", errorMessage);
-      onError?.(errorMessage);
+      const errorMessage =
+        error instanceof Error ? error.message : 'An unexpected error occurred'
+      Alert.alert('Error', errorMessage)
+      onError?.(errorMessage)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [amount, currency, description, plan, onSuccess, onError, disabled, loading]);
+  }, [amount, currency, description, plan, onSuccess, onError, disabled, loading])
 
-  const providerName = paymentService.getCurrentProviderName();
-  const buttonText = plan 
-    ? `Subscribe for ${formatAmount(plan.amount, plan.currency)}` 
-    : `Pay ${formatAmount(amount, currency)}`;
+  const providerName = paymentService.getCurrentProviderName()
+  const buttonText = plan
+    ? `Subscribe for ${formatAmount(plan.amount, plan.currency)}`
+    : `Pay ${formatAmount(amount, currency)}`
 
   return (
     <Pressable
@@ -124,35 +117,35 @@ export function PaymentButton({
         </>
       )}
     </Pressable>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#3B82F6",
+    backgroundColor: '#3B82F6',
     paddingVertical: 16,
     paddingHorizontal: 24,
     borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     minHeight: 56,
   },
   buttonPressed: {
     opacity: 0.8,
   },
   buttonDisabled: {
-    backgroundColor: "#9CA3AF",
+    backgroundColor: '#9CA3AF',
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   providerText: {
-    color: "rgba(255, 255, 255, 0.7)",
+    color: 'rgba(255, 255, 255, 0.7)',
     fontSize: 12,
     marginTop: 2,
   },
-});
+})
 
-export default PaymentButton;
+export default PaymentButton

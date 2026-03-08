@@ -1,17 +1,18 @@
-import { Input, Text } from "@/components/atoms";
-import { TextInputProps, View } from "react-native";
+import { View } from 'react-native'
+
+import { Input, Text } from '@/components/atoms'
+
+import type { TextInputProps } from 'react-native'
 
 interface FormFieldProps extends TextInputProps {
-  label: string;
-  error?: string;
+  label: string
+  error?: string
 }
 
-export const FormField = ({ label, error, ...inputProps }: FormFieldProps) => {
-  return (
-    <View className="mb-4">
-      <Text className="text-gray-700 font-medium mb-2">{label}</Text>
-      <Input error={!!error} {...inputProps} />
-      {error && <Text className="text-red-500 text-sm mt-1">{error}</Text>}
-    </View>
-  );
-};
+export const FormField = ({ label, error, ...inputProps }: FormFieldProps) => (
+  <View className="mb-4">
+    <Text className="mb-2 font-medium text-gray-700">{label}</Text>
+    <Input error={!!error} {...inputProps} />
+    {error && <Text className="mt-1 text-sm text-red-500">{error}</Text>}
+  </View>
+)

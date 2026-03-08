@@ -1,3 +1,3 @@
-import { Text as RNText } from "react-native";
+import { Text as RNText } from 'react-native'
 
-export const Text = RNText;
+export const Text = RNText

@@ -1,20 +1,22 @@
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import { Avatar, Divider, LeaveTypeIcon, StatusBadge } from "../atoms";
-import type { LeaveType } from "../atoms/LeaveTypeIcon";
-import type { LeaveStatus } from "../atoms/StatusBadge";
+import React from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
+
+import { Avatar, Divider, LeaveTypeIcon, StatusBadge } from '../atoms'
+
+import type { LeaveType } from '../atoms/LeaveTypeIcon'
+import type { LeaveStatus } from '../atoms/StatusBadge'
 
 interface LeaveCardProps {
-  leaveType: LeaveType;
-  status: LeaveStatus;
-  startDate: string;
-  endDate: string;
-  duration: string;
-  reason?: string;
-  employeeName?: string;
-  employeeAvatar?: string;
-  onPress?: () => void;
-  className?: string;
+  leaveType: LeaveType
+  status: LeaveStatus
+  startDate: string
+  endDate: string
+  duration: string
+  reason?: string
+  employeeName?: string
+  employeeAvatar?: string
+  onPress?: () => void
+  className?: string
 }
 
 const LeaveCard: React.FC<LeaveCardProps> = ({
@@ -27,9 +29,9 @@ const LeaveCard: React.FC<LeaveCardProps> = ({
   employeeName,
   employeeAvatar,
   onPress,
-  className = "",
+  className = '',
 }) => {
-  const Component = onPress ? TouchableOpacity : View;
+  const Component = onPress ? TouchableOpacity : View
 
   return (
     <Component
@@ -73,7 +75,7 @@ const LeaveCard: React.FC<LeaveCardProps> = ({
         </>
       )}
     </Component>
-  );
-};
+  )
+}
 
-export default LeaveCard;
+export default LeaveCard

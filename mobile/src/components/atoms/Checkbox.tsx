@@ -1,17 +1,18 @@
-import { Colors } from "@/constants/colors";
-import { useTheme } from "@/contexts/ThemeContext";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
+
+import { Colors } from '@/constants/colors'
+import { useTheme } from '@/contexts/ThemeContext'
 
 interface CheckboxProps {
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-  label?: string;
-  disabled?: boolean;
-  error?: boolean;
-  className?: string;
-  size?: "sm" | "md" | "lg";
+  checked: boolean
+  onChange: (checked: boolean) => void
+  label?: string
+  disabled?: boolean
+  error?: boolean
+  className?: string
+  size?: 'sm' | 'md' | 'lg'
 }
 
 const Checkbox: React.FC<CheckboxProps> = ({
@@ -20,38 +21,38 @@ const Checkbox: React.FC<CheckboxProps> = ({
   label,
   disabled = false,
   error = false,
-  className = "",
-  size = "md",
+  className = '',
+  size = 'md',
 }) => {
-  const { isDark } = useTheme();
+  const { isDark } = useTheme()
 
   const getSizeStyles = () => {
     const sizes = {
-      sm: { box: "w-4 h-4", icon: 14, text: "text-sm" },
-      md: { box: "w-5 h-5", icon: 16, text: "text-base" },
-      lg: { box: "w-6 h-6", icon: 20, text: "text-lg" },
-    };
-    return sizes[size];
-  };
+      sm: { box: 'w-4 h-4', icon: 14, text: 'text-sm' },
+      md: { box: 'w-5 h-5', icon: 16, text: 'text-base' },
+      lg: { box: 'w-6 h-6', icon: 20, text: 'text-lg' },
+    }
+    return sizes[size]
+  }
 
-  const sizeStyles = getSizeStyles();
+  const sizeStyles = getSizeStyles()
 
   const getBorderColor = () => {
-    if (error) return "border-error-500";
-    if (checked) return "border-primary-500";
-    return isDark ? "border-neutral-600" : "border-neutral-400";
-  };
+    if (error) return 'border-error-500'
+    if (checked) return 'border-primary-500'
+    return isDark ? 'border-neutral-600' : 'border-neutral-400'
+  }
 
   const getBackgroundColor = () => {
-    if (checked) return "bg-primary-500";
-    return isDark ? "bg-neutral-800" : "bg-white";
-  };
+    if (checked) return 'bg-primary-500'
+    return isDark ? 'bg-neutral-800' : 'bg-white'
+  }
 
   return (
     <TouchableOpacity
       onPress={() => !disabled && onChange(!checked)}
       disabled={disabled}
-      className={`flex-row items-center ${disabled ? "opacity-50" : ""} ${className}`}
+      className={`flex-row items-center ${disabled ? 'opacity-50' : ''} ${className}`}
     >
       <View
         className={`items-center justify-center rounded border-2 ${
@@ -65,14 +66,14 @@ const Checkbox: React.FC<CheckboxProps> = ({
       {label && (
         <Text
           className={`ml-2 ${sizeStyles.text} ${
-            error ? "text-error-500" : "text-neutral-900 dark:text-neutral-100"
+            error ? 'text-error-500' : 'text-neutral-900 dark:text-neutral-100'
           }`}
         >
           {label}
         </Text>
       )}
     </TouchableOpacity>
-  );
-};
+  )
+}
 
-export default Checkbox;
+export default Checkbox

@@ -2,59 +2,63 @@
  * ApprovalsList - List of pending approvals with filters
  * Usage: <ApprovalsList requests={requests} onApprove={...} onReject={...} />
  */
-import { Colors } from "@/constants/colors";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { FlatList, View } from "react-native";
-import EmptyStateText from "../atoms/EmptyStateText";
-import type { LeaveType } from "../atoms/LeaveTypeTag";
-import type { LeaveStatus } from "../atoms/StatusBadge";
-import FilterChipGroup from "../molecules/FilterChipGroup";
-import LeaveRequestCard from "./LeaveRequestCard";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { FlatList, View } from 'react-native'
+
+import { Colors } from '@/constants/colors'
+
+import EmptyStateText from '../atoms/EmptyStateText'
+import FilterChipGroup from '../molecules/FilterChipGroup'
+
+import LeaveRequestCard from './LeaveRequestCard'
+
+import type { LeaveType } from '../atoms/LeaveTypeTag'
+import type { LeaveStatus } from '../atoms/StatusBadge'
 
 interface LeaveRequest {
-  id: string;
-  employeeName: string;
-  employeeImage?: string;
-  leaveType: LeaveType;
-  startDate: string;
-  endDate: string;
-  duration: string;
-  reason: string;
-  status: LeaveStatus;
-  appliedOn?: string;
+  id: string
+  employeeName: string
+  employeeImage?: string
+  leaveType: LeaveType
+  startDate: string
+  endDate: string
+  duration: string
+  reason: string
+  status: LeaveStatus
+  appliedOn?: string
 }
 
 interface ApprovalsListProps {
-  requests: LeaveRequest[];
-  onApprove: (id: string) => void;
-  onReject: (id: string) => void;
-  onRequestPress?: (id: string) => void;
-  filter?: string;
-  onFilterChange?: (filter: string) => void;
-  loading?: boolean;
-  className?: string;
+  requests: LeaveRequest[]
+  onApprove: (id: string) => void
+  onReject: (id: string) => void
+  onRequestPress?: (id: string) => void
+  filter?: string
+  onFilterChange?: (filter: string) => void
+  loading?: boolean
+  className?: string
 }
 
 const filterOptions = [
-  { label: "All", value: "all" },
-  { label: "Pending", value: "pending" },
-  { label: "Approved", value: "approved" },
-  { label: "Rejected", value: "rejected" },
-];
+  { label: 'All', value: 'all' },
+  { label: 'Pending', value: 'pending' },
+  { label: 'Approved', value: 'approved' },
+  { label: 'Rejected', value: 'rejected' },
+]
 
 const ApprovalsList: React.FC<ApprovalsListProps> = ({
   requests,
   onApprove,
   onReject,
   onRequestPress,
-  filter = "all",
+  filter = 'all',
   onFilterChange,
   loading = false,
-  className = "",
+  className = '',
 }) => {
   const filteredRequests =
-    filter === "all" ? requests : requests.filter((r) => r.status === filter);
+    filter === 'all' ? requests : requests.filter((r) => r.status === filter)
 
   return (
     <View className={`flex-1 ${className}`}>
@@ -75,21 +79,25 @@ const ApprovalsList: React.FC<ApprovalsListProps> = ({
             onPress={() => onRequestPress?.(item.id)}
             onApprove={() => onApprove(item.id)}
             onReject={() => onReject(item.id)}
-            showActions={item.status === "pending"}
+            showActions={item.status === 'pending'}
             loading={loading}
             className="mb-3"
           />
         )}
         ListEmptyComponent={
           <View className="items-center py-12">
-            <Ionicons name="checkmark-done-circle-outline" size={64} color={Colors.neutral[300]} />
+            <Ionicons
+              name="checkmark-done-circle-outline"
+              size={64}
+              color={Colors.neutral[300]}
+            />
             <EmptyStateText>No pending approvals</EmptyStateText>
           </View>
         }
         showsVerticalScrollIndicator={false}
       />
     </View>
-  );
-};
+  )
+}
 
-export default ApprovalsList;
+export default ApprovalsList

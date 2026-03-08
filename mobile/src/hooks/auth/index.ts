@@ -3,20 +3,15 @@
  * Integrates with Supabase Auth for magic link authentication
  */
 
-export { useAuth } from "./useAuth";
-export { useUser } from "./useUser";
-export { useSession } from "./useSession";
-export { useAuthState } from "./useAuthState";
-export { useSignIn } from "./useSignIn";
-export { useSignUp } from "./useSignUp";
-export { useSignOut } from "./useSignOut";
-export { useProfile } from "./useProfile";
-export { useStripeAccount } from "./useStripeAccount";
+export { useAuth } from './useAuth'
+export { useUser } from './useUser'
+export { useSession } from './useSession'
+export { useAuthState } from './useAuthState'
+export { useSignIn } from './useSignIn'
+export { useSignUp } from './useSignUp'
+export { useSignOut } from './useSignOut'
+export { useProfile } from './useProfile'
+export { useStripeAccount } from './useStripeAccount'
 
 // Types
-export type {
-  AuthUser,
-  AuthSession,
-  UserProfile,
-  StripeAccount,
-} from "./types";
+export type { AuthUser, AuthSession, UserProfile, StripeAccount } from './types'

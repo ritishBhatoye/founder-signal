@@ -1,40 +1,41 @@
-import { Card, Icon, Text } from "@/components/atoms";
-import { useTheme } from "@/contexts/ThemeContext";
-import { useState } from "react";
-import { ScrollView, Switch, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useState } from 'react'
+import { ScrollView, Switch, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
+import { Card, Icon, Text } from '@/components/atoms'
+import { useTheme } from '@/contexts/ThemeContext'
 
 export default function SettingsScreen() {
-  const { setTheme, isDark } = useTheme();
-  const [notifications, setNotifications] = useState(true);
-  const [biometric, setBiometric] = useState(false);
+  const { setTheme, isDark } = useTheme()
+  const [notifications, setNotifications] = useState(true)
+  const [biometric, setBiometric] = useState(false)
 
   const handleThemeChange = (value: boolean) => {
-    setTheme(value ? "dark" : "light");
-  };
+    setTheme(value ? 'dark' : 'light')
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-neutral-50 dark:bg-neutral-950">
       <ScrollView className="flex-1">
         <View className="p-4">
-          <Text className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-4">
+          <Text className="mb-4 text-lg font-semibold text-neutral-900 dark:text-neutral-100">
             Preferences
           </Text>
 
-          <View className="gap-3 mb-6">
+          <View className="mb-6 gap-3">
             <Card variant="outlined">
               <View className="flex-row items-center justify-between">
-                <View className="flex-row items-center flex-1">
+                <View className="flex-1 flex-row items-center">
                   <Icon
                     name="notifications-outline"
                     size={24}
-                    color={isDark ? "#9CA3AF" : "#6B7280"}
+                    color={isDark ? '#9CA3AF' : '#6B7280'}
                   />
                   <View className="ml-4">
-                    <Text className="text-neutral-900 dark:text-neutral-100 font-medium">
+                    <Text className="font-medium text-neutral-900 dark:text-neutral-100">
                       Notifications
                     </Text>
-                    <Text className="text-neutral-600 dark:text-neutral-400 text-sm">
+                    <Text className="text-sm text-neutral-600 dark:text-neutral-400">
                       Receive push notifications
                     </Text>
                   </View>
@@ -45,13 +46,17 @@ export default function SettingsScreen() {
 
             <Card variant="outlined">
               <View className="flex-row items-center justify-between">
-                <View className="flex-row items-center flex-1">
-                  <Icon name="moon-outline" size={24} color={isDark ? "#9CA3AF" : "#6B7280"} />
+                <View className="flex-1 flex-row items-center">
+                  <Icon
+                    name="moon-outline"
+                    size={24}
+                    color={isDark ? '#9CA3AF' : '#6B7280'}
+                  />
                   <View className="ml-4">
-                    <Text className="text-neutral-900 dark:text-neutral-100 font-medium">
+                    <Text className="font-medium text-neutral-900 dark:text-neutral-100">
                       Dark Mode
                     </Text>
-                    <Text className="text-neutral-600 dark:text-neutral-400 text-sm">
+                    <Text className="text-sm text-neutral-600 dark:text-neutral-400">
                       Enable dark theme
                     </Text>
                   </View>
@@ -62,17 +67,17 @@ export default function SettingsScreen() {
 
             <Card variant="outlined">
               <View className="flex-row items-center justify-between">
-                <View className="flex-row items-center flex-1">
+                <View className="flex-1 flex-row items-center">
                   <Icon
                     name="finger-print-outline"
                     size={24}
-                    color={isDark ? "#9CA3AF" : "#6B7280"}
+                    color={isDark ? '#9CA3AF' : '#6B7280'}
                   />
                   <View className="ml-4">
-                    <Text className="text-neutral-900 dark:text-neutral-100 font-medium">
+                    <Text className="font-medium text-neutral-900 dark:text-neutral-100">
                       Biometric Login
                     </Text>
-                    <Text className="text-neutral-600 dark:text-neutral-400 text-sm">
+                    <Text className="text-sm text-neutral-600 dark:text-neutral-400">
                       Use fingerprint or face ID
                     </Text>
                   </View>
@@ -82,39 +87,49 @@ export default function SettingsScreen() {
             </Card>
           </View>
 
-          <Text className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-4">
+          <Text className="mb-4 text-lg font-semibold text-neutral-900 dark:text-neutral-100">
             Account
           </Text>
 
-          <View className="gap-3 mb-6">
+          <View className="mb-6 gap-3">
             <Card variant="outlined">
               <View className="flex-row items-center">
-                <Icon name="lock-closed-outline" size={24} color={isDark ? "#9CA3AF" : "#6B7280"} />
-                <Text className="text-neutral-900 dark:text-neutral-100 font-medium ml-4">
+                <Icon
+                  name="lock-closed-outline"
+                  size={24}
+                  color={isDark ? '#9CA3AF' : '#6B7280'}
+                />
+                <Text className="ml-4 font-medium text-neutral-900 dark:text-neutral-100">
                   Change Password
                 </Text>
                 <Icon
                   name="chevron-forward"
                   size={20}
                   color="#9CA3AF"
-                  style={{ marginLeft: "auto" }}
+                  style={{ marginLeft: 'auto' }}
                 />
               </View>
             </Card>
 
             <Card variant="outlined">
               <View className="flex-row items-center">
-                <Icon name="language-outline" size={24} color={isDark ? "#9CA3AF" : "#6B7280"} />
-                <Text className="text-neutral-900 dark:text-neutral-100 font-medium ml-4">
+                <Icon
+                  name="language-outline"
+                  size={24}
+                  color={isDark ? '#9CA3AF' : '#6B7280'}
+                />
+                <Text className="ml-4 font-medium text-neutral-900 dark:text-neutral-100">
                   Language
                 </Text>
-                <Text className="text-neutral-600 dark:text-neutral-400 ml-auto mr-2">English</Text>
+                <Text className="ml-auto mr-2 text-neutral-600 dark:text-neutral-400">
+                  English
+                </Text>
                 <Icon name="chevron-forward" size={20} color="#9CA3AF" />
               </View>
             </Card>
           </View>
 
-          <Text className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-4">
+          <Text className="mb-4 text-lg font-semibold text-neutral-900 dark:text-neutral-100">
             About
           </Text>
 
@@ -124,16 +139,16 @@ export default function SettingsScreen() {
                 <Icon
                   name="information-circle-outline"
                   size={24}
-                  color={isDark ? "#9CA3AF" : "#6B7280"}
+                  color={isDark ? '#9CA3AF' : '#6B7280'}
                 />
-                <Text className="text-neutral-900 dark:text-neutral-100 font-medium ml-4">
+                <Text className="ml-4 font-medium text-neutral-900 dark:text-neutral-100">
                   Help & Support
                 </Text>
                 <Icon
                   name="chevron-forward"
                   size={20}
                   color="#9CA3AF"
-                  style={{ marginLeft: "auto" }}
+                  style={{ marginLeft: 'auto' }}
                 />
               </View>
             </Card>
@@ -143,16 +158,16 @@ export default function SettingsScreen() {
                 <Icon
                   name="document-text-outline"
                   size={24}
-                  color={isDark ? "#9CA3AF" : "#6B7280"}
+                  color={isDark ? '#9CA3AF' : '#6B7280'}
                 />
-                <Text className="text-neutral-900 dark:text-neutral-100 font-medium ml-4">
+                <Text className="ml-4 font-medium text-neutral-900 dark:text-neutral-100">
                   Terms & Privacy
                 </Text>
                 <Icon
                   name="chevron-forward"
                   size={20}
                   color="#9CA3AF"
-                  style={{ marginLeft: "auto" }}
+                  style={{ marginLeft: 'auto' }}
                 />
               </View>
             </Card>
@@ -160,8 +175,12 @@ export default function SettingsScreen() {
             <Card variant="outlined">
               <View className="flex-row items-center justify-between">
                 <View className="flex-row items-center">
-                  <Icon name="code-outline" size={24} color={isDark ? "#9CA3AF" : "#6B7280"} />
-                  <Text className="text-neutral-900 dark:text-neutral-100 font-medium ml-4">
+                  <Icon
+                    name="code-outline"
+                    size={24}
+                    color={isDark ? '#9CA3AF' : '#6B7280'}
+                  />
+                  <Text className="ml-4 font-medium text-neutral-900 dark:text-neutral-100">
                     Version
                   </Text>
                 </View>
@@ -172,5 +191,5 @@ export default function SettingsScreen() {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }

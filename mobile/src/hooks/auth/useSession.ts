@@ -2,19 +2,20 @@
  * Hook for managing user session
  */
 
-import { useState, useEffect } from "react";
-import { AuthSession } from "./types";
+import { useState, useEffect } from 'react'
+
+import type { AuthSession } from './types'
 
 // TODO: Import from Supabase client when installed
 // import { supabase } from '@/lib/supabase';
 
 export function useSession() {
-  const [session, setSession] = useState<AuthSession | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [session, setSession] = useState<AuthSession | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    getSession();
+    getSession()
 
     // TODO: Set up auth state listener when Supabase is installed
     // const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -25,55 +26,53 @@ export function useSession() {
     // );
 
     // return () => subscription.unsubscribe();
-  }, []);
+  }, [])
 
   const getSession = async () => {
     try {
-      setIsLoading(true);
-      setError(null);
+      setIsLoading(true)
+      setError(null)
 
       // TODO: Replace with actual Supabase session fetch
       // const { data: { session }, error } = await supabase.auth.getSession();
 
       // Mock implementation
-      const session = null;
-      const error = null;
+      const session = null
+      const error = null
 
       if (error) {
-        setError(error.message);
-        setSession(null);
+        setError(error.message)
+        setSession(null)
       } else {
-        setSession(session);
+        setSession(session)
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to get session");
-      setSession(null);
+      setError(err instanceof Error ? err.message : 'Failed to get session')
+      setSession(null)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const refreshSession = async () => {
     try {
-      setError(null);
+      setError(null)
 
       // TODO: Replace with actual Supabase session refresh
       // const { data: { session }, error } = await supabase.auth.refreshSession();
 
-      const session = null;
-      const error = null;
+      const session = null
+      const error = null
 
       if (error) {
-        setError(error.message);
+        setError(error.message)
       } else {
-        setSession(session);
+        setSession(session)
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to refresh session"
-      );
+      setError(err instanceof Error ? err.message : 'Failed to refresh session')
     }
-  };
+  }
 
   return {
     session,
@@ -81,5 +80,5 @@ export function useSession() {
     error,
     refreshSession,
     refetch: getSession,
-  };
+  }
 }

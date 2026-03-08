@@ -1,38 +1,34 @@
-import { Text } from "@/components/atoms";
-import {
-  ActivityIndicator,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { ProtectedRoute } from "@/components/auth";
-import { MetricCard, StatusIndicator } from "@/components/founderops";
-import { colors } from "@/constants/theme";
-import { useAuthContext } from "@/contexts";
-import { mockHealthCheck } from "@/data/mockMetrics";
-import { useStripeAccount } from "@/hooks/auth";
-import { useGetMetricsQuery } from "@/hooks/useData";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { useRouter } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import { useRouter } from 'expo-router'
+import { ActivityIndicator, ScrollView, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
+import { Text } from '@/components/atoms'
+import { ProtectedRoute } from '@/components/auth'
+import { MetricCard, StatusIndicator } from '@/components/founderops'
+import { colors } from '@/constants/theme'
+import { useAuthContext } from '@/contexts'
+import { mockHealthCheck } from '@/data/mockMetrics'
+import { useStripeAccount } from '@/hooks/auth'
+import { useGetMetricsQuery } from '@/hooks/useData'
 
 function formatCurrency(cents: number): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(cents / 100);
+  }).format(cents / 100)
 }
 
 function formatPercent(value: number): string {
-  return `${value.toFixed(1)}%`;
+  return `${value.toFixed(1)}%`
 }
 
 function TruthDashboardContent() {
-  const router = useRouter();
-  const { user } = useAuthContext();
-  const { isConnected: isStripeConnected } = useStripeAccount(user?.id);
+  const router = useRouter()
+  const { user } = useAuthContext()
+  const { isConnected: isStripeConnected } = useStripeAccount(user?.id)
 
   const {
     data: metricsData,
@@ -41,30 +37,27 @@ function TruthDashboardContent() {
     refetch,
   } = useGetMetricsQuery(undefined, {
     skip: !isStripeConnected,
-  });
+  })
 
-  const healthCheck = mockHealthCheck;
+  const healthCheck = mockHealthCheck
 
   const formatLastSync = (dateString?: string) => {
-    if (!dateString) return "Never";
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
+    if (!dateString) return 'Never'
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffMs = now.getTime() - date.getTime()
+    const diffMins = Math.floor(diffMs / 60000)
 
-    if (diffMins < 1) return "Just now";
-    if (diffMins < 60) return `${diffMins} min ago`;
-    const diffHours = Math.floor(diffMins / 60);
-    if (diffHours < 24) return `${diffHours} hr ago`;
-    return date.toLocaleDateString();
-  };
+    if (diffMins < 1) return 'Just now'
+    if (diffMins < 60) return `${diffMins} min ago`
+    const diffHours = Math.floor(diffMins / 60)
+    if (diffHours < 24) return `${diffHours} hr ago`
+    return date.toLocaleDateString()
+  }
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: colors.bg }}>
-      <ScrollView
-        className="flex-1"
-        contentContainerStyle={{ paddingBottom: 120 }}
-      >
+      <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 120 }}>
         <View className="p-4">
           {/* Header */}
           <View className="mb-6">
@@ -79,19 +72,15 @@ function TruthDashboardContent() {
           {/* Stripe Connection Banner */}
           {!isStripeConnected && (
             <TouchableOpacity
-              onPress={() => router.push("/stripe-connect")}
+              onPress={() => router.push('/stripe-connect')}
               className="mb-4 rounded-2xl border p-4"
               style={{
-                backgroundColor: colors.warning[500] + "10",
-                borderColor: colors.warning[500] + "30",
+                backgroundColor: `${colors.warning[500]}10`,
+                borderColor: `${colors.warning[500]}30`,
               }}
             >
               <View className="flex-row items-center">
-                <Ionicons
-                  name="warning"
-                  size={20}
-                  color={colors.warning[500]}
-                />
+                <Ionicons name="warning" size={20} color={colors.warning[500]} />
                 <View className="ml-3 flex-1">
                   <Text
                     style={{ color: colors.warning[500] }}
@@ -103,11 +92,7 @@ function TruthDashboardContent() {
                     Tap to connect your Stripe account
                   </Text>
                 </View>
-                <Ionicons
-                  name="chevron-forward"
-                  size={16}
-                  color={colors.warning[500]}
-                />
+                <Ionicons name="chevron-forward" size={16} color={colors.warning[500]} />
               </View>
             </TouchableOpacity>
           )}
@@ -128,16 +113,12 @@ function TruthDashboardContent() {
               onPress={() => refetch()}
               className="mb-4 rounded-2xl border p-4"
               style={{
-                backgroundColor: colors.danger[500] + "10",
-                borderColor: colors.danger[500] + "30",
+                backgroundColor: `${colors.danger[500]}10`,
+                borderColor: `${colors.danger[500]}30`,
               }}
             >
               <View className="flex-row items-center">
-                <Ionicons
-                  name="alert-circle"
-                  size={20}
-                  color={colors.danger[500]}
-                />
+                <Ionicons name="alert-circle" size={20} color={colors.danger[500]} />
                 <View className="ml-3 flex-1">
                   <Text
                     style={{ color: colors.danger[500] }}
@@ -162,32 +143,22 @@ function TruthDashboardContent() {
                 borderColor: colors.border,
               }}
             >
-              <Text
-                style={{ color: colors.textMuted }}
-                className="mb-1 text-sm"
-              >
+              <Text style={{ color: colors.textMuted }} className="mb-1 text-sm">
                 Monthly Recurring Revenue
               </Text>
-              <Text
-                style={{ color: colors.text }}
-                className="text-5xl font-bold"
-              >
-                {metricsData?.month
-                  ? formatCurrency(metricsData.month.mrr)
-                  : "$0"}
+              <Text style={{ color: colors.text }} className="text-5xl font-bold">
+                {metricsData?.month ? formatCurrency(metricsData.month.mrr) : '$0'}
               </Text>
               <View className="mt-3 flex-row items-center">
                 <Ionicons
                   name={
-                    metricsData?.month?.mrr_change &&
-                    metricsData.month.mrr_change >= 0
-                      ? "arrow-up"
-                      : "arrow-down"
+                    metricsData?.month?.mrr_change && metricsData.month.mrr_change >= 0
+                      ? 'arrow-up'
+                      : 'arrow-down'
                   }
                   size={18}
                   color={
-                    metricsData?.month?.mrr_change &&
-                    metricsData.month.mrr_change >= 0
+                    metricsData?.month?.mrr_change && metricsData.month.mrr_change >= 0
                       ? colors.success[500]
                       : colors.danger[500]
                   }
@@ -195,8 +166,7 @@ function TruthDashboardContent() {
                 <Text
                   style={{
                     color:
-                      metricsData?.month?.mrr_change &&
-                      metricsData.month.mrr_change >= 0
+                      metricsData?.month?.mrr_change && metricsData.month.mrr_change >= 0
                         ? colors.success[500]
                         : colors.danger[500],
                   }}
@@ -204,12 +174,9 @@ function TruthDashboardContent() {
                 >
                   {metricsData?.month
                     ? formatCurrency(Math.abs(metricsData.month.mrr_change))
-                    : "$0"}
+                    : '$0'}
                 </Text>
-                <Text
-                  style={{ color: colors.textMuted }}
-                  className="ml-2 text-sm"
-                >
+                <Text style={{ color: colors.textMuted }} className="ml-2 text-sm">
                   this month
                 </Text>
               </View>
@@ -223,31 +190,23 @@ function TruthDashboardContent() {
                 <MetricCard
                   title="Net MRR Today"
                   value={
-                    metricsData?.today
-                      ? formatCurrency(metricsData.today.mrr)
-                      : "$0"
+                    metricsData?.today ? formatCurrency(metricsData.today.mrr) : '$0'
                   }
                   changeType={
-                    metricsData?.today?.mrr_change &&
-                    metricsData.today.mrr_change >= 0
-                      ? "up"
-                      : "down"
+                    metricsData?.today?.mrr_change && metricsData.today.mrr_change >= 0
+                      ? 'up'
+                      : 'down'
                   }
                 />
               </View>
               <View className="flex-1">
                 <MetricCard
                   title="Net MRR Week"
-                  value={
-                    metricsData?.week
-                      ? formatCurrency(metricsData.week.mrr)
-                      : "$0"
-                  }
+                  value={metricsData?.week ? formatCurrency(metricsData.week.mrr) : '$0'}
                   changeType={
-                    metricsData?.week?.mrr_change &&
-                    metricsData.week.mrr_change >= 0
-                      ? "up"
-                      : "down"
+                    metricsData?.week?.mrr_change && metricsData.week.mrr_change >= 0
+                      ? 'up'
+                      : 'down'
                   }
                 />
               </View>
@@ -260,9 +219,7 @@ function TruthDashboardContent() {
               <View className="flex-1">
                 <MetricCard
                   title="Active Subscriptions"
-                  value={
-                    metricsData?.month?.active_subscriptions?.toString() || "0"
-                  }
+                  value={metricsData?.month?.active_subscriptions?.toString() || '0'}
                   subtitle="paying customers"
                 />
               </View>
@@ -272,18 +229,17 @@ function TruthDashboardContent() {
                   value={
                     metricsData?.month
                       ? formatPercent(metricsData.month.churn_rate)
-                      : "0%"
+                      : '0%'
                   }
                   changeType={
-                    metricsData?.month?.churn_rate &&
-                    metricsData.month.churn_rate < 2
-                      ? "down"
-                      : "up"
+                    metricsData?.month?.churn_rate && metricsData.month.churn_rate < 2
+                      ? 'down'
+                      : 'up'
                   }
                   change={
                     metricsData?.month
                       ? `${formatPercent(metricsData.month.churn_rate)} vs last month`
-                      : "No data"
+                      : 'No data'
                   }
                 />
               </View>
@@ -295,10 +251,7 @@ function TruthDashboardContent() {
             className="rounded-2xl border p-4"
             style={{ backgroundColor: colors.card, borderColor: colors.border }}
           >
-            <Text
-              style={{ color: colors.text }}
-              className="mb-2 text-lg font-semibold"
-            >
+            <Text style={{ color: colors.text }} className="mb-2 text-lg font-semibold">
               Health Check
             </Text>
             {isStripeConnected && !isLoading && !error ? (
@@ -306,60 +259,48 @@ function TruthDashboardContent() {
                 {/* Payment Success Rate */}
                 <StatusIndicator
                   label="Payment Success"
-                  value={
-                    metricsData?.subscriptions?.length ? "98.5%" : "No data"
-                  }
-                  status={
-                    metricsData?.subscriptions?.length ? "good" : "warning"
-                  }
+                  value={metricsData?.subscriptions?.length ? '98.5%' : 'No data'}
+                  status={metricsData?.subscriptions?.length ? 'good' : 'warning'}
                 />
                 {/* Active Subscriptions */}
                 <StatusIndicator
                   label="Active Subscriptions"
-                  value={
-                    metricsData?.month?.active_subscriptions?.toString() || "0"
-                  }
-                  status={
-                    metricsData?.month?.active_subscriptions
-                      ? "good"
-                      : "warning"
-                  }
+                  value={metricsData?.month?.active_subscriptions?.toString() || '0'}
+                  status={metricsData?.month?.active_subscriptions ? 'good' : 'warning'}
                 />
                 {/* New Subscriptions This Month */}
                 <StatusIndicator
                   label="New Subscriptions"
-                  value={
-                    metricsData?.month?.new_subscriptions?.toString() || "0"
-                  }
+                  value={metricsData?.month?.new_subscriptions?.toString() || '0'}
                   status={
                     metricsData?.month?.new_subscriptions &&
                     metricsData.month.new_subscriptions > 0
-                      ? "good"
-                      : "warning"
+                      ? 'good'
+                      : 'warning'
                   }
                 />
                 {/* Failed Payments */}
                 <StatusIndicator
                   label="Failed Payments"
-                  value={metricsData?.month?.failed_payments?.toString() || "0"}
+                  value={metricsData?.month?.failed_payments?.toString() || '0'}
                   status={
                     !metricsData?.month?.failed_payments ||
                     metricsData.month.failed_payments < 3
-                      ? "good"
-                      : "warning"
+                      ? 'good'
+                      : 'warning'
                   }
                 />
               </View>
             ) : (
-              <View className="py-4 items-center">
+              <View className="items-center py-4">
                 <Ionicons name="link" size={24} color={colors.textMuted} />
                 <Text
                   style={{ color: colors.textMuted }}
-                  className="mt-2 text-sm text-center"
+                  className="mt-2 text-center text-sm"
                 >
                   {isStripeConnected
-                    ? "Connect Stripe to see health metrics"
-                    : "Connect Stripe to see health metrics"}
+                    ? 'Connect Stripe to see health metrics'
+                    : 'Connect Stripe to see health metrics'}
                 </Text>
               </View>
             )}
@@ -370,13 +311,10 @@ function TruthDashboardContent() {
             <Text style={{ color: colors.textMuted }} className="text-xs">
               {isStripeConnected
                 ? `Last synced: ${formatLastSync(metricsData?.month?.calculated_at)}`
-                : "No data source connected"}
+                : 'No data source connected'}
             </Text>
             {user && (
-              <Text
-                style={{ color: colors.textMuted }}
-                className="text-xs mt-1"
-              >
+              <Text style={{ color: colors.textMuted }} className="mt-1 text-xs">
                 Signed in as {user.email}
               </Text>
             )}
@@ -384,7 +322,7 @@ function TruthDashboardContent() {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
 
 export default function TruthDashboard() {
@@ -392,5 +330,5 @@ export default function TruthDashboard() {
     <ProtectedRoute>
       <TruthDashboardContent />
     </ProtectedRoute>
-  );
+  )
 }

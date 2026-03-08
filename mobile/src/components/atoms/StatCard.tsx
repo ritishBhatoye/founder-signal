@@ -1,18 +1,18 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
 
 interface StatCardProps {
-  title: string;
-  value: string | number;
-  subtitle?: string;
-  icon?: keyof typeof Ionicons.glyphMap;
-  iconColor?: string;
-  iconBg?: string;
-  trend?: "up" | "down" | "neutral";
-  trendValue?: string;
-  onPress?: () => void;
-  className?: string;
+  title: string
+  value: string | number
+  subtitle?: string
+  icon?: keyof typeof Ionicons.glyphMap
+  iconColor?: string
+  iconBg?: string
+  trend?: 'up' | 'down' | 'neutral'
+  trendValue?: string
+  onPress?: () => void
+  className?: string
 }
 
 const StatCard: React.FC<StatCardProps> = ({
@@ -20,26 +20,26 @@ const StatCard: React.FC<StatCardProps> = ({
   value,
   subtitle,
   icon,
-  iconColor = "#3B82F6",
-  iconBg = "#EFF6FF",
+  iconColor = '#3B82F6',
+  iconBg = '#EFF6FF',
   trend,
   trendValue,
   onPress,
-  className = "",
+  className = '',
 }) => {
   const getTrendIcon = () => {
-    if (trend === "up") return "trending-up";
-    if (trend === "down") return "trending-down";
-    return "remove";
-  };
+    if (trend === 'up') return 'trending-up'
+    if (trend === 'down') return 'trending-down'
+    return 'remove'
+  }
 
   const getTrendColor = () => {
-    if (trend === "up") return "text-success-600";
-    if (trend === "down") return "text-error-600";
-    return "text-neutral-600";
-  };
+    if (trend === 'up') return 'text-success-600'
+    if (trend === 'down') return 'text-error-600'
+    return 'text-neutral-600'
+  }
 
-  const Component = onPress ? TouchableOpacity : View;
+  const Component = onPress ? TouchableOpacity : View
 
   return (
     <Component
@@ -61,11 +61,7 @@ const StatCard: React.FC<StatCardProps> = ({
           )}
           {trend && trendValue && (
             <View className="mt-2 flex-row items-center">
-              <Ionicons
-                name={getTrendIcon()}
-                size={16}
-                className={getTrendColor()}
-              />
+              <Ionicons name={getTrendIcon()} size={16} className={getTrendColor()} />
               <Text className={`ml-1 text-xs font-medium ${getTrendColor()}`}>
                 {trendValue}
               </Text>
@@ -82,7 +78,7 @@ const StatCard: React.FC<StatCardProps> = ({
         )}
       </View>
     </Component>
-  );
-};
+  )
+}
 
-export default StatCard;
+export default StatCard

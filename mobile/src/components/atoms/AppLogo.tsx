@@ -2,65 +2,68 @@
  * AppLogo - Displays the app logo with optional size variants
  * Usage: <AppLogo size="md" />
  */
-import { Colors } from "@/constants/colors";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { tva } from "@/utils/tva";
-import React from "react";
-import { Image, ImageSourcePropType, Text, View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import React from 'react'
+import { Image, Text, View } from 'react-native'
 
-type LogoSize = "sm" | "md" | "lg" | "xl";
+import { Colors } from '@/constants/colors'
+import { tva } from '@/utils/tva'
+
+import type { ImageSourcePropType } from 'react-native'
+
+type LogoSize = 'sm' | 'md' | 'lg' | 'xl'
 
 interface AppLogoProps {
-  size?: LogoSize;
-  showText?: boolean;
-  imageSource?: ImageSourcePropType;
-  className?: string;
+  size?: LogoSize
+  showText?: boolean
+  imageSource?: ImageSourcePropType
+  className?: string
 }
 
 const logoContainerStyle = tva({
-  base: "items-center justify-center",
+  base: 'items-center justify-center',
   variants: {
     size: {
-      sm: "w-8 h-8",
-      md: "w-12 h-12",
-      lg: "w-16 h-16",
-      xl: "w-24 h-24",
+      sm: 'w-8 h-8',
+      md: 'w-12 h-12',
+      lg: 'w-16 h-16',
+      xl: 'w-24 h-24',
     },
   },
   defaultVariants: {
-    size: "md",
+    size: 'md',
   },
-});
+})
 
 const logoTextStyle = tva({
-  base: "font-bold text-primary-600 dark:text-primary-400",
+  base: 'font-bold text-primary-600 dark:text-primary-400',
   variants: {
     size: {
-      sm: "text-lg",
-      md: "text-xl",
-      lg: "text-2xl",
-      xl: "text-3xl",
+      sm: 'text-lg',
+      md: 'text-xl',
+      lg: 'text-2xl',
+      xl: 'text-3xl',
     },
   },
   defaultVariants: {
-    size: "md",
+    size: 'md',
   },
-});
+})
 
 const AppLogo: React.FC<AppLogoProps> = ({
-  size = "md",
+  size = 'md',
   showText = true,
   imageSource,
-  className = "",
+  className = '',
 }) => {
-  const iconSizes = { sm: 24, md: 32, lg: 48, xl: 64 };
+  const iconSizes = { sm: 24, md: 32, lg: 48, xl: 64 }
 
   return (
     <View className={`flex-row items-center ${className}`}>
       <View
         className={`${logoContainerStyle({
           size,
-        })} rounded-xl bg-primary-100 dark:bg-primary-900 items-center justify-center`}
+        })} items-center justify-center rounded-xl bg-primary-100 dark:bg-primary-900`}
       >
         {imageSource ? (
           <Image
@@ -74,7 +77,7 @@ const AppLogo: React.FC<AppLogoProps> = ({
       </View>
       {showText && <Text className={`${logoTextStyle({ size })} ml-2`}>Clockio</Text>}
     </View>
-  );
-};
+  )
+}
 
-export default AppLogo;
+export default AppLogo

@@ -1,22 +1,24 @@
-import { Text } from "@/components/atoms";
-import { ProtectedRoute } from "@/components/auth";
-import { AlertCard } from "@/components/founderops";
-import { colors } from "@/constants/theme";
-import { useAuthContext } from "@/contexts";
+import Ionicons from '@expo/vector-icons/Ionicons'
+import { ActivityIndicator, ScrollView, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
+import { Text } from '@/components/atoms'
+import { ProtectedRoute } from '@/components/auth'
+import { AlertCard } from '@/components/founderops'
+import { colors } from '@/constants/theme'
+import { useAuthContext } from '@/contexts'
+import { useStripeAccount } from '@/hooks/auth'
 import {
   useGetAlertsQuery,
   useMarkAlertAsReadMutation,
   useDismissAlertMutation,
-} from "@/hooks/useData";
-import { useStripeAccount } from "@/hooks/auth";
-import type { AlertType as AlertTypeEnum } from "@/types/metrics";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { ActivityIndicator, ScrollView, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from '@/hooks/useData'
+
+import type { AlertType as AlertTypeEnum } from '@/types/metrics'
 
 interface AlertTypeToggleProps {
-  label: string;
-  enabled: boolean;
+  label: string
+  enabled: boolean
 }
 
 function AlertTypeToggle({ label, enabled }: AlertTypeToggleProps) {
@@ -36,70 +38,64 @@ function AlertTypeToggle({ label, enabled }: AlertTypeToggleProps) {
       >
         <View
           className="h-4 w-4 rounded-full bg-white"
-          style={{ alignSelf: enabled ? "flex-end" : "flex-start" }}
+          style={{ alignSelf: enabled ? 'flex-end' : 'flex-start' }}
         />
       </View>
     </View>
-  );
+  )
 }
 
 // Alert type configuration
 const alertTypes: { type: AlertTypeEnum; label: string }[] = [
-  { type: "revenue_drop", label: "Revenue Drop (>5%)" },
-  { type: "churn_spike", label: "Churn Spike (>2x normal)" },
-  { type: "failed_payments", label: "Failed Payments Surge" },
-];
+  { type: 'revenue_drop', label: 'Revenue Drop (>5%)' },
+  { type: 'churn_spike', label: 'Churn Spike (>2x normal)' },
+  { type: 'failed_payments', label: 'Failed Payments Surge' },
+]
 
 function AlertsContent() {
-  const { user } = useAuthContext();
-  const { isConnected: isStripeConnected } = useStripeAccount(user?.id);
+  const { user } = useAuthContext()
+  const { isConnected: isStripeConnected } = useStripeAccount(user?.id)
 
   const { data, isLoading, error } = useGetAlertsQuery(undefined, {
     skip: !isStripeConnected,
-  });
+  })
 
-  const [markAsRead] = useMarkAlertAsReadMutation();
+  const [markAsRead] = useMarkAlertAsReadMutation()
 
-  const alerts = data?.alerts || [];
-  const unreadCount = data?.unreadCount || 0;
+  const alerts = data?.alerts || []
+  const unreadCount = data?.unreadCount || 0
 
   const handleAlertPress = async (alertId: string) => {
     try {
-      await markAsRead(alertId).unwrap();
+      await markAsRead(alertId).unwrap()
     } catch (err) {
-      console.error("Failed to mark alert as read:", err);
+      console.error('Failed to mark alert as read:', err)
     }
-  };
+  }
 
   const formatTimestamp = (timestamp: string) => {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMins / 60);
-    const diffDays = Math.floor(diffHours / 24);
+    const date = new Date(timestamp)
+    const now = new Date()
+    const diffMs = now.getTime() - date.getTime()
+    const diffMins = Math.floor(diffMs / 60000)
+    const diffHours = Math.floor(diffMins / 60)
+    const diffDays = Math.floor(diffHours / 24)
 
-    if (diffMins < 1) return "Just now";
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
-    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  };
+    if (diffMins < 1) return 'Just now'
+    if (diffMins < 60) return `${diffMins}m ago`
+    if (diffHours < 24) return `${diffHours}h ago`
+    if (diffDays < 7) return `${diffDays}d ago`
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  }
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: colors.bg }}>
-      <ScrollView
-        className="flex-1"
-        contentContainerStyle={{ paddingBottom: 120 }}
-      >
+      <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 120 }}>
         <View className="p-4">
           {/* Header */}
           <View className="mb-6">
             <View className="flex-row items-center justify-between">
-              <Text
-                style={{ color: colors.text }}
-                className="text-2xl font-bold"
-              >
+              <Text style={{ color: colors.text }} className="text-2xl font-bold">
                 Alerts
               </Text>
               {unreadCount > 0 && (
@@ -122,16 +118,12 @@ function AlertsContent() {
             <View
               className="mb-6 rounded-2xl border p-4"
               style={{
-                backgroundColor: colors.warning[500] + "10",
-                borderColor: colors.warning[500] + "30",
+                backgroundColor: `${colors.warning[500]}10`,
+                borderColor: `${colors.warning[500]}30`,
               }}
             >
               <View className="flex-row items-center">
-                <Ionicons
-                  name="warning"
-                  size={20}
-                  color={colors.warning[500]}
-                />
+                <Ionicons name="warning" size={20} color={colors.warning[500]} />
                 <Text
                   style={{ color: colors.warning[500] }}
                   className="ml-2 text-sm font-semibold"
@@ -156,20 +148,13 @@ function AlertsContent() {
             <View
               className="mb-4 rounded-2xl border p-4"
               style={{
-                backgroundColor: colors.danger[500] + "10",
-                borderColor: colors.danger[500] + "30",
+                backgroundColor: `${colors.danger[500]}10`,
+                borderColor: `${colors.danger[500]}30`,
               }}
             >
               <View className="flex-row items-center">
-                <Ionicons
-                  name="alert-circle"
-                  size={20}
-                  color={colors.danger[500]}
-                />
-                <Text
-                  style={{ color: colors.danger[500] }}
-                  className="ml-2 text-sm"
-                >
+                <Ionicons name="alert-circle" size={20} color={colors.danger[500]} />
+                <Text style={{ color: colors.danger[500] }} className="ml-2 text-sm">
                   Failed to load alerts
                 </Text>
               </View>
@@ -181,10 +166,7 @@ function AlertsContent() {
             className="mb-6 rounded-2xl border p-4"
             style={{ backgroundColor: colors.card, borderColor: colors.border }}
           >
-            <Text
-              style={{ color: colors.text }}
-              className="mb-3 text-base font-semibold"
-            >
+            <Text style={{ color: colors.text }} className="mb-3 text-base font-semibold">
               Active Alerts (3 types)
             </Text>
             {alertTypes.map((item) => (
@@ -195,10 +177,7 @@ function AlertsContent() {
           {/* Alerts List */}
           {isStripeConnected && !isLoading && alerts.length > 0 && (
             <>
-              <Text
-                style={{ color: colors.text }}
-                className="mb-3 text-lg font-semibold"
-              >
+              <Text style={{ color: colors.text }} className="mb-3 text-lg font-semibold">
                 Recent Alerts
               </Text>
 
@@ -207,7 +186,7 @@ function AlertsContent() {
                   key={alert.id}
                   type={alert.type as AlertTypeEnum}
                   title={alert.title}
-                  description={alert.description || ""}
+                  description={alert.description || ''}
                   timestamp={formatTimestamp(alert.triggered_at)}
                   isRead={alert.is_read}
                   onPress={() => handleAlertPress(alert.id)}
@@ -225,15 +204,8 @@ function AlertsContent() {
                 borderColor: colors.border,
               }}
             >
-              <Ionicons
-                name="checkmark-circle"
-                size={48}
-                color={colors.success[500]}
-              />
-              <Text
-                style={{ color: colors.text }}
-                className="mt-4 text-lg font-semibold"
-              >
+              <Ionicons name="checkmark-circle" size={48} color={colors.success[500]} />
+              <Text style={{ color: colors.text }} className="mt-4 text-lg font-semibold">
                 All Clear
               </Text>
               <Text
@@ -256,7 +228,7 @@ function AlertsContent() {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
 
 export default function AlertsScreen() {
@@ -264,5 +236,5 @@ export default function AlertsScreen() {
     <ProtectedRoute>
       <AlertsContent />
     </ProtectedRoute>
-  );
+  )
 }

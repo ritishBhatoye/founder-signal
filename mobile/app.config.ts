@@ -1,50 +1,50 @@
-import { ConfigContext, ExpoConfig } from "expo/config";
+import type { ConfigContext, ExpoConfig } from 'expo/config'
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "clockio",
-  slug: "clockio",
-  version: "1.0.0",
-  orientation: "portrait",
-  icon: "./assets/images/icon.png",
-  scheme: "clockio",
-  userInterfaceStyle: "automatic",
+  name: 'clockio',
+  slug: 'clockio',
+  version: '1.0.0',
+  orientation: 'portrait',
+  icon: './assets/images/icon.png',
+  scheme: 'clockio',
+  userInterfaceStyle: 'automatic',
   newArchEnabled: true,
   ios: {
     supportsTablet: true,
-    bundleIdentifier: "com.ritishbhatoye.clockio",
+    bundleIdentifier: 'com.ritishbhatoye.clockio',
   },
   android: {
     adaptiveIcon: {
-      backgroundColor: "#E6F4FE",
-      foregroundImage: "./assets/images/android-icon-foreground.png",
-      backgroundImage: "./assets/images/android-icon-background.png",
-      monochromeImage: "./assets/images/android-icon-monochrome.png",
+      backgroundColor: '#E6F4FE',
+      foregroundImage: './assets/images/android-icon-foreground.png',
+      backgroundImage: './assets/images/android-icon-background.png',
+      monochromeImage: './assets/images/android-icon-monochrome.png',
     },
     edgeToEdgeEnabled: true,
     predictiveBackGestureEnabled: false,
-    package: "com.ritishbhatoye.clockio",
+    package: 'com.ritishbhatoye.clockio',
   },
   web: {
-    output: "static",
-    favicon: "./assets/images/favicon.png",
+    output: 'static',
+    favicon: './assets/images/favicon.png',
   },
   plugins: [
-    "expo-router",
+    'expo-router',
     [
-      "expo-splash-screen",
+      'expo-splash-screen',
       {
-        image: "./assets/images/splash-icon.png",
+        image: './assets/images/splash-icon.png',
         imageWidth: 200,
-        resizeMode: "contain",
-        backgroundColor: "#ffffff",
+        resizeMode: 'contain',
+        backgroundColor: '#ffffff',
         dark: {
-          backgroundColor: "#000000",
+          backgroundColor: '#000000',
         },
       },
     ],
-    "@react-native-community/datetimepicker",
-    "expo-web-browser",
+    '@react-native-community/datetimepicker',
+    'expo-web-browser',
   ],
   experiments: {
     typedRoutes: true,
@@ -54,6 +54,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL,
     supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
     stripePublishableKey: process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-    nodeEnv: process.env.NODE_ENV || "development",
+    nodeEnv: process.env.NODE_ENV || 'development',
   },
-});
+})

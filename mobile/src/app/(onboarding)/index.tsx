@@ -1,10 +1,5 @@
-import { AuthActionButtons } from "@/components/onboarding/AuthActionButtons";
-import { OnboardingItem } from "@/components/onboarding/OnboardingItem";
-import { Pagination } from "@/components/onboarding/Pagination";
-import { onboardingData } from "@/data/onboardingData";
-import { LinearGradient } from "expo-linear-gradient";
-import type { ReactElement } from "react";
-import { useEffect, useRef, useState } from "react";
+import { LinearGradient } from 'expo-linear-gradient'
+import { useEffect, useRef, useState } from 'react'
 import {
   Animated,
   Dimensions,
@@ -14,19 +9,26 @@ import {
   Text,
   View,
   type ViewToken,
-} from "react-native";
+} from 'react-native'
 
-const { width: screenWidth } = Dimensions.get("window");
+import { AuthActionButtons } from '@/components/onboarding/AuthActionButtons'
+import { OnboardingItem } from '@/components/onboarding/OnboardingItem'
+import { Pagination } from '@/components/onboarding/Pagination'
+import { onboardingData } from '@/data/onboardingData'
+
+import type { ReactElement } from 'react'
+
+const { width: screenWidth } = Dimensions.get('window')
 
 const OnBoardingScreen = (): ReactElement => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const slidesRef = useRef<FlatList>(null);
-  const floatAnim = useRef(new Animated.Value(0)).current;
-  const pulseAnim = useRef(new Animated.Value(1)).current;
-  const width = screenWidth;
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const scrollX = useRef(new Animated.Value(0)).current
+  const slidesRef = useRef<FlatList>(null)
+  const floatAnim = useRef(new Animated.Value(0)).current
+  const pulseAnim = useRef(new Animated.Value(1)).current
+  const width = screenWidth
 
-  const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
+  const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current
 
   // Floating animation for app title
   useEffect(() => {
@@ -42,9 +44,9 @@ const OnBoardingScreen = (): ReactElement => {
           duration: 2500,
           useNativeDriver: true,
         }),
-      ])
-    ).start();
-  }, [floatAnim]);
+      ]),
+    ).start()
+  }, [floatAnim])
 
   // Pulse animation for logo
   useEffect(() => {
@@ -60,35 +62,35 @@ const OnBoardingScreen = (): ReactElement => {
           duration: 1500,
           useNativeDriver: true,
         }),
-      ])
-    ).start();
-  }, [pulseAnim]);
+      ]),
+    ).start()
+  }, [pulseAnim])
 
   const viewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[] }) => {
       if (viewableItems.length > 0) {
-        setCurrentIndex(viewableItems[0]?.index || 0);
+        setCurrentIndex(viewableItems[0]?.index || 0)
       }
-    }
-  ).current;
+    },
+  ).current
 
   const gradientColors = onboardingData[currentIndex]?.backgroundColor || [
-    "rgba(37, 99, 235, 0.95)",
-    "rgba(29, 78, 216, 0.98)",
-  ];
+    'rgba(37, 99, 235, 0.95)',
+    'rgba(29, 78, 216, 0.98)',
+  ]
 
   const handleSkip = () => {
     if (slidesRef.current) {
-      slidesRef.current.scrollToEnd({ animated: true });
+      slidesRef.current.scrollToEnd({ animated: true })
     }
-  };
+  }
 
   return (
     <View className="flex-1">
       <StatusBar barStyle="light-content" />
 
       <LinearGradient
-        colors={[gradientColors[0], gradientColors[1], "rgba(0,0,0,0.85)"]}
+        colors={[gradientColors[0], gradientColors[1], 'rgba(0,0,0,0.85)']}
         style={{ flex: 1 }}
       >
         {/* Animated Background Circles */}
@@ -145,12 +147,7 @@ const OnBoardingScreen = (): ReactElement => {
           <FlatList
             data={onboardingData}
             renderItem={({ item, index }) => (
-              <OnboardingItem
-                item={item}
-                width={width}
-                scrollX={scrollX}
-                index={index}
-              />
+              <OnboardingItem item={item} width={width} scrollX={scrollX} index={index} />
             )}
             keyExtractor={(item) => item.id.toString()}
             horizontal
@@ -165,7 +162,7 @@ const OnBoardingScreen = (): ReactElement => {
               [{ nativeEvent: { contentOffset: { x: scrollX } } }],
               {
                 useNativeDriver: false,
-              }
+              },
             )}
             contentContainerStyle={{ flexGrow: 0 }}
           />
@@ -181,7 +178,7 @@ const OnBoardingScreen = (): ReactElement => {
         </View>
       </LinearGradient>
     </View>
-  );
-};
+  )
+}
 
-export default OnBoardingScreen;
+export default OnBoardingScreen
