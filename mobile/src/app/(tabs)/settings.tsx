@@ -1,10 +1,12 @@
 import { Text } from "@/components/atoms";
+import { ProtectedRoute } from "@/components/auth";
 import { colors } from "@/constants/theme";
 import { useAuthContext } from "@/contexts";
-import { useProfile, useStripeAccount } from "@/hooks/auth";
+import { useStripeAccount } from "@/hooks/auth";
+import { useGetSettingsQuery, useGetSupportPressureQuery } from "@/hooks/useData";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
-import { Alert, ScrollView, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, ScrollView, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface SettingsRowProps {
@@ -52,17 +54,18 @@ function SettingsRow({
   );
 }
 
-export default function SettingsScreen() {
+function SettingsContent() {
   const router = useRouter();
-  const { user, signOut, isLoading: authLoading } = useAuthContext();
-  const { profile } = useProfile(user?.id);
-  const {
-    stripeAccount,
-    isConnected: isStripeConnected,
-    connectStripeAccount,
-    disconnectStripeAccount,
-    isConnecting,
-  } = useStripeAccount(user?.id);
+  const { user, signOut } = useAuthContext();
+  const { isConnected: isStripeConnected, isLoading: isStripeLoading, stripeAccount, disconnectStripeAccount } = useStripeAccount(user?.id);
+  
+  const { data: settings, isLoading: isSettingsLoading } = useGetSettingsQuery(undefined, {
+    skip: !user,
+  });
+  
+  const { data: supportPressureData } = useGetSupportPressureQuery(undefined, {
+    skip: !isStripeConnected,
+  });
 
   const handleSignOut = async () => {
     Alert.alert("Sign Out", "Are you sure you want to sign out?", [
@@ -78,18 +81,8 @@ export default function SettingsScreen() {
     ]);
   };
 
-  const handleConnectStripe = async () => {
-    const result = await connectStripeAccount();
-    if (result.success && result.url) {
-      // TODO: Open Stripe OAuth URL
-      // For now, navigate to stripe-connect screen
-      router.push("/stripe-connect");
-    } else {
-      Alert.alert(
-        "Connection Failed",
-        result.error || "Failed to connect Stripe"
-      );
-    }
+  const handleConnectStripe = () => {
+    router.push("/stripe-connect");
   };
 
   const handleDisconnectStripe = async () => {
@@ -114,6 +107,34 @@ export default function SettingsScreen() {
     );
   };
 
+  const getSupportPressureLabel = (value?: number) => {
+    switch (value) {
+      case 1:
+        return "Low";
+      case 2:
+        return "Medium";
+      case 3:
+        return "High";
+      default:
+        return "Not set";
+    }
+  };
+
+  const getSupportPressureColor = (value?: number) => {
+    switch (value) {
+      case 1:
+        return colors.success[500];
+      case 2:
+        return colors.warning[500];
+      case 3:
+        return colors.danger[500];
+      default:
+        return colors.textMuted;
+    }
+  };
+
+  const isLoading = isStripeLoading || isSettingsLoading;
+
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: colors.bg }}>
       <ScrollView
@@ -130,6 +151,16 @@ export default function SettingsScreen() {
               Manage your FounderOps account
             </Text>
           </View>
+
+          {/* Loading State */}
+          {isLoading && (
+            <View className="items-center justify-center py-8 mb-4">
+              <ActivityIndicator size="large" color={colors.primary[500]} />
+              <Text style={{ color: colors.textMuted }} className="mt-2">
+                Loading settings...
+              </Text>
+            </View>
+          )}
 
           {/* Stripe Connection */}
           <View
@@ -177,12 +208,11 @@ export default function SettingsScreen() {
               ) : (
                 <TouchableOpacity
                   onPress={handleConnectStripe}
-                  disabled={isConnecting}
                   className="px-4 py-2 rounded-full"
                   style={{ backgroundColor: colors.stripe }}
                 >
                   <Text className="text-white text-sm font-medium">
-                    {isConnecting ? "Connecting..." : "Connect"}
+                    Connect
                   </Text>
                 </TouchableOpacity>
               )}
@@ -232,9 +262,12 @@ export default function SettingsScreen() {
                 rightElement={
                   <View
                     className="w-10 h-6 rounded-full justify-center px-1"
-                    style={{ backgroundColor: colors.success[500] }}
+                    style={{ backgroundColor: settings?.push_enabled !== false ? colors.success[500] : colors.border }}
                   >
-                    <View className="w-4 h-4 rounded-full bg-white self-end" />
+                    <View 
+                      className="w-4 h-4 rounded-full bg-white" 
+                      style={{ alignSelf: settings?.push_enabled !== false ? "flex-end" : "flex-start" }} 
+                    />
                   </View>
                 }
               />
@@ -242,7 +275,7 @@ export default function SettingsScreen() {
                 icon="time"
                 iconColor={colors.warning[500]}
                 title="Daily Summary Time"
-                subtitle="9:00 AM"
+                subtitle={settings?.daily_summary_time ? new Date(`2000-01-01T${settings.daily_summary_time}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) : "9:00 AM"}
               />
             </View>
           </View>
@@ -269,9 +302,9 @@ export default function SettingsScreen() {
             <View className="px-4">
               <SettingsRow
                 icon="chatbubbles"
-                iconColor={colors.success[500]}
+                iconColor={getSupportPressureColor(supportPressureData?.support_pressure)}
                 title="Support Pressure"
-                subtitle="Currently: Low"
+                subtitle={`Currently: ${getSupportPressureLabel(supportPressureData?.support_pressure)}`}
                 onPress={() => router.push("/support-pressure")}
               />
             </View>
@@ -294,7 +327,7 @@ export default function SettingsScreen() {
               <SettingsRow
                 icon="person"
                 title="Profile"
-                subtitle={user?.email || profile?.email || "Not signed in"}
+                subtitle={user?.email || "Not signed in"}
               />
               <SettingsRow
                 icon="diamond"
@@ -342,5 +375,13 @@ export default function SettingsScreen() {
         </View>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+export default function SettingsScreen() {
+  return (
+    <ProtectedRoute>
+      <SettingsContent />
+    </ProtectedRoute>
   );
 }
