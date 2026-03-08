@@ -3,10 +3,11 @@ import { ProtectedRoute } from "@/components/auth";
 import { AlertCard } from "@/components/founderops";
 import { colors } from "@/constants/theme";
 import { useAuthContext } from "@/contexts";
-import { mockAlerts } from "@/data/mockMetrics";
-import type { AlertType } from "@/types/metrics";
+import { useGetAlertsQuery, useMarkAlertAsReadMutation, useDismissAlertMutation } from "@/hooks/useData";
+import { useStripeAccount } from "@/hooks/auth";
+import type { AlertType as AlertTypeEnum } from "@/types/metrics";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { ScrollView, View } from "react-native";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface AlertTypeToggleProps {
@@ -39,7 +40,7 @@ function AlertTypeToggle({ label, enabled }: AlertTypeToggleProps) {
 }
 
 // Alert type configuration
-const alertTypes: { type: AlertType; label: string }[] = [
+const alertTypes: { type: AlertTypeEnum; label: string }[] = [
   { type: "revenue_drop", label: "Revenue Drop (>5%)" },
   { type: "churn_spike", label: "Churn Spike (>2x normal)" },
   { type: "failed_payments", label: "Failed Payments Surge" },
@@ -47,8 +48,47 @@ const alertTypes: { type: AlertType; label: string }[] = [
 
 function AlertsContent() {
   const { user } = useAuthContext();
-  const alerts = mockAlerts;
-  const unreadCount = alerts.filter((a) => !a.isRead).length;
+  const { isConnected: isStripeConnected } = useStripeAccount(user?.id);
+  
+  const { data, isLoading, error } = useGetAlertsQuery(undefined, {
+    skip: !isStripeConnected,
+  });
+  
+  const [markAsRead] = useMarkAlertAsReadMutation();
+
+  const alerts = data?.alerts || [];
+  const unreadCount = data?.unreadCount || 0;
+
+  const handleAlertPress = async (alertId: string) => {
+    try {
+      await markAsRead(alertId).unwrap();
+    } catch (err) {
+      console.error("Failed to mark alert as read:", err);
+    }
+  };
+
+  const handleDismiss = async (alertId: string) => {
+    try {
+      await dismissAlert(alertId).unwrap();
+    } catch (err) {
+      console.error("Failed to dismiss alert:", err);
+    }
+  };
+
+  const formatTimestamp = (timestamp: string) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+    
+    if (diffMins < 1) return "Just now";
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  };
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: colors.bg }}>
@@ -82,6 +122,51 @@ function AlertsContent() {
             </Text>
           </View>
 
+          {!isStripeConnected && (
+            <View
+              className="mb-6 rounded-2xl border p-4"
+              style={{
+                backgroundColor: colors.warning[500] + "10",
+                borderColor: colors.warning[500] + "30",
+              }}
+            >
+              <View className="flex-row items-center">
+                <Ionicons name="warning" size={20} color={colors.warning[500]} />
+                <Text style={{ color: colors.warning[500] }} className="ml-2 text-sm font-semibold">
+                  Connect Stripe to see alerts
+                </Text>
+              </View>
+            </View>
+          )}
+
+          {/* Loading State */}
+          {isStripeConnected && isLoading && (
+            <View className="items-center justify-center py-8">
+              <ActivityIndicator size="large" color={colors.primary[500]} />
+              <Text style={{ color: colors.textMuted }} className="mt-2">
+                Loading alerts...
+              </Text>
+            </View>
+          )}
+
+          {/* Error State */}
+          {isStripeConnected && error && (
+            <View
+              className="mb-4 rounded-2xl border p-4"
+              style={{
+                backgroundColor: colors.danger[500] + "10",
+                borderColor: colors.danger[500] + "30",
+              }}
+            >
+              <View className="flex-row items-center">
+                <Ionicons name="alert-circle" size={20} color={colors.danger[500]} />
+                <Text style={{ color: colors.danger[500] }} className="ml-2 text-sm">
+                  Failed to load alerts
+                </Text>
+              </View>
+            </View>
+          )}
+
           {/* Alert Types Config */}
           <View
             className="mb-6 rounded-2xl border p-4"
@@ -99,26 +184,31 @@ function AlertsContent() {
           </View>
 
           {/* Alerts List */}
-          <Text
-            style={{ color: colors.text }}
-            className="mb-3 text-lg font-semibold"
-          >
-            Recent Alerts
-          </Text>
+          {isStripeConnected && !isLoading && alerts.length > 0 && (
+            <>
+              <Text
+                style={{ color: colors.text }}
+                className="mb-3 text-lg font-semibold"
+              >
+                Recent Alerts
+              </Text>
 
-          {alerts.map((alert) => (
-            <AlertCard
-              key={alert.id}
-              type={alert.type}
-              title={alert.title}
-              description={alert.description}
-              timestamp={alert.timestamp}
-              isRead={alert.isRead}
-            />
-          ))}
+              {alerts.map((alert) => (
+                <AlertCard
+                  key={alert.id}
+                  type={alert.type as AlertTypeEnum}
+                  title={alert.title}
+                  description={alert.description || ""}
+                  timestamp={formatTimestamp(alert.triggered_at)}
+                  isRead={alert.is_read}
+                  onPress={() => handleAlertPress(alert.id)}
+                />
+              ))}
+            </>
+          )}
 
           {/* Empty State */}
-          {alerts.length === 0 && (
+          {isStripeConnected && !isLoading && alerts.length === 0 && (
             <View
               className="items-center rounded-2xl border p-8"
               style={{
