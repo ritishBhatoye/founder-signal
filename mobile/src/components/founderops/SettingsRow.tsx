@@ -1,7 +1,8 @@
-import { colors } from '@/constants/theme'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
+
+import { colors } from '@/constants/theme'
 
 interface SettingsRowProps {
   icon: keyof typeof Ionicons.glyphMap
@@ -27,7 +28,7 @@ export function SettingsRow({
     >
       <View
         className="mr-3 h-10 w-10 items-center justify-center rounded-full"
-        style={{ backgroundColor: iconColor + '20' }}
+        style={{ backgroundColor: `${iconColor}20` }}
       >
         <Ionicons name={icon} size={20} color={iconColor} />
       </View>
